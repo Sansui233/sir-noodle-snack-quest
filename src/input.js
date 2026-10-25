@@ -17,7 +17,12 @@ function primary() {
   else if (state === 'pause') setState('play');
   wake();
 }
-function toggleMute() { muted = !muted; $mute.innerHTML = iconHtml(muted ? 'speaker_off' : 'speaker'); if (!muted) audio(); }
+function applyMute() { $mute.innerHTML = iconHtml(muted ? 'speaker_off' : 'speaker'); }
+function toggleMute() {
+  muted = !muted;
+  try { localStorage.setItem('sirNoodleMuted', muted ? '1' : '0'); } catch (e) {}
+  applyMute(); if (!muted) audio();
+}
 
 function applyLowFx() {
   $lowfx.innerHTML = iconHtml(lowFx ? 'feather' : 'sparkle');

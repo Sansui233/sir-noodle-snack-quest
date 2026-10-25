@@ -7,7 +7,7 @@ const SAVE_KEY = 'sirNoodleSave';
 const RANK_SIZE = 10;                        // runs kept on the ranking board
 
 function emptySave() {
-  return { v: 1, lang: '', profile: { name: DEFAULT_NAME, avatar: AVATARS[0].id }, ranking: [], unlocked: {}, progress: {},
+  return { v: 1, profile: { name: DEFAULT_NAME, avatar: AVATARS[0].id }, ranking: [], unlocked: {}, progress: {},
     life: { games: 0, snacks: 0, tried: [] } };
 }
 
@@ -20,7 +20,6 @@ function loadSave() {
     if (Array.isArray(d.ranking)) s.ranking = d.ranking.filter(r => r && num(r.score) > 0).slice(0, RANK_SIZE)
       .map(r => ({ score: num(r.score), snacks: num(r.snacks), length: num(r.length), time: num(r.time), date: num(r.date),
         name: cleanName(r.name), avatar: cleanAvatar(r.avatar) }));
-    if (d.lang === 'en' || d.lang === 'zh') s.lang = d.lang;
     if (d.profile) s.profile = { name: cleanName(d.profile.name), avatar: cleanAvatar(d.profile.avatar) };
     if (d.unlocked && typeof d.unlocked === 'object') s.unlocked = d.unlocked;
     if (d.progress && typeof d.progress === 'object') s.progress = d.progress;
@@ -43,9 +42,9 @@ const save = loadSave();
 
 function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) {} }
 
-// keeps the profile and language: "reset records" is about scores, not who you are
+// keeps the profile: "reset records" is about scores, not who you are
 function wipeSave() {
-  Object.assign(save, emptySave(), { profile: save.profile, lang: save.lang });
+  Object.assign(save, emptySave(), { profile: save.profile });
   persist();
 }
 

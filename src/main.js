@@ -16,6 +16,7 @@ function wake() {
   requestAnimationFrame(frame);
 }
 applyLowFx();
+applyMute();
 reset();
 
 function frame(now) {

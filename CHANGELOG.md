@@ -3,8 +3,9 @@
 ## Unreleased
 
 - **简体中文**: every screen, HUD tooltip, banner, speech bubble, achievement and the controls hint, in Chinese.
-  Picked from the browser language; the 中 / EN button in the HUD switches and remembers it.
+  Follows the browser language until you pick one with the HUD language button (shows the current one: EN / 中).
   Chinese text uses the system UI font (PingFang SC, Microsoft YaHei UI, Noto Sans CJK), kept light.
+- Options remember themselves: language and mute are kept in localStorage, like low effects.
 
 ## v2.0.2
 

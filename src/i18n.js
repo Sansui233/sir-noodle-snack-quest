@@ -4,15 +4,21 @@
 // - Data tables (effects, pickups, quotes, achievements...): English stays in config.js / achievements.js,
 //   the Chinese overrides below are swapped in by setLang() (English is kept aside to swap back).
 // - Text built in code: tr('key', ...args) with both languages in STR.
-// The choice is save.lang ('' = follow the browser). Chinese glyphs come from system UI fonts (css/style.css).
+// The choice is an option in localStorage (sirNoodleLang); until the player picks one, the browser language decides.
+// Chinese glyphs come from system UI fonts (css/style.css).
 'use strict';
 
 let lang = 'en';
-const pickLang = () => save.lang || (/^zh\b/i.test(navigator.language || '') ? 'zh' : 'en');
+function pickLang() {
+  let l = null;
+  try { l = localStorage.getItem('sirNoodleLang'); } catch (e) {}
+  if (l === 'en' || l === 'zh') return l;
+  return /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
+}
 
 const STR = {
   en: {
-    langBtn: '中', langTitle: '切换到中文 / Switch to Chinese',
+    langBtn: 'EN', langTitle: 'Language: English (click for 中文)',
     locale: 'en-US',
     anon: 'Anonymous',
     // HUD
@@ -58,7 +64,7 @@ const STR = {
     toast: 'Achievement unlocked!', toastTier: (tier) => `${tier} achievement!`
   },
   zh: {
-    langBtn: 'EN', langTitle: 'Switch to English / 切换到英文',
+    langBtn: '中', langTitle: '语言：中文（点击切换到 English）',
     locale: 'zh-CN',
     anon: '匿名',
     records: (got, all) => `记录：排行榜和成就，已解锁 ${got}/${all}（T）`,
@@ -234,9 +240,8 @@ function setLang(l) {
 // HUD button: switch, keep the choice, and rewrite the text that is already on screen
 // (a game over dialog that is up keeps its language until the next one)
 function toggleLang() {
-  save.lang = lang === 'zh' ? 'en' : 'zh';
-  persist();
-  setLang(save.lang);
+  setLang(lang === 'zh' ? 'en' : 'zh');
+  try { localStorage.setItem('sirNoodleLang', lang); } catch (e) {}
   lastFxText = ''; lastSpd = ''; $trophyCount.textContent = '';   // updateHud() only writes what changed
   updateHud(); updateProfile();
   $lowfx.title = tr(lowFx ? 'fxLow' : 'fxHigh');
