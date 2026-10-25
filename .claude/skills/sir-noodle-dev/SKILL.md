@@ -8,7 +8,7 @@ description: How to add art, power-ups/timed effects, achievements and UI screen
 Canvas game, no build step, no npm deps, must keep working from `file://`. `index.html` loads `css/` and the
 classic scripts in `src/` (not ES modules: browsers block those on file://). The scripts share one global scope,
 so files read each other's state directly; keep the `<script>` order and only run load-time code that uses
-earlier files. Map of files: README.md. Git: work on a branch, commit with the attribution trailer.
+earlier files. Map of files: docs/development.md (README.md is for players). Git: work on a branch, commit with the attribution trailer.
 
 ## Art (cheap, code-drawn)
 - Every icon is code in `tools/art.js`: `ART.<name> = g => { ... }`, drawn in a 100x100 box with the shared

@@ -1,63 +1,55 @@
 # Sir Noodle's Snack Quest
 
-Open `index.html` in a browser. Everything is local: no network access, no server and no build step needed.
+Snake, but snackier. Guide Sir Noodle across the grass, eat everything, grow a fancy hat, and don't bonk
+into the rocks falling from the sky.
 
-```
-index.html              page shell: HUD, board (canvas + UI screens), script tags (in load order)
-css/style.css           page + HUD styles, page mood per effect
-css/hud.css             HUD header on top of the board: profile, counters, buttons, speed + effect strip
-css/ui.css              title / pause / game over / records / profile screens, toasts, all their animations
-src/                    the game, as plain classic scripts sharing one global scope
-  config.js             constants and data: effects, pickups, quotes, art names
-  util.js               small pure helpers
-  storage.js            save file in localStorage: ranking, achievements, lifetime totals
-  dom.js                page elements
-  state.js              mutable game state, reset()
-  hud.js                HUD above the canvas
-  audio.js              synthesized sound effects
-  particles.js          particle bursts, ambient effect particles
-  achievements.js       achievement list, per-run stats, unlocking
-  i18n.js               languages: Chinese text for the page, data tables and tr() strings
-  game.js               rules: spawning, effects, movement, eating, rocks, bombs
-  ui.js                 DOM screens over the canvas, game over dialog, records, toasts
-  input.js              keyboard / touch / mouse
-  render/               canvas drawing (helpers, world, snake, overlays + render())
-  main.js               main loop and boot (loads last)
-assets/*.png            all art, 128x128 (no system emoji are used, so it looks the same on every OS)
-assets/fonts/           Fredoka (SIL Open Font License, see OFL.txt)
-tools/art.js            the art, drawn as code in a 100x100 box
-tools/sheet.html        preview of every icon (open in a browser)
-tools/export.mjs        renders tools/art.js -> assets/*.png via headless Chrome
-tools/playtest.mjs      drives the game in headless Chrome (smoke test, scripted tests, screenshots)
-tools/release.mjs       builds dist/sir-noodle (runtime files only) and copies it to deploy folders
-docs/                   game mechanics write-ups (for humans)
-```
+**[▶ Play it in your browser](https://sansui233.github.io/static/sir-noodle/)** (desktop and phone, English / 简体中文)
 
-Why classic scripts and not ES modules: browsers block module scripts on `file://`, and the game is meant to
-be opened by double-clicking `index.html`. Top-level `let`/`const`/`function` in classic scripts share one
-global scope, so the files see each other's state directly. Keep the `<script>` order in `index.html`:
-a file may only *run* code at load time that uses things defined in files above it.
+![Sir Noodle in Monkey Mode, wearing the crown, next to a pizza, a star power-up, a bomb and falling rocks](docs/img/gameplay.png)
 
-## Docs
+## How to play
 
-- [UI hierarchy and screen flow](docs/ui.md): layers, screens, game over dialog timeline, animations, key map
-- [Achievements and ranking](docs/achievements-and-ranking.md): all 34 achievements and their rarity tiers, ranking rules, save format
-- [Speed and the Night (moon) mechanic](docs/speed-and-night.md): speed stage table, speed meter, moon spawn rules, tuning knobs
+| Keyboard | Touch | |
+|---|---|---|
+| Arrows / WASD | swipe (one drag can chain turns) | move |
+| Space / P / Esc | tap | pause, resume |
+| Space / Enter | tap | start, replay |
+| T | 🏆 button | records and achievements |
+| M / L | buttons | mute / low effects for slower devices |
 
-## Changing the art
+Snacks give points and speed you up; the edges of the board wrap around. Every 5th snack Sir Noodle burps up
+a better hat, all the way to the crown.
+After 50 points rocks start falling: watch for the red warning, then steer around them. Biting your own tail
+or hitting a rock ends the run.
 
-1. Edit or add a drawing in `tools/art.js` (`ART.<name> = g => { ... }`).
-2. Run `node tools/export.mjs` (set `CHROME=<path>` if Chrome/Edge is not in the default Windows location).
-3. New icons used on the canvas must also be listed in `ICON_NAMES` in `src/config.js`.
+## Power-ups
 
-## Releasing
+| Pickup | Effect |
+|---|---|
+| <img src="assets/chili.png" width="24"> Chili | Spicy: faster, double points |
+| <img src="assets/ice.png" width="24"> Ice | Chill: slow motion |
+| <img src="assets/mushroom.png" width="24"> Mushroom | Dizzy: controls flipped, triple points |
+| <img src="assets/star.png" width="24"> Star | God Mode: smash through rocks and yourself, double points |
+| <img src="assets/banana.png" width="24"> Banana | Monkey Mode: paws grab snacks and fling rocks away |
+| <img src="assets/moon.png" width="24"> Moon | Night: a sleepy slow-down, wake up at starting speed |
+| <img src="assets/shield.png" width="24"> Shield | blocks one rock hit (stacks to 3) |
+| <img src="assets/bomb.png" width="24"> Bomb | zaps the nearest rock |
+| <img src="assets/dynamite.png" width="24"> Super bomb | clears every rock on the board |
 
-1. Bump `VERSION` in `src/config.js` and add a section to `CHANGELOG.md`.
-2. Commit on `main`, tag it: `git tag -a v<version> -m "..."`.
-3. `node tools/release.mjs --to <deploy dir> ...` builds `dist/sir-noodle/` (index.html, css, src, assets, VERSION)
-   and replaces each `--to` folder with it.
+Effects stack, and so do their multipliers.
 
-## Testing
+## Also inside
 
-`node tools/playtest.mjs` boots the game headless, plays random moves and fails on any page error.
-`node tools/playtest.mjs path/to/test.mjs` runs your own script; see the header of `tools/playtest.mjs`.
+- **34 achievements** in four rarities, from *First Bite* to *Hall of Fame*
+- **Your top 10 runs** with a podium, plus a name and one of 13 avatars
+- **English and 简体中文**, picked from your browser, switch any time
+- Everything is saved in your browser; nothing is sent anywhere
+
+## Play offline
+
+Download this repository (or a release zip) and open `index.html`. No install, no server, no internet needed.
+
+---
+
+Made with plain JavaScript and canvas, no dependencies. Notes for developers: [docs/development.md](docs/development.md).
+Font: [Fredoka](assets/fonts/OFL.txt) (SIL Open Font License).
