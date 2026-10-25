@@ -147,7 +147,7 @@ const UI_ZH = {
   profile: '资料', whoPlays: '谁在玩？', anon: '匿名', yourName: '你的名字',
   randomTip: '随机一个搞笑的名字', random: '随机名字',
   save: '保存 <kbd>Enter</kbd>', cancel: '取消 <kbd>Esc</kbd>',
-  peekBack: '显示结算', share: '分享',
+  peekBack: '显示结算', share: '分享', ghTip: 'GitHub 上的源代码',
   hint: `方向键 / WASD 或滑动 • 空格 = 暂停 • T = 记录和成就 • M = 静音 • L = 低特效 • 空格 / 回车 = 再来一局<br>
     50 分后 <img class="ico" src="assets/rock.png" alt="石头"> 石头开始掉落（注意红色警告！） &nbsp;•&nbsp; <img class="ico" src="assets/bomb.png" alt="炸弹"> 炸掉最近的石头 &nbsp;•&nbsp; <img class="ico" src="assets/dynamite.png" alt="超级炸弹"> 超级炸弹清除所有石头 &nbsp;•&nbsp; <img class="ico" src="assets/shield.png" alt="护盾"> 挡下一次石头（最多叠 3 层） &nbsp;•&nbsp; <img class="ico" src="assets/star.png" alt="星星"> = 无敌模式：横冲直撞 &nbsp;•&nbsp; <img class="ico" src="assets/banana.png" alt="香蕉"> = 猴子模式：猴爪扔石头、抓零食 &nbsp;•&nbsp; <img class="ico" src="assets/moon.png" alt="月亮"> = 夜晚：面条爵士打个盹，醒来回到初始速度`
 };

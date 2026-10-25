@@ -5,7 +5,7 @@ into the rocks falling from the sky.
 
 **[▶ Play it in your browser](https://sansui233.github.io/static/sir-noodle/)** (desktop and phone, English / 简体中文)
 
-![Sir Noodle in Chill Mode on icy grass, wearing the crown, next to a pizza, a star power-up, a bomb and rocks](docs/img/gameplay.png)
+![Three screenshots: Sir Noodle in Chill Mode on icy grass; a 100-segment rainbow noodle among rocks; the game over dialog with a new high score](docs/img/gallery.png)
 
 ## How to play
 
