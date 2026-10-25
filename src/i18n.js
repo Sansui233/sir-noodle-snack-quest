@@ -64,12 +64,11 @@ const STR = {
     toast: 'Achievement unlocked!', toastTier: (tier) => `${tier} achievement!`,
     // game over: peek and share (share.js)
     peekTip: 'Hide the results to see the board (for a screenshot)', shareTip: 'Share this run',
-    shareT: 'Share your run', shareBtn: 'Share…', copyImg: 'Copy image', saveImg: 'Save image', copyText: 'Copy text',
+    shareT: 'Share your run', copyImg: 'Copy image', saveImg: 'Save image', copyText: 'Copy text',
     copied: 'Copied!', copyFailed: 'Could not copy', saved: 'Saved!',
-    postTo: 'Post to', socialTip: 'Opens a new tab with your text and link; attach the saved image there',
+    socialTip: 'Opens a new tab with your text and link; attach the saved image there',
     net_x: 'X', net_weibo: 'Weibo', net_facebook: 'Facebook',
     drawing: 'Drawing your snapshot…',
-    noImage: 'Pictures can\'t be made when the game is opened as a local file. Play it online to share a picture, or share the text.',
     shareImgTitle: "Sir Noodle's Snack Quest",
     shareText: (o) => `${o.best ? 'New personal best! ' : ''}I just scored ${o.score} points in Sir Noodle's Snack Quest. ` +
       `My noodle ate ${o.snacks} snacks and grew ${o.length} segments long in ${o.time}, then ` +
@@ -115,12 +114,11 @@ const STR = {
     unlocked: '已解锁', unlockedOn: (d) => `${d} 解锁`,
     toast: '解锁成就！', toastTier: (tier) => `${tier}成就！`,
     peekTip: '隐藏结算，看看棋盘（方便截图）', shareTip: '分享这一局',
-    shareT: '分享这一局', shareBtn: '分享…', copyImg: '复制图片', saveImg: '保存图片', copyText: '复制文字',
+    shareT: '分享这一局', copyImg: '复制图片', saveImg: '保存图片', copyText: '复制文字',
     copied: '已复制！', copyFailed: '复制失败', saved: '已保存！',
-    postTo: '发到', socialTip: '在新标签页打开，带上文字和链接；图片请保存后自己添加',
+    socialTip: '在新标签页打开，带上文字和链接；图片请保存后自己添加',
     net_x: 'X', net_weibo: '微博', net_facebook: 'Facebook',
     drawing: '正在画你的截图…',
-    noImage: '以本地文件打开游戏时无法生成图片。去在线版分享图片，或者先分享文字吧。',
     shareImgTitle: '面条爵士的零食大冒险',
     shareText: (o) => `${o.best ? '刷新个人纪录！' : ''}我在《面条爵士的零食大冒险》里拿到了 ${o.score} 分！` +
       `我的面条吃了 ${o.snacks} 份零食，用 ${o.time} 长到了 ${o.length} 节，最后` +

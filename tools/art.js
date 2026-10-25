@@ -537,10 +537,11 @@ ART.eye = g => {
   ink(g, 4.5); g.stroke();
 };
 
-ART.share = g => {                                 // a paper plane
-  roundPoly(g, [[92, 10], [8, 46], [40, 60], [60, 92]], 3); paint(g, '#ffd6e5');
-  roundPoly(g, [[92, 10], [40, 60], [44, 84]], 3); paint(g, '#ff7aa2');
-  shine(g, 40, 42, 12, 3, -0.4, 0.8);
+ART.share = g => {                                 // an arrow out of an open box (Lucide "share")
+  g.beginPath(); g.moveTo(20, 48); g.lineTo(20, 76); g.quadraticCurveTo(20, 88, 32, 88);
+  g.lineTo(68, 88); g.quadraticCurveTo(80, 88, 80, 76); g.lineTo(80, 48); stroke2(g, 9, '#7dd3fc');
+  g.beginPath(); g.moveTo(50, 64); g.lineTo(50, 14); stroke2(g, 9, '#ff7aa2');
+  g.beginPath(); g.moveTo(32, 31); g.lineTo(50, 13); g.lineTo(68, 31); stroke2(g, 9, '#ff7aa2');
 };
 
 // ---------- stat icons (HUD, pause, game over) ----------
