@@ -1,7 +1,7 @@
 # Speed and the Night (moon) mechanic
 
 How fast Sir Noodle moves, why it keeps getting faster, and how the moon pickup brings it back down.
-All numbers come from `index.html`. If you change the code, update the tables here too.
+All numbers come from `src/game.js` and `src/config.js`. If you change the code, update the tables here too.
 
 ## The problem it solves
 
@@ -15,7 +15,7 @@ you can't miss, not a quiet number change.
 ## Speed level
 
 - `speedLvl` starts at 0 and goes up by **1 for everything you eat**: snacks, bombs, shields and power-ups
-  (`snack()` in `index.html`). So early on it's basically your snack count.
+  (`snack()` in `src/game.js`). So early on it's basically your snack count.
 - It's capped at `MAX_LVL = 38`.
 - Eating does **not** raise it while the night is active (sleeping noodles don't speed up).
 - `eaten` (the Snacks counter in the HUD) is just a stat now and doesn't affect speed.
