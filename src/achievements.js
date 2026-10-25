@@ -116,7 +116,8 @@ function finishRun(cause) {
   save.life.tried = [...new Set([...save.life.tried, ...run.tried])];
   run.banked = true;
   checkAchievements(true);
-  const entry = score > 0 ? { score, snacks: eaten, length: run.length, time: Math.round(clock), date: Date.now() } : null;
+  const entry = score > 0 ? { score, snacks: eaten, length: run.length, time: Math.round(clock), date: Date.now(),
+    name: save.profile.name, avatar: save.profile.avatar } : null;
   const rank = entry ? addRanking(entry) : -1;
   persist();
   return { entry, rank, run, unlocked: run.unlocked.map(id => ACH_BY_ID[id]) };

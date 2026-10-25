@@ -8,6 +8,7 @@ let fx, wasActive, clock, shake, bubble, particles, deathMsg, lastFxText = '', t
 let hatTier = 0;
 let stones, blasts, rings, zaps, flash, banner, stonesStarted, sinceSuper, shields;
 let flung, grabs;              // monkey mode: rocks flying off the board, items flying from a paw to the mouth
+let pops;                      // "×N" snack milestones floating up beside the head
 let speedLvl, nightFrom;       // speed rises one level per snack; a night's sleep drains it from nightFrom to 0
 let run;                       // stats of the current run, for achievements and the game over dialog (achievements.js)
 const fxAmt = fxMap(0);        // smooth 0..1 fade for visuals
@@ -33,7 +34,7 @@ function reset() {
   clock = 0; shake = 0; bubble = null; particles = []; special = null;
   stones = []; blasts = []; rings = []; zaps = []; flash = 0; banner = null; stonesStarted = false;
   bomb = null; sinceSuper = 0; shields = 0;
-  flung = []; grabs = [];
+  flung = []; grabs = []; pops = [];
   speedLvl = 0; nightFrom = 0;
   run = newRun();
   food = null;

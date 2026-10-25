@@ -79,6 +79,7 @@ function interval() {
 }
 function snack() {                                         // sleeping noodles don't speed up
   eaten++;
+  if (eaten % 5 === 0) milestone();
   if (!isActive('night')) speedLvl = Math.min(MAX_LVL, speedLvl + 1);
 }
 function currentTheme() { for (const k of THEME_ORDER) if (isActive(k)) return k; return 'normal'; }

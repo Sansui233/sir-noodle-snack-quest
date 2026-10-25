@@ -1,7 +1,7 @@
-// The DOM HUD above the canvas.
+// The HUD header on top of the board (css/hud.css): profile button, counters, buttons, speed + effect strip.
 'use strict';
 
-// write a HUD number only when it changes; going up during play gives its pill a little bump
+// write a HUD number only when it changes; going up during play gives its counter a little bump
 function setNum(el, v) {
   const s = String(v);
   if (el.textContent === s) return;
@@ -12,8 +12,8 @@ function setNum(el, v) {
 
 function updateHud() {
   setNum($score, score); setNum($best, best); setNum($snacks, eaten);
-  const got = unlockedCount() + '/' + ACHIEVEMENTS.length;
-  if ($trophyCount.textContent !== got) $trophyCount.textContent = got;
+  const got = String(unlockedCount());
+  if ($trophyCount.textContent !== got) { $trophyCount.textContent = got; $trophies.title = `Records: ranking and achievements, ${got}/${ACHIEVEMENTS.length} unlocked (T)`; }
   const parts = [];
   for (const k of THEME_ORDER) {
     if (isActive(k)) parts.push(`${iconHtml(EFFECTS[k].emo)} ${EFFECTS[k].name} ${Math.ceil((fx[k] - clock) / 1000)}s`);
@@ -26,9 +26,17 @@ function updateHud() {
   const th = currentTheme();
   if (th !== theme) {
     theme = th;
-    document.body.className = th === 'normal' ? '' : 'fx-' + th;
-    cv.style.boxShadow = GLOWS[th];
+    for (const k of THEME_ORDER) document.body.classList.toggle('fx-' + k, k === th);   // keeps low-fx / idle classes
+    $board.style.boxShadow = GLOWS[th];
   }
+}
+
+// name + avatar on the profile button
+function updateProfile() {
+  const p = save.profile;
+  $hudAvatar.src = `assets/${p.avatar}.png`;
+  $hudName.textContent = p.name;
+  $profileBtn.title = `${p.name}: click to change your name and avatar`;
 }
 
 let lastSpd = '';

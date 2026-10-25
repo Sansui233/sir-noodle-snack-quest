@@ -66,11 +66,13 @@ instead, and any toasts still queued at death are dropped, because the dialog li
 ## Ranking
 
 - The top **10** runs (`RANK_SIZE`), sorted by score; ties keep the older run ahead.
-- A run is recorded when it ends with a score above 0: score, snacks, max length, time, date.
+- A run is recorded when it ends with a score above 0: score, snacks, max length, time, date, and the
+  player's name and avatar at that moment.
 - The game over dialog shows the top 3 as a podium (the new run glows and says YOU!), plus a ribbon:
   new high score, `#2/#3 on the podium`, `Rank #N in your top 10`, or how many points short of the board.
 - The **Records** modal (`T`, or the trophy button in the HUD) shows all 10 plus lifetime totals.
-  "Reset records" (click twice) wipes the ranking, achievements, lifetime totals and the best score.
+  "Reset records" (click twice) wipes the ranking, achievements, lifetime totals and the best score
+  (not the profile).
 
 ## Save format
 
@@ -80,7 +82,8 @@ corrupt or blocked storage never breaks the game.
 ```js
 {
   v: 1,
-  ranking:  [{ score, snacks, length, time /* ms */, date /* epoch ms */ }, ...],   // best first, max 10
+  profile:  { name: 'Anonymous', avatar: 'av_anon' },          // see docs/ui.md#profile
+  ranking:  [{ score, snacks, length, time /* ms */, date /* epoch ms */, name, avatar }, ...],   // best first, max 10
   unlocked: { first_bite: 1729850000000, ... },     // id -> unlock time
   progress: { snack_attack: 23, ... },               // best value seen for run-scope achievements
   life:     { games, snacks, tried: ['spicy', ...] }  // lifetime totals

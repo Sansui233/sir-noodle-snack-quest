@@ -8,20 +8,55 @@ costs nothing while the game loop sleeps. Code: `src/ui.js`, styles: `css/ui.css
 
 ```
 body
-├─ h1                       title
-├─ #hud                     Score · Best · Snacks · Speed · effect status · [trophy n/22] [mute] [FX]
-├─ #stage                   the board (square, scales with the window; container for cqw font sizing)
-│  ├─ canvas#c              z0  world: grass, rocks, pickups, Sir Noodle, particles, banners, speech bubbles
-│  ├─ .screen #scr-title    z2  ┐
-│  ├─ .screen #scr-pause    z2  ├ at most one of these, picked by the game state
-│  ├─ .screen #scr-over     z2  ┘
-│  ├─ .screen.modal #scr-records  z3  can open on top of any state (opening it during play pauses)
-│  └─ #toasts               z4  achievement toasts, never block input (pointer-events: none)
+├─ main#board               header + stage as one piece; carries the effect glow (GLOWS)
+│  ├─ header#hud            the HUD, glued to the top of the board (css/hud.css)
+│  │  ├─ .hud-row
+│  │  │  ├─ button#profile        [avatar  PLAYER / name]   opens the profile dialog
+│  │  │  ├─ .counters             (coin) score · (snack bag) snacks · (crown) best     read-outs, not buttons
+│  │  │  └─ .hud-btns             (trophy + unlocked count) records · (speaker) mute · (sparkle/feather) FX
+│  │  └─ .hud-status              speed meter ................................ current effect / shields
+│  └─ #stage                the square board (container for cqw font sizing)
+│     ├─ canvas#c           z0  world: grass, rocks, pickups, Sir Noodle, particles, "×N" pops, banners, bubbles
+│     ├─ .screen #scr-title     z2  ┐
+│     ├─ .screen #scr-pause     z2  ├ at most one of these, picked by the game state
+│     ├─ .screen #scr-over      z2  ┘
+│     ├─ .screen.modal #scr-records  z3  ┐ open on top of any state (opening one during play pauses)
+│     ├─ .screen.modal #scr-profile  z3  ┘
+│     └─ #toasts            z4  achievement toasts, never block input (pointer-events: none)
 └─ .hint                    controls
 ```
 
-Each `.screen` is a dimmed backdrop with one `.card`. Card text is sized in `em` off a font size of `2.5cqw`
-(2.5% of the board width, clamped to 9-16px), so every dialog scales with the board.
+Title, pause and game over have **no backdrop**: the board stays bright behind the card, so a break still
+feels like part of the game. The two modals get a light pink frosting (never a dark dim). Card text is sized
+in `em` off `2.5cqw` (2.5% of the board width, clamped to 9-16px), so every dialog scales with the board.
+
+## HUD: buttons vs read-outs
+
+The old HUD was a row of identical pills, so nobody could tell what was clickable. Now there are two looks:
+
+| Kind       | Items                                   | Look                                                        |
+|------------|-----------------------------------------|-------------------------------------------------------------|
+| Buttons    | profile, records, mute, FX              | white, raised (dark bottom edge), round or pill; lift on hover, sink on press |
+| Read-outs  | score, snacks, best, speed, effect      | flat, inset "scoreboard" wells, icon + number, no shadow; bump when a number goes up |
+
+Every stat has its own icon everywhere it appears (HUD, pause chips, game over tiles):
+`coin` = score, `snackbag` = snacks, `crown` = best, `worm` = length, `clock` = time.
+On small boards the profile button drops the "PLAYER" label, then the name, keeping the avatar.
+
+## Profile
+
+Everyone starts as **Anonymous** with the disguise avatar (`av_anon`). The profile button (HUD) or the
+"Playing as" chip (title card) opens `#scr-profile`: big preview, name field (14 chars, "Random name" picks a
+funny one), 13 avatars (`AVATARS` in `src/config.js`, art in `tools/art.js`), Save (Enter) / Cancel (Esc).
+While it's open, every key goes to the name field (no muting on M, no records on T).
+Name and avatar appear in the HUD, title and pause cards, the game over header, the podium and the ranking.
+Each ranking entry keeps the name and avatar it was played with.
+
+## Snack milestones
+
+Every 5th snack a small "(snack bag) ×N" pops out beside Sir Noodle's head, floats up and fades (1.2s);
+every 10th is bigger and gold, with sparkles. Code: `milestone()` (`src/particles.js`), `drawPops()`
+(`src/render/overlays.js`), the `pops` array.
 
 ## Screens
 
@@ -29,8 +64,9 @@ Each `.screen` is a dimmed backdrop with one `.card`. Card text is sized in `em`
 |---------|-------------------|--------------------------------------------------------------------------|-------------------------------------|
 | `title` | `#scr-title`      | logo, name, **Play**, **Records**, best score + achievement count chips   | Play / Enter / Space / arrow / tap  |
 | `play`  | none              | canvas + HUD; toasts drop in when an achievement unlocks                  | Space/P/Esc pause, T records, death |
-| `pause` | `#scr-pause`      | score / snacks / time so far, **Resume**, **Records**                     | Resume / Space / arrow / tap        |
+| `pause` | `#scr-pause`      | avatar, a silly "<name> is munching" line, score / snacks / time chips, **Resume**, **Records** | Resume / Space / arrow / tap        |
 | `over`  | `#scr-over`       | game over dialog (below)                                                  | Replay / Space / Enter, once landed |
+| any     | `#scr-profile`    | name + avatar picker (above)                                              | Save / Enter, Cancel / Esc / backdrop |
 | any     | `#scr-records`    | tabs: **Ranking** (top 10 + lifetime totals, reset) / **Achievements**    | ✕ / Esc / T / Enter / backdrop      |
 
 Every state change goes through `setState()` (`src/game.js`), which calls `syncScreens()` to show the right one.
@@ -39,7 +75,7 @@ Every state change goes through `setState()` (`src/game.js`), which calls `syncS
 
 ```
 ┌──────────────────────────────────────────────┐
-│        (x_x)  GAME OVER                      │  header + death quote
+│     (avatar, seeing stars)  GAME OVER        │  header + death quote
 │        "Hard head, soft worm."               │
 │ ┌────────┐ ┌──────┐ ┌──────┐ ┌──────┐        │  this run: numbers count up
 │ │ SCORE  │ │SNACKS│ │LENGTH│ │ TIME │        │
@@ -48,6 +84,7 @@ Every state change goes through `setState()` (`src/game.js`), which calls `syncS
 │        ╔═ NEW HIGH SCORE! ═╗                 │  ribbon: new best / #rank / points to top 10
 │ ───────────── TOP 3 ─────────────            │
 │            crown                             │  podium, this run glows and says YOU!
+│  (cat)     (frog)     (you)                  │  avatars, names, "YOU!"
 │   420     [ 520 ]     260                    │
 │  [ 2 ]   [   1   ]   [ 3 ]                   │
 │ ──────── UNLOCKED THIS RUN ────────          │  badges in their rarity look, rarest first

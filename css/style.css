@@ -18,7 +18,6 @@ body.fx-chill { background: radial-gradient(circle at 25% 10%, #f2fbff, #b9e4ff 
 body.fx-monkey { background: radial-gradient(circle at 30% 10%, #fff3b0, #b9e07a 50%, #7cc46a); }
 body.fx-god   { background: radial-gradient(circle at 50% 40%, #fff6b8, #ffd84d 50%, #ffb347); }
 body.fx-night { background: radial-gradient(circle at 80% 8%, #6b74c9, #2d3470 45%, #171b3d); }
-body.fx-night h1, body.fx-night .hint { color: #e6e9ff; text-shadow: 2px 2px 0 #171b3d; }
 /* dizzy rainbow: a big layer slid with transform (compositor-only, no per-frame page repaint) */
 body::before {
   content: ''; position: fixed; top: 0; left: 0; width: 400vw; height: 100vh; z-index: -1; pointer-events: none;
@@ -28,33 +27,20 @@ body::before {
 body.fx-dizzy::before { opacity: 1; animation: dz 3s ease infinite; }
 @keyframes dz { 0% {transform: translateX(0)} 50% {transform: translateX(-300vw)} 100% {transform: translateX(0)} }
 
-h1 { margin: 0; font-size: clamp(18px, 3.4vh, 30px); text-shadow: 2px 2px 0 #fff; text-align: center; }
-#hud { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; font-weight: 700; padding: 0 8px; }
-.pill {
-  background: #fff; border: 3px solid var(--ink); border-radius: 999px; padding: 3px 14px;
-  box-shadow: 0 3px 0 var(--ink); font-size: clamp(12px, 2.2vh, 18px); white-space: nowrap;
+/* the board: HUD header (css/hud.css) glued on top of the stage; the canvas fills the stage and the UI
+   screens (css/ui.css) sit on top of it. The whole board glows with the active effect (GLOWS). */
+#board {
+  width: min(94vw, calc(100vh - 165px), 640px); container-type: inline-size;
+  border-radius: 22px; box-shadow: 0 8px 0 var(--ink), 0 18px 30px rgba(91,42,78,.3); transition: box-shadow .25s;
 }
-#fx { min-width: 150px; max-width: 92vw; white-space: normal; text-align: center; background: #fff7c9; }
-/* speed meter: the bar is the base speed (what a night's sleep resets), the number is the current speed */
-#spd { display: flex; align-items: center; gap: 6px; }
-#spd .meter { width: 72px; height: 12px; border: 2.5px solid var(--ink); border-radius: 999px; background: #eef3f0; overflow: hidden; }
-#spd .meter i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .35s, background-color .35s; }
-#spdx { min-width: 2.6em; text-align: right; }
-/* the board; the canvas fills it and the UI screens (css/ui.css) sit on top */
-#stage { position: relative; width: min(94vw, calc(100vh - 170px), 640px); aspect-ratio: 1; container-type: inline-size; }
+#stage { position: relative; width: 100%; aspect-ratio: 1; container-type: inline-size; }
 canvas {
   display: block; width: 100%; height: 100%;
-  border: 5px solid var(--ink); border-radius: 22px;
-  box-shadow: 0 8px 0 var(--ink), 0 18px 30px rgba(91,42,78,.3);
+  border: 5px solid var(--ink); border-radius: 0 0 22px 22px;
   background: #bdf0a6; touch-action: none; cursor: pointer;
-  transition: box-shadow .25s;
 }
 .hint { font-size: 13px; opacity: .85; text-align: center; padding: 0 10px; max-width: 680px; }
+body.fx-night .hint { color: #e6e9ff; text-shadow: 2px 2px 0 #171b3d; }
 body.low-fx::before { display: none; }
 body.idle::before { animation-play-state: paused; }     /* nothing animates while the game sleeps */
-#mute, #lowfx, #trophies { border: 3px solid var(--ink); background: #fff; border-radius: 999px; padding: 3px 12px; cursor: pointer; font: 600 16px "Fredoka", system-ui, sans-serif; color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
-#trophies { background: #fff3c4; }
-/* a HUD number went up */
-.pill.bump { animation: bump .32s cubic-bezier(.3,1.8,.5,1); }
-@keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.18) rotate(-2deg); background: #fff3c4; } 100% { transform: scale(1); } }
 .ico { height: 1.3em; width: 1.3em; vertical-align: -0.3em; }

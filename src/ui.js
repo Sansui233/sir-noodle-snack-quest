@@ -31,13 +31,19 @@ function hideScreen(el) {
 
 // called by setState(): exactly one of title / pause / game over is up (records can sit on top of any)
 function syncScreens() {
+  const p = save.profile;
   if (state === 'title') {
-    $titleSub.innerHTML = `<span class="chip">${iconHtml('trophy')} Best ${best}</span>` +
+    $titlePlayer.innerHTML = `${avatarHtml(p.avatar, 'sm')}<small>Playing as</small> ${esc(p.name)} <span class="edit">change</span>`;
+    $titleSub.innerHTML = `<span class="chip">${iconHtml('crown')} Best ${fmtNum(best)}</span>` +
       `<span class="chip">${iconHtml('star')} ${unlockedCount()}/${ACHIEVEMENTS.length} achievements</span>`;
     showScreen($scrTitle);
   } else hideScreen($scrTitle);
   if (state === 'pause') {
-    $pauseSub.textContent = `Score ${score} • Snacks ${eaten} • ${fmtTime(clock)}`;
+    $pauseAvatar.src = `assets/${p.avatar}.png`;
+    $pauseWho.textContent = rnd([`${p.name} is munching a snack.`, `${p.name} went to get more napkins.`,
+      `${p.name} is catching their breath.`, `Hold my noodle, ${p.name} will be right back.`]);
+    $pauseSub.innerHTML = statChip('coin', 'Score', fmtNum(score)) + statChip('snackbag', 'Snacks', fmtNum(eaten)) +
+      statChip('clock', 'Time', fmtTime(clock));
     showScreen($scrPause);
   } else hideScreen($scrPause);
   if (state !== 'over') { cancelOver(); hideScreen($scrOver); }
@@ -48,6 +54,9 @@ const fmtTime = (ms) => { const s = Math.floor(ms / 1000); return `${Math.floor(
 const fmtDate = (ts) => new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 const fmtNum = (v) => v.toLocaleString('en-US');
 const baseSpeed = (lvl) => (150 / Math.max(75, 150 - lvl * 2)).toFixed(1) + '×';   // speed without effects
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);   // names go into innerHTML
+const avatarHtml = (id, cls = '') => `<span class="avatar ${cls}"><img src="assets/${id}.png" alt=""></span>`;
+const statChip = (icon, label, v) => `<span class="stat-chip">${iconHtml(icon)}<span><small>${label}</small><br><b>${v}</b></span></span>`;
 const bar = (p, goal, cls = '') => `<span class="bar ${cls}"><i style="width:${Math.round(p / goal * 100)}%"></i></span>`;
 
 function countUp(el, to, fmt, ms = 650) {
@@ -77,14 +86,14 @@ function showGameOver(rep) {
   const counts = [];                                   // [ms, element index, value, formatter]
   const d = (ms) => `style="--d:${ms}ms"`;
 
-  let h = `<div class="over-head pop" ${d(next())}>${iconHtml('face_dead')}<h2>GAME OVER</h2></div>
+  let h = `<div class="over-head pop" ${d(next())}><span class="over-avatar" title="${esc(save.profile.name)}">${avatarHtml(save.profile.avatar)}<img class="stars" src="assets/dizzy.png" alt=""></span><h2>GAME OVER</h2></div>
     <p class="quote pop" ${d(next())}>${deathMsg}</p>
     <div class="stats">`;
-  const stats = [['Score', score, fmtNum, 'big'], ['Snacks', eaten, fmtNum], ['Length', r.length, fmtNum], ['Time', clock, fmtTime]];
-  stats.forEach(([label, v, fmt, cls], i) => {
+  const stats = [['Score', 'coin', score, fmtNum, 'big'], ['Snacks', 'snackbag', eaten, fmtNum], ['Length', 'worm', r.length, fmtNum], ['Time', 'clock', clock, fmtTime]];
+  stats.forEach(([label, icon, v, fmt, cls], i) => {
     const ms = next();
     counts.push([ms, i, v, fmt]); sounds.push([ms, 'pop']);
-    h += `<div class="stat pop ${cls || ''}" ${d(ms)}><small>${label}</small><b data-count>${fmt(0)}</b></div>`;
+    h += `<div class="stat pop ${cls || ''}" ${d(ms)}>${iconHtml(icon)}<span><small>${label}</small><b data-count>${fmt(0)}</b></span></div>`;
   });
   h += `</div><div class="chips pop" ${d(next())}>
     ${r.rocks ? `<span class="chip">${iconHtml('rock')} ${r.rocks} rock${r.rocks === 1 ? '' : 's'} destroyed</span>` : ''}
@@ -112,8 +121,8 @@ function showGameOver(rep) {
     const e = top[i], me = e && e === rep.entry;
     sounds.push([placeAt[i], 'pop']);
     h += `<div class="place p${i + 1}${me ? ' me' : ''}">
-      <div class="who pop" ${d(placeAt[i] + 200)}>${i === 0 ? `<span class="crown">${iconHtml('crown')}</span>` : ''}
-        <b>${e ? fmtNum(e.score) : '—'}</b><small>${e ? (me ? 'YOU!' : fmtDate(e.date)) : 'empty'}</small></div>
+      <div class="who pop" ${d(placeAt[i] + 200)} ${e ? `title="${esc(e.name)}, ${fmtDate(e.date)}"` : ''}>${i === 0 ? `<span class="crown">${iconHtml('crown')}</span>` : ''}
+        ${e ? avatarHtml(e.avatar) : ''}<b>${e ? fmtNum(e.score) : '—'}</b><small>${e ? (me ? 'YOU!' : esc(e.name)) : 'empty'}</small></div>
       <div class="step rise" ${d(placeAt[i])}><span>${i + 1}</span></div>
     </div>`;
   }
@@ -207,11 +216,12 @@ function renderRecords() {
     if (!save.ranking.length) {
       h += `<div class="empty pop" ${d(120)}>${iconHtml('worm')}<b>No runs yet.</b><small>Go eat something! Your top ${RANK_SIZE} runs land here.</small></div>`;
     } else {
-      h += `<table class="rank"><thead><tr><th>#</th><th>Score</th><th>Snacks</th><th>Length</th><th>Time</th><th>Date</th></tr></thead><tbody>`;
+      h += `<table class="rank"><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Snacks</th><th>Time</th><th>Date</th></tr></thead><tbody>`;
       save.ranking.forEach((e, i) => {
         h += `<tr class="slide${e === lastEntry ? ' me' : ''}" ${d(60 + i * 45)}>
-          <td><span class="medal m${i + 1}">${i + 1}</span></td><td class="sc">${fmtNum(e.score)}${e === lastEntry ? ' <em>new</em>' : ''}</td>
-          <td>${fmtNum(e.snacks)}</td><td>${fmtNum(e.length)}</td><td>${fmtTime(e.time)}</td><td>${fmtDate(e.date)}</td></tr>`;
+          <td><span class="medal m${i + 1}">${i + 1}</span></td><td class="pl">${avatarHtml(e.avatar, 'sm')} ${esc(e.name)}</td>
+          <td class="sc">${fmtNum(e.score)}${e === lastEntry ? ' <em>new</em>' : ''}</td>
+          <td>${fmtNum(e.snacks)}</td><td>${fmtTime(e.time)}</td><td>${fmtDate(e.date)}</td></tr>`;
       });
       h += `</tbody></table>`;
     }
@@ -247,6 +257,50 @@ function wipeRecords(btn) {
   try { localStorage.removeItem('sirNoodleBest'); } catch (e) {}
   lastEntry = null; wipeArmed = false;
   updateHud(); renderRecords(); syncScreens();
+}
+
+// ---------- profile: name + avatar (save.profile) ----------
+let pfAvatar = null;
+function profileOpen() { return !$scrProfile.hidden && !$scrProfile.classList.contains('out'); }
+function openProfile() {
+  if (state === 'play') setState('pause');
+  if (recordsOpen()) hideScreen($scrRecords);
+  const p = save.profile;
+  pfAvatar = p.avatar;
+  $pfName.value = p.name === DEFAULT_NAME ? '' : p.name;
+  $pfPreview.src = `assets/${p.avatar}.png`;
+  $pfGrid.innerHTML = AVATARS.map((a, i) => `<button class="av-pick pop" role="radio" aria-checked="${a.id === pfAvatar}"
+    data-av="${a.id}" title="${a.name}" style="--d:${260 + i * 25}ms"><img src="assets/${a.id}.png" alt="${a.name}"></button>`).join('');
+  showScreen($scrProfile);
+  sfx.click();
+  if (matchMedia('(pointer: fine)').matches) setTimeout(() => $pfName.focus(), 60);   // no surprise keyboard on phones
+}
+function pickAvatar(id) {
+  pfAvatar = id;
+  for (const b of $pfGrid.children) b.setAttribute('aria-checked', b.dataset.av === id);
+  $pfPreview.src = `assets/${id}.png`;
+  const w = $pfPreview.parentElement;
+  w.classList.remove('boing'); void w.offsetWidth; w.classList.add('boing');
+  sfx.pop();
+}
+function randomName() {
+  let n;
+  do n = rnd(FUNNY_NAMES); while (n === $pfName.value);
+  $pfName.value = n;
+  sfx.pop();
+}
+function saveProfile() {
+  save.profile = { name: cleanName($pfName.value), avatar: pfAvatar };
+  persist();
+  updateProfile();
+  syncScreens();                             // the title / pause cards show the profile too
+  closeProfile();
+  sfx.shieldUp();
+}
+function closeProfile() { $pfName.blur(); hideScreen($scrProfile); }
+function profileKey(e) {
+  if (e.key === 'Enter') { e.preventDefault(); saveProfile(); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeProfile(); sfx.click(); }
 }
 
 // ---------- achievement toasts: drop down from the top of the board, one at a time ----------
@@ -288,10 +342,16 @@ function onScreenClick(e) {
   if (act === 'records') return openRecords();
   if (act === 'close') return closeRecords();
   if (act === 'wipe') return wipeRecords(b);
-  if (b) return;
+  if (act === 'profile') return openProfile();
+  if (act === 'pf-random') return randomName();
+  if (act === 'pf-save') return saveProfile();
+  if (act === 'pf-cancel') { closeProfile(); sfx.click(); return; }
+  if (b && b.dataset.av) return pickAvatar(b.dataset.av);
+  if (b || e.target.closest('input')) return;
   // a click on the backdrop or card: title starts, pause resumes, records closes (backdrop only)
   if (e.currentTarget === $scrTitle) { start(); wake(); }
   else if (e.currentTarget === $scrPause) { setState('play'); wake(); }
   else if (e.currentTarget === $scrRecords && e.target === $scrRecords) closeRecords();
+  else if (e.currentTarget === $scrProfile && e.target === $scrProfile) closeProfile();
 }
-for (const el of [$scrTitle, $scrPause, $scrOver, $scrRecords]) el.addEventListener('click', onScreenClick);
+for (const el of [$scrTitle, $scrPause, $scrOver, $scrRecords, $scrProfile]) el.addEventListener('click', onScreenClick);

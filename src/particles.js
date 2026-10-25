@@ -12,6 +12,13 @@ function burst(px, py, n, colors, speed = 140, ic) {
 }
 const ROCK_COLORS = ['#9aa0a6', '#6b7075', '#cfd4d8', '#7d8389'];
 
+// every 5th snack a little "×N" pops out beside the head; every 10th is bigger and gold, with sparkles
+function milestone() {
+  const h = snake[0], px = (h.x + .5) * CELL, py = (h.y + .5) * CELL, big = eaten % 10 === 0;
+  pops.push({ x: px, y: py, n: eaten, big, ms: 1200, total: 1200 });
+  if (big) burst(px, py - 16, 6, ['#fff'], 120, 'sparkle');
+}
+
 // a rare achievement unlocked mid-run: confetti from the head (gold sparkles + flash for legendary)
 function celebrate(tier) {
   if (state !== 'play') return;

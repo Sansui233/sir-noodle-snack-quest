@@ -5,70 +5,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>Sir Noodle's Snack Quest</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hud.css">
 <link rel="stylesheet" href="css/ui.css">
 </head>
 <body>
-  <h1><img class="ico" src="assets/worm.png" alt=""> Sir Noodle's Snack Quest <img class="ico" src="assets/pizza.png" alt=""></h1>
-  <div id="hud">
-    <div class="pill">Score: <span id="score">0</span></div>
-    <div class="pill">Best: <span id="best">0</span></div>
-    <div class="pill">Snacks: <span id="snacks">0</span></div>
-    <div class="pill" id="spd" title="Speed: the bar fills as you eat; a moon resets it"><span id="spdlbl">Speed</span><span class="meter"><i id="spdbar"></i></span><span id="spdx">1.0×</span></div>
-    <div class="pill" id="fx"><img class="ico" src="assets/face_relieved.png" alt=""> Feeling normal</div>
-    <button id="trophies" title="Records: ranking and achievements (T)"><img class="ico" src="assets/trophy.png" alt="Records"> <span id="trophy-count">0/0</span></button>
-    <button id="mute" title="Mute / unmute (M)"><img class="ico" src="assets/speaker.png" alt="Sound on"></button>
-    <button id="lowfx" title="Reduce effects for slower devices (L)"><img class="ico" src="assets/sparkle.png" alt=""> FX: High</button>
-  </div>
-  <!-- the board: canvas at the bottom, then screens, then the records modal, toasts on top (docs/ui.md) -->
-  <div id="stage">
-    <canvas id="c"></canvas>
-
-    <div class="screen" id="scr-title" hidden>
-      <div class="card title-card">
-        <div class="pop" style="--d:150ms"><img class="logo" src="assets/worm.png" alt=""></div>
-        <h2 class="t1 pop" style="--d:240ms">Sir Noodle's</h2>
-        <h2 class="t2 pop" style="--d:320ms">Snack Quest</h2>
-        <p class="tag pop" style="--d:400ms">Eat snacks. Grow hats. Dodge rocks.</p>
-        <div class="actions pop" style="--d:500ms">
-          <button class="btn primary" data-act="play">Play <kbd>Enter</kbd></button>
-          <button class="btn" data-act="records"><img class="ico" src="assets/trophy.png" alt=""> Records <kbd>T</kbd></button>
+  <!-- the board: HUD header on top, then the stage (canvas, screens, modals, toasts). Layers: docs/ui.md -->
+  <main id="board">
+    <header id="hud">
+      <div class="hud-row">
+        <!-- buttons look like buttons (raised, round); counters look like a scoreboard (flat, inset) -->
+        <button id="profile" class="hud-profile" title="Your profile: change name and avatar">
+          <span class="avatar"><img id="hud-avatar" src="assets/av_anon.png" alt=""></span>
+          <span class="who"><small>Player</small><b id="hud-name">Anonymous</b></span>
+        </button>
+        <div class="counters">
+          <div class="counter" title="Score"><img class="ico" src="assets/coin.png" alt="Score"><b id="score">0</b></div>
+          <div class="counter" title="Snacks eaten"><img class="ico" src="assets/snackbag.png" alt="Snacks"><b id="snacks">0</b></div>
+          <div class="counter best" title="Best score"><img class="ico" src="assets/crown.png" alt="Best"><b id="best">0</b></div>
         </div>
-        <div class="chips pop" id="title-sub" style="--d:600ms"></div>
-        <p class="keys pop" style="--d:680ms">or press any arrow key / tap to start</p>
-      </div>
-    </div>
-
-    <div class="screen" id="scr-pause" hidden>
-      <div class="card pause-card">
-        <div class="pop" style="--d:120ms"><img class="logo still" src="assets/pause.png" alt=""></div>
-        <h2 class="t1 pop" style="--d:200ms">Snack break!</h2>
-        <p class="tag pop" id="pause-sub" style="--d:270ms"></p>
-        <div class="actions pop" style="--d:340ms">
-          <button class="btn primary" data-act="resume">Resume <kbd>Space</kbd></button>
-          <button class="btn" data-act="records"><img class="ico" src="assets/trophy.png" alt=""> Records <kbd>T</kbd></button>
+        <div class="hud-btns">
+          <button id="trophies" class="round" title="Records: ranking and achievements (T)"><img class="ico" src="assets/trophy.png" alt="Records"><span class="num-badge" id="trophy-count">0</span></button>
+          <button id="mute" class="round" title="Mute / unmute (M)"><img class="ico" src="assets/speaker.png" alt="Sound on"></button>
+          <button id="lowfx" class="round" title="Effects: high (L to switch to low for slower devices)"><img class="ico" src="assets/sparkle.png" alt="Effects high"></button>
         </div>
       </div>
-    </div>
+      <div class="hud-status">
+        <div id="spd" title="Speed: the bar fills as you eat; a moon resets it"><span id="spdlbl">Speed</span><span class="meter"><i id="spdbar"></i></span><span id="spdx">1.0×</span></div>
+        <div id="fx"><img class="ico" src="assets/face_relieved.png" alt=""> Feeling normal</div>
+      </div>
+    </header>
 
-    <div class="screen" id="scr-over" hidden>
-      <div class="card over-card" id="over-card" role="dialog" aria-label="Game over"></div>
-    </div>
+    <div id="stage">
+      <canvas id="c"></canvas>
 
-    <div class="screen modal" id="scr-records" hidden>
-      <div class="card records-card" role="dialog" aria-label="Records">
-        <div class="rec-head">
-          <div class="tabs" role="tablist">
-            <button class="tab" role="tab" data-tab="rank"><img class="ico" src="assets/trophy.png" alt=""> Ranking</button>
-            <button class="tab" role="tab" data-tab="ach"><img class="ico" src="assets/star.png" alt=""> Achievements <span id="rec-ach-count"></span></button>
+      <div class="screen" id="scr-title" hidden>
+        <div class="card title-card">
+          <div class="pop" style="--d:150ms"><img class="logo" src="assets/worm.png" alt=""></div>
+          <h2 class="t1 pop" style="--d:240ms">Sir Noodle's</h2>
+          <h2 class="t2 pop" style="--d:320ms">Snack Quest</h2>
+          <p class="tag pop" style="--d:400ms">Eat snacks. Grow hats. Dodge rocks.</p>
+          <div class="actions pop" style="--d:500ms">
+            <button class="btn primary" data-act="play">Play <kbd>Enter</kbd></button>
+            <button class="btn" data-act="records"><img class="ico" src="assets/trophy.png" alt=""> Records <kbd>T</kbd></button>
           </div>
-          <button class="btn close" data-act="close" title="Close (Esc)" aria-label="Close"></button>
+          <button class="player-chip pop" data-act="profile" id="title-player" style="--d:600ms"></button>
+          <div class="chips pop" id="title-sub" style="--d:680ms"></div>
+          <p class="keys pop" style="--d:760ms">or press any arrow key / tap to start</p>
         </div>
-        <div class="rec-body" id="rec-body"></div>
       </div>
-    </div>
 
-    <div id="toasts" aria-live="polite"></div>
-  </div>
+      <div class="screen" id="scr-pause" hidden>
+        <div class="card pause-card">
+          <div class="pop" style="--d:120ms"><span class="avatar xl bob"><img id="pause-avatar" src="assets/av_anon.png" alt=""></span></div>
+          <h2 class="t1 pop" style="--d:200ms">Snack break!</h2>
+          <p class="tag pop" id="pause-who" style="--d:260ms"></p>
+          <div class="stat-chips pop" id="pause-sub" style="--d:330ms"></div>
+          <div class="actions pop" style="--d:420ms">
+            <button class="btn primary" data-act="resume">Resume <kbd>Space</kbd></button>
+            <button class="btn" data-act="records"><img class="ico" src="assets/trophy.png" alt=""> Records <kbd>T</kbd></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen" id="scr-over" hidden>
+        <div class="card over-card" id="over-card" role="dialog" aria-label="Game over"></div>
+      </div>
+
+      <div class="screen modal" id="scr-records" hidden>
+        <div class="card records-card" role="dialog" aria-label="Records">
+          <div class="rec-head">
+            <div class="tabs" role="tablist">
+              <button class="tab" role="tab" data-tab="rank"><img class="ico" src="assets/trophy.png" alt=""> Ranking</button>
+              <button class="tab" role="tab" data-tab="ach"><img class="ico" src="assets/star.png" alt=""> Achievements <span id="rec-ach-count"></span></button>
+            </div>
+            <button class="btn close" data-act="close" title="Close (Esc)" aria-label="Close"></button>
+          </div>
+          <div class="rec-body" id="rec-body"></div>
+        </div>
+      </div>
+
+      <div class="screen modal" id="scr-profile" hidden>
+        <div class="card profile-card" role="dialog" aria-label="Profile">
+          <h2 class="t1 pop" style="--d:80ms">Who's playing?</h2>
+          <div class="pop" style="--d:150ms"><span class="avatar xl" id="pf-preview-wrap"><img id="pf-preview" src="assets/av_anon.png" alt=""></span></div>
+          <div class="name-row pop" style="--d:220ms">
+            <input id="pf-name" maxlength="14" placeholder="Anonymous" autocomplete="off" spellcheck="false" aria-label="Your name">
+            <button class="btn small" data-act="pf-random" title="Pick a random funny name">Random name</button>
+          </div>
+          <div class="avatar-grid" id="pf-grid"></div>
+          <div class="actions pop" style="--d:500ms">
+            <button class="btn primary" data-act="pf-save">Save <kbd>Enter</kbd></button>
+            <button class="btn" data-act="pf-cancel">Cancel <kbd>Esc</kbd></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="toasts" aria-live="polite"></div>
+    </div>
+  </main>
   <div class="hint">Arrows / WASD or swipe • Space = pause • T = records &amp; achievements • M = mute • L = low effects • Space / Enter = replay<br>
     After 50 points <img class="ico" src="assets/rock.png" alt="rock"> rocks start falling (watch for the red warning!) &nbsp;•&nbsp; <img class="ico" src="assets/bomb.png" alt="bomb"> zaps the nearest rock &nbsp;•&nbsp; <img class="ico" src="assets/dynamite.png" alt="super bomb"> SUPER BOMB clears every rock &nbsp;•&nbsp; <img class="ico" src="assets/shield.png" alt="shield"> blocks one rock hit (stacks to 3) &nbsp;•&nbsp; <img class="ico" src="assets/star.png" alt="star"> = God Mode: smash through anything &nbsp;•&nbsp; <img class="ico" src="assets/banana.png" alt="banana"> = Monkey Mode: paws fling rocks and grab snacks &nbsp;•&nbsp; <img class="ico" src="assets/moon.png" alt="moon"> = Night: Sir Noodle naps and wakes up at starting speed</div>
 

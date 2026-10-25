@@ -527,4 +527,173 @@ ART.feather = g => {
   shine(g, 66, 30, 3, 8, 0.6, 0.6);
 };
 
+// ---------- stat icons (HUD, pause, game over) ----------
+ART.coin = g => {                                  // score
+  circ(g, 50, 50, 40); paint(g, '#ffc107');
+  circ(g, 50, 50, 30); paint(g, '#ffd23d', 3.5);
+  star(g, 50, 52, 17, 7.5); paint(g, '#fff3a0', 3.5);
+  shine(g, 32, 30, 9, 4.5, -0.7, 0.6);
+};
+
+ART.snackbag = g => {                              // snacks eaten
+  g.beginPath(); g.moveTo(22, 22); g.lineTo(78, 22); g.lineTo(84, 86); g.quadraticCurveTo(50, 92, 16, 86); g.closePath(); paint(g, '#ff7a5c');
+  g.beginPath(); g.moveTo(20, 24);
+  for (let i = 0; i <= 10; i++) g.lineTo(20 + i * 6, i % 2 ? 10 : 18);
+  g.lineTo(80, 24); g.closePath(); paint(g, '#ff9e7a', 3.5);
+  circ(g, 50, 56, 17); paint(g, '#ffe066', 3.5);
+  ell(g, 50, 56, 9, 6, -0.4); paint(g, '#e8a04a', 3);
+  shine(g, 30, 40, 4, 12, 0.1, 0.4);
+};
+
+ART.clock = g => {                                 // time survived
+  for (const x of [26, 74]) { circ(g, x, 24, 12); paint(g, '#ff6b6b', 4); }
+  g.beginPath(); g.moveTo(28, 82); g.lineTo(22, 92); g.moveTo(72, 82); g.lineTo(78, 92); ink(g, 5); g.stroke();
+  circ(g, 50, 54, 34); paint(g, '#ff6b6b');
+  circ(g, 50, 54, 26); paint(g, '#fff', 3.5);
+  g.beginPath(); g.moveTo(50, 54); g.lineTo(50, 36); g.moveTo(50, 54); g.lineTo(62, 60); ink(g, 4.5); g.stroke();
+  dot(g, 50, 54, 3.5);
+  shine(g, 34, 34, 8, 4, -0.6, 0.6);
+};
+
+// ---------- avatars (profile pictures; av_anon is everyone's default) ----------
+function eyes(g, y, dx = 15, r = 7, cx = 50) {
+  for (const s of [-1, 1]) {
+    const x = cx + s * dx;
+    circ(g, x, y, r); paint(g, '#fff', 3); dot(g, x + 1, y + 1, r * 0.5); dot(g, x - 0.5, y - 1.5, r * 0.17, '#fff');
+  }
+}
+function smile(g, x, y, r, w = 4) { g.beginPath(); g.arc(x, y, r, Math.PI * 0.15, Math.PI * 0.85); ink(g, w); g.stroke(); }
+function cheeks(g, y, dx = 26) { g.fillStyle = 'rgba(255,90,140,.45)'; ell(g, 50 - dx, y, 6, 3.5); g.fill(); ell(g, 50 + dx, y, 6, 3.5); g.fill(); }
+
+ART.av_anon = g => {                               // a noodle in a very convincing disguise
+  circ(g, 50, 54, 38); paint(g, '#ff9ec4'); shine(g, 32, 30, 10, 5);
+  ink(g, 6); g.beginPath(); g.arc(35, 34, 12, Math.PI * 1.15, Math.PI * 1.85); g.moveTo(54, 26); g.arc(65, 34, 12, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+  for (const x of [35, 65]) { circ(g, x, 46, 11); paint(g, 'rgba(255,255,255,.85)', 4.5); dot(g, x + 2, 47, 3.5); }
+  g.beginPath(); g.moveTo(46, 45); g.quadraticCurveTo(50, 41, 54, 45); ink(g, 4); g.stroke();
+  g.beginPath(); g.moveTo(50, 67); g.bezierCurveTo(40, 61, 26, 65, 22, 76); g.bezierCurveTo(34, 71, 42, 73, 50, 71);
+  g.bezierCurveTo(58, 73, 66, 71, 78, 76); g.bezierCurveTo(74, 65, 60, 61, 50, 67); g.closePath(); paint(g, '#6b3f2a', 3);
+  ell(g, 50, 60, 8, 7); paint(g, '#ffb38a', 3.5);
+};
+
+ART.av_frog = g => {
+  ell(g, 50, 60, 42, 30); paint(g, '#7ccf6a'); shine(g, 26, 50, 7, 3.5);
+  for (const x of [30, 70]) { circ(g, x, 30, 15); paint(g, '#7ccf6a'); }
+  eyes(g, 30, 20, 9);
+  g.beginPath(); g.moveTo(22, 62); g.quadraticCurveTo(50, 86, 78, 62); ink(g, 4.5); g.stroke();
+  cheeks(g, 66, 32);
+};
+
+ART.av_cat = g => {
+  for (const s of [-1, 1]) {
+    poly(g, [[50 + s * 36, 46], [50 + s * 32, 10], [50 + s * 8, 26]]); paint(g, '#ffa94d');
+    poly(g, [[50 + s * 30, 36], [50 + s * 29, 18], [50 + s * 16, 28]]); g.fillStyle = '#ffc2d4'; g.fill();
+  }
+  circ(g, 50, 56, 36); paint(g, '#ffa94d'); shine(g, 32, 36, 8, 4);
+  ink(g, 3.5); g.beginPath(); for (const x of [42, 50, 58]) { g.moveTo(x, 22); g.lineTo(x, 31); } g.stroke();
+  eyes(g, 50, 14, 7);
+  poly(g, [[45, 61], [55, 61], [50, 66]]); paint(g, '#ff7aa2', 2.5);
+  ink(g, 3.5); g.beginPath(); g.arc(45, 67, 5, 0, Math.PI); g.moveTo(60, 67); g.arc(55, 67, 5, 0, Math.PI); g.stroke();
+  ink(g, 2.5); g.beginPath(); for (const s of [-1, 1]) { g.moveTo(50 + s * 18, 64); g.lineTo(50 + s * 38, 60); g.moveTo(50 + s * 18, 68); g.lineTo(50 + s * 38, 70); } g.stroke();
+};
+
+ART.av_pug = g => {
+  circ(g, 50, 54, 37); paint(g, '#e8c39a'); shine(g, 32, 32, 9, 4.5);
+  for (const s of [-1, 1]) { ell(g, 50 + s * 34, 40, 10, 17, s * 0.5); paint(g, '#5a3a2a'); }
+  ell(g, 50, 68, 21, 15); paint(g, '#5a3a2a');
+  eyes(g, 46, 16, 8.5);
+  ell(g, 50, 61, 6.5, 4.5); g.fillStyle = INK; g.fill();
+  ell(g, 56, 80, 6, 8); paint(g, '#ff6b8a', 3);
+  g.beginPath(); g.moveTo(40, 72); g.quadraticCurveTo(50, 78, 60, 72); g.strokeStyle = '#e8c39a'; g.lineWidth = 3; g.stroke();
+};
+
+ART.av_panda = g => {
+  for (const x of [20, 80]) { circ(g, x, 22, 13); paint(g, '#3a3340'); }
+  circ(g, 50, 54, 38); paint(g, '#fff'); shine(g, 32, 32, 9, 4.5, -0.5, 0.9);
+  for (const s of [-1, 1]) { ell(g, 50 + s * 15, 48, 10, 13, s * -0.5); g.fillStyle = '#3a3340'; g.fill(); }
+  for (const s of [-1, 1]) { circ(g, 50 + s * 15, 47, 4.5); g.fillStyle = '#fff'; g.fill(); dot(g, 50 + s * 15 + 1, 48, 2.5); }
+  ell(g, 50, 62, 6, 4); g.fillStyle = INK; g.fill();
+  smile(g, 50, 64, 7, 3.5);
+  cheeks(g, 66, 27);
+};
+
+ART.av_penguin = g => {
+  circ(g, 50, 54, 38); paint(g, '#3b4a6b'); shine(g, 30, 30, 9, 4.5, -0.5, 0.35);
+  g.beginPath(); g.arc(37, 58, 21, 0, Math.PI * 2); g.arc(63, 58, 21, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill();
+  eyes(g, 52, 13, 6.5);
+  poly(g, [[42, 64], [58, 64], [50, 76]]); paint(g, '#ffa94d', 3.5);
+  cheeks(g, 68, 25);
+};
+
+ART.av_chick = g => {
+  circ(g, 50, 58, 36); paint(g, '#ffe066'); shine(g, 32, 40, 9, 4.5);
+  g.beginPath(); g.moveTo(22, 34);
+  for (let i = 0; i <= 8; i++) g.lineTo(22 + i * 7, i % 2 ? 30 : 38);
+  g.lineTo(78, 34); g.bezierCurveTo(78, 6, 22, 6, 22, 34); g.closePath(); paint(g, '#fffaf0');
+  eyes(g, 54, 13, 6.5);
+  poly(g, [[43, 64], [57, 64], [50, 73]]); paint(g, '#ff9f43', 3.5);
+  cheeks(g, 68, 24);
+};
+
+ART.av_octopus = g => {
+  for (let i = 0; i < 5; i++) { const x = 18 + i * 16; ell(g, x, 80, 8, 12, (i - 2) * 0.25); paint(g, '#b57edc'); }
+  g.beginPath(); g.moveTo(14, 78); g.bezierCurveTo(10, 10, 90, 10, 86, 78); g.closePath(); paint(g, '#b57edc'); shine(g, 30, 32, 9, 4.5);
+  for (const [x, y] of [[64, 34], [74, 44], [34, 34]]) { circ(g, x, y, 3); g.fillStyle = '#9b5fc8'; g.fill(); }
+  eyes(g, 50, 14, 8);
+  smile(g, 50, 60, 9, 4);
+  cheeks(g, 64, 28);
+};
+
+ART.av_alien = g => {
+  for (const s of [-1, 1]) {
+    g.beginPath(); g.moveTo(50 + s * 14, 26); g.lineTo(50 + s * 26, 8); ink(g, 4); g.stroke();
+    circ(g, 50 + s * 26, 8, 6); paint(g, '#ff7aa2', 3);
+  }
+  g.beginPath(); g.moveTo(50, 92); g.bezierCurveTo(16, 84, 8, 56, 12, 42); g.bezierCurveTo(16, 16, 84, 16, 88, 42); g.bezierCurveTo(92, 56, 84, 84, 50, 92); g.closePath(); paint(g, '#8be36b');
+  shine(g, 30, 34, 9, 4.5);
+  for (const s of [-1, 1]) { ell(g, 50 + s * 17, 52, 12, 8, s * 0.45); g.fillStyle = '#2b2440'; g.fill(); circ(g, 50 + s * 17 - 3, 49, 3); g.fillStyle = '#fff'; g.fill(); }
+  g.beginPath(); g.ellipse(50, 74, 4, 3, 0, 0, Math.PI * 2); g.fillStyle = INK; g.fill();
+};
+
+ART.av_ghost = g => {
+  g.beginPath(); g.moveTo(14, 88); g.lineTo(14, 48); g.bezierCurveTo(14, 4, 86, 4, 86, 48); g.lineTo(86, 88);
+  for (let i = 1; i <= 4; i++) g.quadraticCurveTo(86 - i * 18 + 9, i % 2 ? 78 : 96, 86 - i * 18, 88);
+  g.closePath(); paint(g, '#f4f1ff'); shine(g, 32, 28, 9, 4.5, -0.5, 0.9);
+  for (const x of [36, 62]) { ell(g, x, 44, 6, 9); g.fillStyle = INK; g.fill(); dot(g, x - 1.5, 40, 2, '#fff'); }
+  ell(g, 49, 64, 9, 7); g.fillStyle = INK; g.fill();
+  ell(g, 51, 70, 5.5, 6); paint(g, '#ff6b8a', 3);
+  cheeks(g, 56, 26);
+};
+
+ART.av_avocado = g => {
+  g.beginPath(); g.moveTo(50, 8); g.bezierCurveTo(70, 8, 74, 32, 82, 52); g.bezierCurveTo(94, 82, 72, 94, 50, 94);
+  g.bezierCurveTo(28, 94, 6, 82, 18, 52); g.bezierCurveTo(26, 32, 30, 8, 50, 8); g.closePath(); paint(g, '#4e8a3a');
+  g.beginPath(); g.moveTo(50, 16); g.bezierCurveTo(66, 16, 68, 36, 75, 54); g.bezierCurveTo(84, 78, 68, 86, 50, 86);
+  g.bezierCurveTo(32, 86, 16, 78, 25, 54); g.bezierCurveTo(32, 36, 34, 16, 50, 16); g.closePath(); g.fillStyle = '#d8f08a'; g.fill();
+  circ(g, 50, 66, 15); paint(g, '#a8642f', 3.5); shine(g, 45, 60, 4, 2.5);
+  eyes(g, 38, 10, 5.5);
+  smile(g, 50, 42, 5, 3);
+};
+
+ART.av_robot = g => {
+  g.beginPath(); g.moveTo(50, 22); g.lineTo(50, 10); ink(g, 4); g.stroke(); circ(g, 50, 9, 6); paint(g, '#ff6b6b', 3);
+  for (const x of [10, 90]) { rrect(g, x - 6, 44, 12, 22, 4); paint(g, '#9aa6b2', 3.5); }
+  rrect(g, 16, 22, 68, 64, 16); paint(g, '#c8d2dc'); shine(g, 30, 32, 8, 3.5);
+  rrect(g, 26, 36, 48, 24, 8); paint(g, '#2b3440', 3.5);
+  for (const x of [40, 60]) { circ(g, x, 48, 5); g.fillStyle = '#5ff3ff'; g.fill(); }
+  rrect(g, 34, 66, 32, 10, 4); paint(g, '#fff', 3);
+  ink(g, 2.5); g.beginPath(); for (const x of [42, 50, 58]) { g.moveTo(x, 66); g.lineTo(x, 76); } g.stroke();
+};
+
+ART.av_cool = g => {                               // Sir Noodle on vacation
+  circ(g, 50, 54, 38); paint(g, '#ff7aa8'); shine(g, 30, 30, 10, 5);
+  g.beginPath(); g.moveTo(14, 44); g.lineTo(86, 44); ink(g, 4.5); g.stroke();
+  for (const s of [-1, 1]) {
+    g.beginPath(); g.moveTo(50 + s * 4, 42); g.lineTo(50 + s * 30, 42); g.quadraticCurveTo(50 + s * 30, 60, 50 + s * 17, 60); g.quadraticCurveTo(50 + s * 4, 60, 50 + s * 4, 42); g.closePath();
+    paint(g, '#2b2440', 3.5);
+  }
+  shine(g, 30, 47, 5, 2, -0.3, 0.6); shine(g, 61, 47, 5, 2, -0.3, 0.6);
+  g.beginPath(); g.moveTo(40, 72); g.quadraticCurveTo(54, 78, 64, 68); ink(g, 4); g.stroke();
+  cheeks(g, 68, 28);
+};
+
 if (typeof module !== 'undefined') module.exports = { ART };

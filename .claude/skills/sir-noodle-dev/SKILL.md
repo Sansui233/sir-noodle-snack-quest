@@ -15,6 +15,8 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
   helpers (`circ`, `ell`, `paint`, `ink`, `shine`, `dot`...) and the ink outline `#5b2a4e`. Match that style.
 - Export: `node tools/export.mjs` (headless Chrome, writes all `assets/*.png` at 128px).
   `--sheet <path.png>` also saves a preview sheet. `CHROME=<path>` if Chrome isn't at the default Windows path.
+- Avatars are art too: `ART.av_<name>` (round face filling the box) plus an entry in `AVATARS` (`src/config.js`).
+  Stat icons: coin = score, snackbag = snacks, crown = best, worm = length, clock = time; use them wherever a stat shows.
 - New icons used on the canvas must be added to `ICON_NAMES` in `src/config.js` (DOM screens use `iconHtml(name)`, no list needed).
 - Things that must rotate with the snake's direction (e.g. the monkey head) are drawn with canvas calls in
   `drawFace`, not PNGs. Rotatable parts (e.g. `paw`) are PNGs drawn pointing up, rotated via `icon(name, x, y, size, rot)`.
@@ -41,7 +43,8 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
   `.r-<tier>` in `css/ui.css`. The rarer, the more the medallion/tile must show it. Hall of Fame stays last.
 - Save data: one localStorage key via `src/storage.js` (`save`, `persist()`); validate anything you add in `loadSave()`.
 - Title / pause / game over / records are DOM screens over the canvas (`src/ui.js`, `css/ui.css`), not canvas
-  panels. Change state only with `setState()`. Layers, flow, key map and the game over timeline: `docs/ui.md`.
+  panels. Change state only with `setState()`. No dark dimming behind cards (players found it gloomy).
+  HUD (`css/hud.css`): buttons are raised/round, read-outs are flat inset wells; keep the two looks distinct. Layers, flow, key map and the game over timeline: `docs/ui.md`.
 - Game over restarts only via `replay()` (Replay button / Space / Enter), gated by `overReady`, which turns on
   when the card has landed (`DEATH_PAUSE + LANDED_MS`, ~1.2s after death), not after the whole results timeline:
   a player mashing Space should get back in right after the dialog pops up. Buttons pop in with the card.

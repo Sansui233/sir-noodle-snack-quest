@@ -6,7 +6,7 @@ let sleeping = false;
 // When nothing is moving (pause, or title / game over once the effects have settled) the scene is
 // drawn once and the loop stops completely until input wakes it -> 0% CPU while idle.
 function settled() {
-  return !particles.length && !blasts.length && !rings.length && !zaps.length && !flung.length && !grabs.length &&
+  return !particles.length && !blasts.length && !rings.length && !zaps.length && !flung.length && !grabs.length && !pops.length &&
     !banner && !bubble && flash <= 0 && shake <= 0 && Object.values(fxAmt).every(v => v === 0);
 }
 function wake() {
@@ -98,6 +98,8 @@ function frame(now) {
   flung = flung.filter(f => f.ms > 0);
   for (const g of grabs) g.ms -= dt;
   grabs = grabs.filter(g => g.ms > 0);
+  for (const p of pops) p.ms -= dt;
+  pops = pops.filter(p => p.ms > 0);
   if (bubble && state !== 'pause') { bubble.ms -= dt; if (bubble.ms <= 0) bubble = null; }
   if (banner && state !== 'pause') { banner.ms -= dt; if (banner.ms <= 0) banner = null; }
   if (shake > 0) shake -= dt;
@@ -121,4 +123,4 @@ const loadIcon = (name) => new Promise((ok) => {
   ICONS[name] = img;
 });
 const fontReady = document.fonts ? document.fonts.load(`700 20px "Fredoka"`).catch(() => {}) : Promise.resolve();
-Promise.all([...ICON_NAMES.map(loadIcon), fontReady]).then(() => { syncScreens(); requestAnimationFrame(frame); });
+Promise.all([...ICON_NAMES.map(loadIcon), fontReady]).then(() => { updateProfile(); syncScreens(); requestAnimationFrame(frame); });

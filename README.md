@@ -5,7 +5,8 @@ Open `index.html` in a browser. Everything is local: no network access, no serve
 ```
 index.html              page shell: HUD, board (canvas + UI screens), script tags (in load order)
 css/style.css           page + HUD styles, page mood per effect
-css/ui.css              title / pause / game over / records screens, toasts, all their animations
+css/hud.css             HUD header on top of the board: profile, counters, buttons, speed + effect strip
+css/ui.css              title / pause / game over / records / profile screens, toasts, all their animations
 src/                    the game, as plain classic scripts sharing one global scope
   config.js             constants and data: effects, pickups, quotes, art names
   util.js               small pure helpers

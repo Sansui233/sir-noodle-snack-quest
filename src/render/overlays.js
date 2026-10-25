@@ -84,6 +84,25 @@ function drawBanner() {
   ctx.restore();
 }
 
+// "×N" snack milestones (milestone() in particles.js): pop out beside the head, float up a little, fade
+function drawPops() {
+  for (const p of pops) {
+    const k = 1 - p.ms / p.total;                                         // 0 -> 1
+    const sc = k < .14 ? .3 + 1.05 * k / .14 : k < .28 ? 1.35 - .35 * (k - .14) / .14 : 1;   // pop, settle
+    const side = p.x > SIZE - 80 ? -1 : 1;                                // stay on the board
+    const size = p.big ? 26 : 18, label = '×' + p.n;
+    ctx.font = `900 ${size}px ${TEXT_FONT}`;
+    const w = ctx.measureText(label).width, gw = size + 3 + w;           // snack bag + gap + text
+    ctx.save();
+    ctx.globalAlpha = k > .72 ? (1 - k) / .28 : 1;
+    ctx.translate(p.x + side * (gw / 2 + 18), Math.max(size, p.y - 8 - 28 * k));
+    ctx.rotate(-.1 * side); ctx.scale(sc, sc);
+    icon('snackbag', -gw / 2 + size / 2, 0, size);
+    text(label, -gw / 2 + size + 3 + w / 2, 1, size, p.big ? '#f59a00' : '#e0457b', '900');
+    ctx.restore();
+  }
+}
+
 function render(time, t) {
   ctx.save();
   ctx.clearRect(0, 0, SIZE, SIZE);
@@ -103,6 +122,7 @@ function render(time, t) {
   drawBlasts();
   drawParticles();
   drawVignettes(time);
+  drawPops();
   drawBubble(hp);
   drawBanner();
   if (flash > 0.01) { ctx.fillStyle = `rgba(255,255,255,${Math.min(1, flash) * 0.9})`; ctx.fillRect(-20, -20, SIZE + 40, SIZE + 40); }

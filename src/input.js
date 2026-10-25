@@ -20,7 +20,8 @@ function primary() {
 function toggleMute() { muted = !muted; $mute.innerHTML = iconHtml(muted ? 'speaker_off' : 'speaker'); if (!muted) audio(); }
 
 function applyLowFx() {
-  $lowfx.innerHTML = lowFx ? `${iconHtml('feather')} FX: Low` : `${iconHtml('sparkle')} FX: High`;
+  $lowfx.innerHTML = iconHtml(lowFx ? 'feather' : 'sparkle');
+  $lowfx.title = lowFx ? 'Effects: low (L to switch back to high)' : 'Effects: high (L to switch to low for slower devices)';
   document.body.classList.toggle('low-fx', lowFx);
   dpr = lowFx ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   cv.width = cv.height = SIZE * dpr;                       // resizing also resets the context state
@@ -40,6 +41,7 @@ const KEYMAP = {
 };
 window.addEventListener('keydown', (e) => {
   const k = e.key;
+  if (profileOpen()) { profileKey(e); return; }               // typing a name: every key belongs to the input
   // Enter/Space are handled here only; a focused button must not also "click" on them
   if (k === ' ' || k === 'Enter') e.preventDefault();
   if (e.repeat && (k === ' ' || k === 'Enter')) return;      // a held key must not skip through the game over
@@ -66,6 +68,7 @@ window.addEventListener('keydown', (e) => {
 $mute.addEventListener('click', (e) => { toggleMute(); e.currentTarget.blur(); });
 $lowfx.addEventListener('click', (e) => { toggleLowFx(); e.currentTarget.blur(); });
 $trophies.addEventListener('click', (e) => { audio(); openRecords(); e.currentTarget.blur(); });
+$profileBtn.addEventListener('click', (e) => { audio(); openProfile(); e.currentTarget.blur(); });
 window.addEventListener('blur', () => { if (state === 'play') setState('pause'); });
 
 // touch / swipe / click on the canvas (title, pause and game over have their own screens on top)
