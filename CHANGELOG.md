@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.2
+
+- Lighter type: bold text is Fredoka 600 (was 700-900), medium text 500. Applies to dialogs, HUD and the
+  canvas (banners, speech bubbles, "×N" pops).
+
 ## v2.0.1
 
 - Fix: the bundled Fredoka font never loaded since the CSS moved to `css/` (its `url()` must be relative to the

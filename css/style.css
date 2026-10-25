@@ -46,4 +46,6 @@ canvas {
 body.fx-night .hint { color: #e6e9ff; text-shadow: 2px 2px 0 #171b3d; }
 body.low-fx::before { display: none; }
 body.idle::before { animation-play-state: paused; }     /* nothing animates while the game sleeps */
+/* Fredoka is chunky: bold text is 600, never heavier (the bundled font tops out at 700 anyway) */
+b, strong, h1, h2, h3, th { font-weight: 600; }
 .ico { height: 1.3em; width: 1.3em; vertical-align: -0.3em; }
