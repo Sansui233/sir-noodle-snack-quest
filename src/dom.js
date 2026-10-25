@@ -2,6 +2,7 @@
 'use strict';
 
 const $board = document.getElementById('board');     // header + stage; carries the effect glow
+const $hud = document.getElementById('hud');
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 let dpr = 1;

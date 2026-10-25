@@ -28,7 +28,7 @@ body
 
 Title, pause and game over have **no backdrop**: the board stays bright behind the card, so a break still
 feels like part of the game. The two modals get a light pink frosting (never a dark dim). Card text is sized
-in `em` off `2.5cqw` (2.5% of the board width, clamped to 9-16px), so every dialog scales with the board.
+in `em` off `2.5cqw` (2.5% of the board width, clamped to 10-16px), so every dialog scales with the board.
 
 ## Borders mean "you can press this"
 
@@ -51,9 +51,22 @@ The old HUD was a row of identical pills, so nobody could tell what was clickabl
 
 Every stat has its own icon everywhere it appears (HUD, pause chips, game over tiles):
 `coin` = score, `snackbag` = snacks, `crown` = best, `worm` = length, `clock` = time.
-The name always sits right of the avatar (cut with … when long); small boards only drop the "PLAYER" label.
-The page keeps 18px of padding and sizes the board from the window height (the header is ~15% of the board
-width), so the board frame is never cut off by the window edge.
+The name always sits right of the avatar (cut with … when long); small boards drop the "PLAYER" label, and
+tiny ones (under 300px) show the avatar alone.
+
+## Window fit
+
+The board is sized from the window so its frame is never cut off by the window edge. `fitWindow()`
+(`src/main.js`) runs once on boot and 150ms after the last resize event (debounced, not per event):
+
+- `--ui`: 1 on roomy windows, down to 0.75 on small ones (`min(width / 760, height / 860)`). Scales what sits
+  around the board: page padding (18px), gaps (12px), the hint (13px, so 10px at 75%) and its icons.
+- `--chrome` / `--hud-k`: the measured height of the hint + padding, and header height / board width
+  (~0.15, more on tiny boards where the header text stops shrinking). The board width solves
+  `board * (1 + hud-k) = window height - chrome`, so a smaller hint gives the board more room.
+- No text is smaller than 10px (`--min-font`): sub-1em sizes are written `max(var(--min-font), .7em)`, and
+  canvas text (`text()`, bubbles, "×N" pops) is floored at `minTextPx`, 10 screen px in board units.
+- Windows under 520px tall (landscape phones) hide the hint.
 
 ## Profile
 

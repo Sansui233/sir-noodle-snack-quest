@@ -6,6 +6,8 @@
   Follows the browser language until you pick one with the HUD language button (shows the current one: EN / 中).
   Chinese text uses the system UI font (PingFang SC, Microsoft YaHei UI, Noto Sans CJK), kept light.
 - Options remember themselves: language and mute are kept in localStorage, like low effects.
+- Small windows (experimental): the hint and page padding shrink to 75% so the board gets more room, no text
+  is ever below 10px (dialogs, HUD and canvas text), and short windows hide the hint. Re-fits 150ms after a resize.
 
 ## v2.0.2
 
