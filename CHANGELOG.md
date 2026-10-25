@@ -1,12 +1,13 @@
 # Changelog
 
-## Unreleased
+## v2.2.0
 
 - **Share your run**: a share button on the game over card makes a picture (the board at the crash, your
   name, stats and the link) with a sentence about the run. Copy or save the picture, copy the text, or post it
   to X / Weibo / Facebook. The picture needs the online version; opened as a local file, it shares text only.
 - **Peek**: the eye button hides the game over card so you can screenshot the board; any key or click brings
   it back (and never starts a new game by accident).
+- GitHub link in the top-right corner of the page (under the controls hint on narrow windows).
 
 ## v2.1.1
 
