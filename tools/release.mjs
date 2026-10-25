@@ -2,7 +2,7 @@
 //   node tools/release.mjs                      -> dist/sir-noodle/ (+ dist/sir-noodle-v<version>.zip if tar is available)
 //   node tools/release.mjs --to <dir> [...]     -> also replaces <dir> with a copy of the release (one --to per target)
 // The version is VERSION in src/config.js; tag the release commit as v<version> in git.
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -12,8 +12,9 @@ const RUNTIME = ['index.html', 'css', 'src', 'assets'];      // everything index
 const version = readFileSync(join(root, 'src/config.js'), 'utf8').match(/const VERSION = '([^']+)'/)[1];
 
 const out = join(root, 'dist', 'sir-noodle');
-rmSync(out, { recursive: true, force: true });
-mkdirSync(out, { recursive: true });
+// empty the folder rather than deleting it: Windows refuses to delete a folder some shell is sitting in
+const empty = (dir) => { mkdirSync(dir, { recursive: true }); for (const f of readdirSync(dir)) rmSync(join(dir, f), { recursive: true, force: true }); };
+empty(out);
 for (const p of RUNTIME) cpSync(join(root, p), join(out, p), { recursive: true });
 writeFileSync(join(out, 'VERSION'), version + '\n');
 console.log(`built v${version} -> ${out}`);
@@ -21,7 +22,9 @@ console.log(`built v${version} -> ${out}`);
 try {
   const zip = join(root, 'dist', `sir-noodle-v${version}.zip`);
   rmSync(zip, { force: true });
-  execFileSync('tar', ['-a', '-c', '-f', zip, '-C', join(root, 'dist'), 'sir-noodle']);
+  // Windows' own bsdtar writes zips; Git Bash's GNU tar (often first on PATH) can't, and misreads C: as a host
+  const tar = process.platform === 'win32' ? join(process.env.SystemRoot || 'C:/Windows', 'System32', 'tar.exe') : 'tar';
+  execFileSync(tar, ['-a', '-c', '-f', zip, '-C', join(root, 'dist'), 'sir-noodle']);
   console.log(`zipped -> ${zip}`);
 } catch { console.log('(no zip: tar not available)'); }
 
@@ -31,7 +34,7 @@ for (let i = 0; i < args.length; i++) {
   if (args[i] !== '--to') continue;
   const dest = resolve(args[++i]);
   if (!existsSync(dirname(dest))) throw new Error(`parent folder does not exist: ${dirname(dest)}`);
-  rmSync(dest, { recursive: true, force: true });
+  empty(dest);
   cpSync(out, dest, { recursive: true });
   console.log(`copied -> ${dest}`);
 }

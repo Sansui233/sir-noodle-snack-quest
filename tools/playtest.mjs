@@ -1,6 +1,7 @@
 // Headless playtest helper: loads index.html in headless Chrome and lets a script drive the game.
 //   node tools/playtest.mjs                 -> smoke test (boots, plays ~300 random steps, dies, reports errors)
 //   VIEWPORT=390x844 node tools/playtest.mjs ...  -> phone-sized window
+//   PAGE=dist/sir-noodle/index.html node tools/playtest.mjs ...  -> test another copy (e.g. a release)
 //   SCROLLBARS=1 node tools/playtest.mjs ...       -> keep real scrollbars (hidden by default for clean screenshots)
 //   node tools/playtest.mjs my-test.mjs     -> runs `export default async ({ T, shot, frames, errors }) => {...}`
 // T(code) evaluates code in the page's global scope (all game state is reachable: state, snake, score...).
@@ -39,7 +40,7 @@ export async function withGame(fn, { width = 900, height = 1000 } = {}) {
     };
     const send = (method, params = {}) => new Promise(r => { const id = ++seq; pending.set(id, r); ws.send(JSON.stringify({ id, method, params })); });
     await send('Page.enable'); await send('Runtime.enable');
-    await send('Page.navigate', { url: pathToFileURL(resolve(here, '..', 'index.html')).href });
+    await send('Page.navigate', { url: pathToFileURL(process.env.PAGE ? resolve(process.env.PAGE) : resolve(here, '..', 'index.html')).href });
     await sleep(1500);
 
     const T = async (code) => {
