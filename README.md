@@ -43,6 +43,8 @@ Effects stack, and so do their multipliers.
 - **34 achievements** in four rarities, from *First Bite* to *Hall of Fame*
 - **Your top 10 runs** with a podium, plus a name and one of 13 avatars
 - **English and 简体中文**, picked from your browser, switch any time
+- **Share a run** from the game over screen: a picture card of your crash and stats plus a ready-made sentence,
+  or hide the results with the eye button and take your own screenshot
 - Everything is saved in your browser; nothing is sent anywhere
 
 ## Play offline

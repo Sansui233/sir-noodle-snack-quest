@@ -527,6 +527,22 @@ ART.feather = g => {
   shine(g, 66, 30, 3, 8, 0.6, 0.6);
 };
 
+// ---------- game over: peek at the board, share the run ----------
+ART.eye = g => {
+  g.beginPath(); g.moveTo(8, 54); g.quadraticCurveTo(50, 10, 92, 54); g.quadraticCurveTo(50, 98, 8, 54); g.closePath(); paint(g, '#fff');
+  circ(g, 50, 54, 19); paint(g, '#7dd3fc', 4);
+  dot(g, 50, 54, 9);
+  dot(g, 43, 47, 4.5, '#fff');
+  g.beginPath(); for (const [x1, y1, x2, y2] of [[30, 37, 23, 26], [50, 32, 50, 19], [70, 37, 77, 26]]) { g.moveTo(x1, y1); g.lineTo(x2, y2); }
+  ink(g, 4.5); g.stroke();
+};
+
+ART.share = g => {                                 // a paper plane
+  roundPoly(g, [[92, 10], [8, 46], [40, 60], [60, 92]], 3); paint(g, '#ffd6e5');
+  roundPoly(g, [[92, 10], [40, 60], [44, 84]], 3); paint(g, '#ff7aa2');
+  shine(g, 40, 42, 12, 3, -0.4, 0.8);
+};
+
 // ---------- stat icons (HUD, pause, game over) ----------
 ART.coin = g => {                                  // score
   circ(g, 50, 50, 40); paint(g, '#ffc107');

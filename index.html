@@ -69,6 +69,8 @@
 
       <div class="screen" id="scr-over" hidden>
         <div class="card over-card" id="over-card" role="dialog" aria-label="Game over" data-i18n-aria="gameOver"></div>
+        <!-- peek: the card slides away for a screenshot; this (or any click / key) brings it back -->
+        <button class="peek-back" data-act="unpeek"><img class="ico" src="assets/eye.png" alt=""> <span data-i18n="peekBack">Show results</span></button>
       </div>
 
       <div class="screen modal" id="scr-records" hidden>
@@ -100,6 +102,10 @@
         </div>
       </div>
 
+      <div class="screen modal" id="scr-share" hidden>
+        <div class="card share-card" id="share-card" role="dialog" aria-label="Share" data-i18n-aria="share"></div>
+      </div>
+
       <div id="toasts" aria-live="polite"></div>
     </div>
   </main>
@@ -120,6 +126,7 @@
   <script src="src/i18n.js"></script>
   <script src="src/game.js"></script>
   <script src="src/ui.js"></script>
+  <script src="src/share.js"></script>
   <script src="src/input.js"></script>
   <script src="src/render/helpers.js"></script>
   <script src="src/render/world.js"></script>

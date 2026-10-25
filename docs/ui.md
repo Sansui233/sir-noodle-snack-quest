@@ -21,7 +21,8 @@ body
 │     ├─ .screen #scr-pause     z2  ├ at most one of these, picked by the game state
 │     ├─ .screen #scr-over      z2  ┘
 │     ├─ .screen.modal #scr-records  z3  ┐ open on top of any state (opening one during play pauses)
-│     ├─ .screen.modal #scr-profile  z3  ┘
+│     ├─ .screen.modal #scr-profile  z3  │
+│     ├─ .screen.modal #scr-share    z3  ┘
 │     └─ #toasts            z4  achievement toasts, never block input (pointer-events: none)
 └─ .hint                    controls
 ```
@@ -94,6 +95,7 @@ every 10th is bigger and gold, with sparkles. Code: `milestone()` (`src/particle
 | `pause` | `#scr-pause`      | avatar, a silly "<name> is munching" line, score / snacks / time chips, **Resume** | Resume / Space / arrow / tap        |
 | `over`  | `#scr-over`       | game over dialog (below)                                                  | Replay / Space / Enter, once landed |
 | any     | `#scr-profile`    | name + avatar picker (above)                                              | Save / Enter, Cancel / Esc / backdrop |
+| over    | `#scr-share`      | share picture preview, editable text, Share… / copy / save, X / Weibo / Facebook | ✕ / Esc / backdrop |
 | any     | `#scr-records`    | tabs: **Ranking** (top 10 + lifetime totals, reset) / **Achievements**    | ✕ / Esc / T / Enter / backdrop      |
 
 Every state change goes through `setState()` (`src/game.js`), which calls `syncScreens()` to show the right one.
@@ -117,6 +119,7 @@ Every state change goes through `setState()` (`src/game.js`), which calls `syncS
 │ ──────── UNLOCKED THIS RUN ────────          │  badges in their rarity look, rarest first
 │ (First Bite) (Royal Noodle) (Rock Bottom)    │
 │             [ Replay Space ]                 │  sticky: reachable even if the card scrolls
+│                                   (eye)(✈)   │  top-right corner: peek, share (with the buttons)
 └──────────────────────────────────────────────┘
 ```
 
@@ -183,3 +186,24 @@ The records grid is grouped by tier, with a per-tier count at the top.
 | Esc / P        |        | pause         | resume  |                     | close (Esc)         |
 | T              | records| pause + records | records | records           | close               |
 | M / L          | mute / low FX everywhere                                                    |
+
+While peeking (game over card hidden), any key or click brings the card back and never replays.
+The share dialog, like the profile dialog, owns the keyboard (typing in its text box); Esc closes it.
+
+## Peek and share (game over)
+
+Two round buttons in the game over card's top-right corner (`src/share.js`):
+
+- **Peek** (eye): the card slides off the bottom (`#scr-over.peek`, using `translate` so it stacks on the
+  drop-in animation) and a "Show results" pill appears, so the crash scene and HUD can be screenshotted.
+  Any click on the board, any key or the pill brings the card back. Space / Enter don't replay while peeking.
+- **Share** (paper plane): opens `#scr-share`. `drawShareImage()` paints a 720x960 picture on its own canvas:
+  title, the board as it is at the crash (copied from the game canvas), avatar + name, "new high score" or the
+  death quote, the four stats and the link. The text is a sentence from `tr('shareText')`, editable before sharing.
+  - **Share…** uses the Web Share API (phones, Chrome / Edge / Safari on desktop), with the picture when the
+    browser can share files. **Copy image** / **Save image** / **Copy text** cover everything else.
+  - **X / Weibo / Facebook** open their share pages with the text and link; links can't carry a picture, so the
+    tooltip says to attach the saved one. Weibo comes first in Chinese.
+  - Opened from `file://`, the game canvas is tainted by the local PNGs it drew, so no picture can be exported:
+    the dialog says so and the text options still work. Online (http/https) everything works.
+  - The link is the page's own address online, `PLAY_URL` otherwise.

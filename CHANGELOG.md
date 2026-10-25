@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **Share your run**: a share button on the game over card makes a picture (the board at the crash, your
+  name, stats and the link) with a sentence about the run. Share it with the system share sheet, copy or
+  save it, or post the text to X / Weibo / Facebook. Pictures need the online version (not a local file).
+- **Peek**: the eye button hides the game over card so you can screenshot the board; any key or click brings
+  it back (and never starts a new game by accident).
+
 ## v2.1.1
 
 - Snappier swipes: the turn fires mid-drag once the finger has moved 14px, and one continuous drag can chain

@@ -20,6 +20,7 @@ src/                    the game, as plain classic scripts sharing one global sc
   i18n.js               languages: Chinese text for the page, data tables and tr() strings
   game.js               rules: spawning, effects, movement, eating, rocks, bombs
   ui.js                 DOM screens over the canvas, game over dialog, records, toasts
+  share.js              game over extras: peek at the board, share dialog, the share picture
   input.js              keyboard / touch / mouse
   render/               canvas drawing (helpers, world, snake, overlays + render())
   main.js               main loop and boot (loads last)
