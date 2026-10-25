@@ -39,7 +39,7 @@ Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js
 | Epic      | `devotee`        | Noodle Devotee     | finish 100 games                       | life  | `lifeGames`        |
 | Legendary | `gourmet`        | Five-Star Gourmet  | eat 200 snacks                         | run   | `snacks`           |
 | Legendary | `grandmaster`    | Grandmaster Noodle | score 10,000                           | run   | `score`            |
-| Legendary | `armageddon`     | Armageddon         | clear 12 rocks with one super bomb (rock cap is 16, needs score ≥ 960) | run | `superBest` |
+| Legendary | `armageddon`     | Armageddon         | clear 12 rocks with one super bomb (rock cap is 16, needs score ≥ 960; at 12+ rocks every bomb is a super bomb) | run | `superBest` |
 | Legendary | `rampage`        | Divine Rampage     | smash 10 rocks in one 7s God Mode      | run   | `godBest`          |
 | Legendary | `cocktail`       | Effect Cocktail    | 4 effects active at once (spicy and chill cancel each other) | run | `maxActive` |
 | Legendary | `bottomless_pit` | Bottomless Pit     | eat 10,000 snacks                      | life  | `lifeSnacks`       |

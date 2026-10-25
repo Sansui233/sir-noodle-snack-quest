@@ -73,7 +73,7 @@ Scrollbars are hidden by default; `SCROLLBARS=1` shows real ones. Scroll contain
 `node tools/playtest.mjs test.mjs` runs `export default async ({ T, shot, frames, sleep, errors }) => {...}`;
 `VIEWPORT=360x640` for phone size. `T(code)` evaluates in the page's global scope, so all game state is reachable
 (`state`, `snake`, `run`, `save`...). Put test scripts and screenshots in the scratchpad, not the repo.
-- Drive with `T("start(); ...set snake/stones/food/special...; step(); 'ok'")` and read state back as JSON.
+- Drive with `T("start(); ...set snake/stones/food/specials...; step(); 'ok'")` and read state back as JSON.
   Stop loops when `state !== 'play'`: `step()` doesn't check state, so stepping after death calls `die()` again.
 - Keys: `T("window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))")`.
 - DOM screens animate in real time (CSS, setTimeout), so use `sleep(ms)` before screenshots of dialogs.

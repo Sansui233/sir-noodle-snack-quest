@@ -43,7 +43,7 @@ a file may only *run* code at load time that uses things defined in files above 
 
 - [UI hierarchy and screen flow](ui.md): layers, screens, game over dialog timeline, animations, key map
 - [Achievements and ranking](achievements-and-ranking.md): all 34 achievements and their rarity tiers, ranking rules, save format
-- [Speed and the Night (moon) mechanic](speed-and-night.md): speed stage table, speed meter, moon spawn rules, tuning knobs
+- [Speed, power-up spawns and the Night](speed-and-night.md): speed stage table, speed meter, item pool and choices, bombs, moon rules, tuning knobs
 
 ## Changing the art
 
