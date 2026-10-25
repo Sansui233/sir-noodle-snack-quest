@@ -44,7 +44,9 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
 - Save data: one localStorage key via `src/storage.js` (`save`, `persist()`); validate anything you add in `loadSave()`.
 - Title / pause / game over / records are DOM screens over the canvas (`src/ui.js`, `css/ui.css`), not canvas
   panels. Change state only with `setState()`. No dark dimming behind cards (players found it gloomy).
-  HUD (`css/hud.css`): buttons are raised/round, read-outs are flat inset wells; keep the two looks distinct. Layers, flow, key map and the game over timeline: `docs/ui.md`.
+  Borders only on clickable things (buttons, tabs, inputs, avatar picks); read-only stats, chips, tiles, avatars
+  have no border. HUD read-outs are bare icon + number. Records opens from title / HUD / T, not from dialogs.
+  Avatars should be cute and simple (see av_anon: grey, minimal, Notion-like). Layers, flow, key map and the game over timeline: `docs/ui.md`.
 - Game over restarts only via `replay()` (Replay button / Space / Enter), gated by `overReady`, which turns on
   when the card has landed (`DEATH_PAUSE + LANDED_MS`, ~1.2s after death), not after the whole results timeline:
   a player mashing Space should get back in right after the dialog pops up. Buttons pop in with the card.

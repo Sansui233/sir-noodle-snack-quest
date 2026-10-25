@@ -149,10 +149,10 @@ function showGameOver(rep) {
     }
   }
 
-  // the buttons arrive with the card, so Replay is usable as soon as the dialog has landed
+  // Records lives on the title card and the HUD (and T), so the dialog keeps a single clear action.
+  // The button arrives with the card, so Replay is usable as soon as the dialog has landed
   h += `<div class="actions pop" ${d(ACT_AT)}>
       <button class="btn primary" data-act="replay" disabled>Replay <kbd>Space</kbd></button>
-      <button class="btn" data-act="records">${iconHtml('trophy')} Records <kbd>T</kbd></button>
     </div>`;
   $overCard.innerHTML = h;
 

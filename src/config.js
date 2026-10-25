@@ -70,13 +70,13 @@ const STONE_DEATH = ['You licked a rock. Not tasty.','Rocks: 1, Noodle: 0','Hard
   'That was NOT a snack.','Bonk! Immovable object detected.','Sir Noodle met a boulder. Boulder won.'];
 const HATS = ['', 'bow', 'tophat', 'cowboy', 'gradcap', 'crown'];
 
-// profile: everyone starts as Anonymous in a disguise; the profile dialog picks from these presets
+// profile: everyone starts as Anonymous with the calm grey face; the profile dialog picks from these presets
 const DEFAULT_NAME = 'Anonymous', NAME_MAX = 14;
 const AVATARS = [
-  { id: 'av_anon', name: 'Mystery Noodle' }, { id: 'av_cool', name: 'Vacation Noodle' }, { id: 'av_frog', name: 'Frog' },
-  { id: 'av_cat', name: 'Cat' }, { id: 'av_pug', name: 'Pug' }, { id: 'av_panda', name: 'Panda' },
+  { id: 'av_anon', name: 'Little Grey' }, { id: 'av_cool', name: 'Vacation Noodle' }, { id: 'av_frog', name: 'Frog' },
+  { id: 'av_cat', name: 'Cat' }, { id: 'av_shiba', name: 'Shiba' }, { id: 'av_panda', name: 'Panda' },
   { id: 'av_penguin', name: 'Penguin' }, { id: 'av_chick', name: 'Chick' }, { id: 'av_octopus', name: 'Octopus' },
-  { id: 'av_alien', name: 'Alien' }, { id: 'av_ghost', name: 'Ghost' }, { id: 'av_avocado', name: 'Avocado' },
+  { id: 'av_alien', name: 'Alien' }, { id: 'av_ghost', name: 'Ghost' }, { id: 'av_bunny', name: 'Bunny' },
   { id: 'av_robot', name: 'Robot' }
 ];
 const FUNNY_NAMES = ['Captain Crunch', 'Noodle Doodle', 'Sir Snacksalot', 'Lady Lasagna', 'Wiggle Boss', 'Baron von Bun',

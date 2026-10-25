@@ -565,14 +565,13 @@ function eyes(g, y, dx = 15, r = 7, cx = 50) {
 function smile(g, x, y, r, w = 4) { g.beginPath(); g.arc(x, y, r, Math.PI * 0.15, Math.PI * 0.85); ink(g, w); g.stroke(); }
 function cheeks(g, y, dx = 26) { g.fillStyle = 'rgba(255,90,140,.45)'; ell(g, 50 - dx, y, 6, 3.5); g.fill(); ell(g, 50 + dx, y, 6, 3.5); g.fill(); }
 
-ART.av_anon = g => {                               // a noodle in a very convincing disguise
-  circ(g, 50, 54, 38); paint(g, '#ff9ec4'); shine(g, 32, 30, 10, 5);
-  ink(g, 6); g.beginPath(); g.arc(35, 34, 12, Math.PI * 1.15, Math.PI * 1.85); g.moveTo(54, 26); g.arc(65, 34, 12, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
-  for (const x of [35, 65]) { circ(g, x, 46, 11); paint(g, 'rgba(255,255,255,.85)', 4.5); dot(g, x + 2, 47, 3.5); }
-  g.beginPath(); g.moveTo(46, 45); g.quadraticCurveTo(50, 41, 54, 45); ink(g, 4); g.stroke();
-  g.beginPath(); g.moveTo(50, 67); g.bezierCurveTo(40, 61, 26, 65, 22, 76); g.bezierCurveTo(34, 71, 42, 73, 50, 71);
-  g.bezierCurveTo(58, 73, 66, 71, 78, 76); g.bezierCurveTo(74, 65, 60, 61, 50, 67); g.closePath(); paint(g, '#6b3f2a', 3);
-  ell(g, 50, 60, 8, 7); paint(g, '#ffb38a', 3.5);
+ART.av_anon = g => {                               // everyone's default: a calm grey face, Notion-style minimal
+  circ(g, 50, 52, 38); paint(g, '#e9e9ee', 3.5);
+  g.beginPath(); g.moveTo(40, 16); g.quadraticCurveTo(50, 22, 47, 30); g.moveTo(52, 15); g.quadraticCurveTo(60, 20, 56, 29);
+  ink(g, 3.5); g.stroke();
+  dot(g, 38, 50, 3.6); dot(g, 62, 50, 3.6);
+  g.beginPath(); g.arc(50, 58, 6, Math.PI * 0.2, Math.PI * 0.8); ink(g, 3.2); g.stroke();
+  g.fillStyle = 'rgba(255,130,160,.35)'; ell(g, 29, 61, 5.5, 3.2); g.fill(); ell(g, 71, 61, 5.5, 3.2); g.fill();
 };
 
 ART.av_frog = g => {
@@ -596,14 +595,18 @@ ART.av_cat = g => {
   ink(g, 2.5); g.beginPath(); for (const s of [-1, 1]) { g.moveTo(50 + s * 18, 64); g.lineTo(50 + s * 38, 60); g.moveTo(50 + s * 18, 68); g.lineTo(50 + s * 38, 70); } g.stroke();
 };
 
-ART.av_pug = g => {
-  circ(g, 50, 54, 37); paint(g, '#e8c39a'); shine(g, 32, 32, 9, 4.5);
-  for (const s of [-1, 1]) { ell(g, 50 + s * 34, 40, 10, 17, s * 0.5); paint(g, '#5a3a2a'); }
-  ell(g, 50, 68, 21, 15); paint(g, '#5a3a2a');
-  eyes(g, 46, 16, 8.5);
-  ell(g, 50, 61, 6.5, 4.5); g.fillStyle = INK; g.fill();
-  ell(g, 56, 80, 6, 8); paint(g, '#ff6b8a', 3);
-  g.beginPath(); g.moveTo(40, 72); g.quadraticCurveTo(50, 78, 60, 72); g.strokeStyle = '#e8c39a'; g.lineWidth = 3; g.stroke();
+ART.av_shiba = g => {                              // happy shiba, eyes closed in a smile
+  for (const s of [-1, 1]) {
+    roundPoly(g, [[50 + s * 38, 44], [50 + s * 30, 10], [50 + s * 10, 26]], 6); paint(g, '#f2a65a');
+    roundPoly(g, [[50 + s * 31, 38], [50 + s * 28, 20], [50 + s * 17, 29]], 3); g.fillStyle = '#fff1e0'; g.fill();
+  }
+  circ(g, 50, 56, 36); paint(g, '#f2a65a'); shine(g, 32, 36, 8, 4);
+  g.beginPath(); g.moveTo(16, 62); g.bezierCurveTo(22, 92, 78, 92, 84, 62); g.bezierCurveTo(70, 70, 60, 58, 50, 58);
+  g.bezierCurveTo(40, 58, 30, 70, 16, 62); g.closePath(); g.fillStyle = '#fff6ea'; g.fill();
+  for (const x of [36, 64]) { g.beginPath(); g.arc(x, 52, 6, Math.PI * 1.15, Math.PI * 1.85); ink(g, 4); g.stroke(); }
+  ell(g, 50, 64, 5, 3.5); g.fillStyle = INK; g.fill();
+  ink(g, 3.2); g.beginPath(); g.arc(45.5, 68, 4.5, 0.1, Math.PI - 0.3); g.moveTo(59, 68.5); g.arc(54.5, 68, 4.5, 0.3, Math.PI - 0.1); g.stroke();
+  cheeks(g, 66, 24);
 };
 
 ART.av_panda = g => {
@@ -664,14 +667,16 @@ ART.av_ghost = g => {
   cheeks(g, 56, 26);
 };
 
-ART.av_avocado = g => {
-  g.beginPath(); g.moveTo(50, 8); g.bezierCurveTo(70, 8, 74, 32, 82, 52); g.bezierCurveTo(94, 82, 72, 94, 50, 94);
-  g.bezierCurveTo(28, 94, 6, 82, 18, 52); g.bezierCurveTo(26, 32, 30, 8, 50, 8); g.closePath(); paint(g, '#4e8a3a');
-  g.beginPath(); g.moveTo(50, 16); g.bezierCurveTo(66, 16, 68, 36, 75, 54); g.bezierCurveTo(84, 78, 68, 86, 50, 86);
-  g.bezierCurveTo(32, 86, 16, 78, 25, 54); g.bezierCurveTo(32, 36, 34, 16, 50, 16); g.closePath(); g.fillStyle = '#d8f08a'; g.fill();
-  circ(g, 50, 66, 15); paint(g, '#a8642f', 3.5); shine(g, 45, 60, 4, 2.5);
-  eyes(g, 38, 10, 5.5);
-  smile(g, 50, 42, 5, 3);
+ART.av_bunny = g => {
+  for (const s of [-1, 1]) {
+    ell(g, 50 + s * 15, 22, 9, 21, s * 0.18); paint(g, '#fffafc');
+    ell(g, 50 + s * 15, 24, 4, 14, s * 0.18); g.fillStyle = '#ffc2d4'; g.fill();
+  }
+  ell(g, 50, 62, 36, 31); paint(g, '#fffafc'); shine(g, 32, 46, 8, 4, -0.5, 0.9);
+  dot(g, 37, 60, 4); dot(g, 63, 60, 4); dot(g, 36, 58.5, 1.3, '#fff'); dot(g, 62, 58.5, 1.3, '#fff');
+  ell(g, 50, 67, 4, 3); g.fillStyle = '#ff8fab'; g.fill();
+  ink(g, 3); g.beginPath(); g.arc(46.5, 71, 3.5, 0.1, Math.PI - 0.3); g.moveTo(57, 71.5); g.arc(53.5, 71, 3.5, 0.3, Math.PI - 0.1); g.stroke();
+  cheeks(g, 70, 24);
 };
 
 ART.av_robot = g => {

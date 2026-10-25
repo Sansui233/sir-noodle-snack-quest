@@ -30,6 +30,13 @@ Title, pause and game over have **no backdrop**: the board stays bright behind t
 feels like part of the game. The two modals get a light pink frosting (never a dark dim). Card text is sized
 in `em` off `2.5cqw` (2.5% of the board width, clamped to 9-16px), so every dialog scales with the board.
 
+## Borders mean "you can press this"
+
+Only clickable things get an ink border: buttons, tabs, the "Playing as" chip, avatar choices, the name field.
+Everything read-only (stat tiles and chips, ribbons, badges, achievement tiles, ranking rows, podium steps,
+toasts, avatars, progress bars) is borderless: a soft fill and at most a soft shadow. Dialog cards and the board
+keep their frame as containers.
+
 ## HUD: buttons vs read-outs
 
 The old HUD was a row of identical pills, so nobody could tell what was clickable. Now there are two looks:
@@ -37,7 +44,7 @@ The old HUD was a row of identical pills, so nobody could tell what was clickabl
 | Kind       | Items                                   | Look                                                        |
 |------------|-----------------------------------------|-------------------------------------------------------------|
 | Buttons    | profile, records, mute, FX              | white, raised (dark bottom edge), round or pill; lift on hover, sink on press |
-| Read-outs  | score, snacks, best, speed, effect      | flat, inset "scoreboard" wells, icon + number, no shadow; bump when a number goes up |
+| Read-outs  | score, snacks, best, speed, effect      | just icon + number on the header, no frame, no well; bump when a number goes up |
 
 Every stat has its own icon everywhere it appears (HUD, pause chips, game over tiles):
 `coin` = score, `snackbag` = snacks, `crown` = best, `worm` = length, `clock` = time.
@@ -45,7 +52,7 @@ On small boards the profile button drops the "PLAYER" label, then the name, keep
 
 ## Profile
 
-Everyone starts as **Anonymous** with the disguise avatar (`av_anon`). The profile button (HUD) or the
+Everyone starts as **Anonymous** with a calm grey, minimal face (`av_anon`). The profile button (HUD) or the
 "Playing as" chip (title card) opens `#scr-profile`: big preview, name field (14 chars, "Random name" picks a
 funny one), 13 avatars (`AVATARS` in `src/config.js`, art in `tools/art.js`), Save (Enter) / Cancel (Esc).
 While it's open, every key goes to the name field (no muting on M, no records on T).
@@ -62,9 +69,9 @@ every 10th is bigger and gold, with sparkles. Code: `milestone()` (`src/particle
 
 | State   | Screen            | Contents                                                                 | Leaves via                          |
 |---------|-------------------|--------------------------------------------------------------------------|-------------------------------------|
-| `title` | `#scr-title`      | logo, name, **Play**, **Records**, best score + achievement count chips   | Play / Enter / Space / arrow / tap  |
+| `title` | `#scr-title`      | logo, name, **Play**, **Records** (the only dialog with it; also HUD / T), best score + achievement count chips   | Play / Enter / Space / arrow / tap  |
 | `play`  | none              | canvas + HUD; toasts drop in when an achievement unlocks                  | Space/P/Esc pause, T records, death |
-| `pause` | `#scr-pause`      | avatar, a silly "<name> is munching" line, score / snacks / time chips, **Resume**, **Records** | Resume / Space / arrow / tap        |
+| `pause` | `#scr-pause`      | avatar, a silly "<name> is munching" line, score / snacks / time chips, **Resume** | Resume / Space / arrow / tap        |
 | `over`  | `#scr-over`       | game over dialog (below)                                                  | Replay / Space / Enter, once landed |
 | any     | `#scr-profile`    | name + avatar picker (above)                                              | Save / Enter, Cancel / Esc / backdrop |
 | any     | `#scr-records`    | tabs: **Ranking** (top 10 + lifetime totals, reset) / **Achievements**    | ✕ / Esc / T / Enter / backdrop      |
@@ -89,7 +96,7 @@ Every state change goes through `setState()` (`src/game.js`), which calls `syncS
 │  [ 2 ]   [   1   ]   [ 3 ]                   │
 │ ──────── UNLOCKED THIS RUN ────────          │  badges in their rarity look, rarest first
 │ (First Bite) (Royal Noodle) (Rock Bottom)    │
-│      [ Replay Space ]   [ Records T ]        │  sticky: reachable even if the card scrolls
+│             [ Replay Space ]                 │  sticky: reachable even if the card scrolls
 └──────────────────────────────────────────────┘
 ```
 
