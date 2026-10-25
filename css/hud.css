@@ -61,23 +61,30 @@
 @keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.25) rotate(-4deg); } 100% { transform: scale(1); } }
 
 .hud-status {
-  display: flex; align-items: center; gap: .6em; margin-top: .35em; padding: 0 .3em;
-  font-size: .82em; font-weight: 700;
+  display: flex; align-items: center; gap: .6em; margin-top: .4em; padding: .2em .6em;
+  font-size: .82em; font-weight: 700; border-radius: .7em;
+  background: rgba(91, 42, 78, .07); box-shadow: inset 0 .12em 0 rgba(91, 42, 78, .13);
 }
 /* speed meter: the bar is the base speed (what a night's sleep resets), the number is the current speed */
 #spd { display: flex; align-items: center; gap: .4em; flex: none; }
-#spd .meter { width: 5.5em; height: .7em; border-radius: 999px; background: rgba(91, 42, 78, .12); overflow: hidden; }
+#spd .meter { width: 5.5em; height: .7em; border-radius: 999px; background: #fff; overflow: hidden; }
 #spd .meter i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .35s, background-color .35s; }
 #spdx { min-width: 2.4em; text-align: right; font-variant-numeric: tabular-nums; }
 #fx { flex: 1; min-width: 0; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* small boards: drop the "Player" label, then the name (the avatar stays) */
+/* small boards: drop the "Player" label and shorten the name (it is always shown) */
 @container (max-width: 520px) {
   .hud-profile small { display: none; }
   .hud-profile b { max-width: 5em; }
 }
 @container (max-width: 420px) {
-  .hud-profile .who { display: none; }
-  .hud-profile { padding: .15em; }
-  .counters { gap: .5em; }
+  .hud-profile b { max-width: 5.2em; }
+  .counters { gap: .45em; }
+}
+@container (max-width: 370px) {
+  .hud-profile b { max-width: 4em; }
+  .hud-row { gap: .35em; }
+  .counter .ico { width: 1.3em; height: 1.3em; }
+  .counter b { font-size: 1em; }
+  .counter.best { display: none; }   /* best is on the title card and in Records; the live numbers matter more here */
 }

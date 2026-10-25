@@ -121,8 +121,7 @@
 .quote { margin: .2em 0 .65em; font-weight: 600; }
 .stats { display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; gap: .45em; }
 .stat {
-  background: #fff; border-radius: .9em; padding: .35em .2em .3em;
-  box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
+  border-radius: .9em; padding: .35em .2em .3em;
 }
 .stat small { display: block; font-size: .68em; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
 .stat b { display: block; font-size: 1.55em; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
@@ -130,7 +129,7 @@
 .stat.big b { font-size: 1.85em; color: var(--pink); }
 .ribbon {
   display: inline-block; margin: .1em 0 .1em; padding: .28em 1em; font-weight: 800;
-  background: #fff; border-radius: .6em; box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
+  background: #fff; border-radius: .6em;
   transform: rotate(-3deg);
 }
 .ribbon.best {
@@ -153,7 +152,7 @@
 .step {
   width: 100%; display: flex; justify-content: center; padding-top: .2em;
   font-size: 1.25em; font-weight: 800; color: #fff; text-shadow: 0 2px 0 var(--ink);
-  border-radius: .6em .6em .25em .25em; box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
+  border-radius: .6em .6em .25em .25em;
 }
 .p1 .step { height: 2.9em; background: linear-gradient(#ffe680, var(--gold)); }
 .p2 .step { height: 2.1em; background: linear-gradient(#f4f6f9, #aab3bd); }
@@ -175,7 +174,7 @@
 .badge.more { padding: .4em .8em; background: #fff; }
 .goal {
   display: flex; align-items: center; gap: .55em; text-align: left; max-width: 26em; margin: 0 auto;
-  background: #fff; border-radius: .9em; padding: .35em .7em; box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
+  background: #fff; border-radius: .9em; padding: .35em .7em;
 }
 .goal > div { flex: 1; min-width: 0; }
 .goal b { display: block; font-size: .95em; }
@@ -227,7 +226,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14em, 1fr)); gap: .45em; text-align: left; }
 .ach {
   display: flex; align-items: center; gap: .5em; padding: .4em .6em;
-  background: #fff; border-radius: .9em; box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
+  background: #fff; border-radius: .9em;
 }
 .ach > div { flex: 1; min-width: 0; }
 .ach b { display: block; font-size: .95em; }
@@ -237,7 +236,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .ach .prog .bar { flex: 1; margin-top: .25em; }
 .ach .prog small { font-weight: 700; font-variant-numeric: tabular-nums; }
 .ach.got { background: linear-gradient(#fffbe6, #fff0b3); }
-.ach.locked { background: #f4eff2; box-shadow: none; }
+.ach.locked { background: #f4eff2; }
 .ach.locked b { opacity: .7; }
 
 /* ---------- toasts ---------- */
@@ -245,7 +244,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
   display: flex; align-items: center; gap: .55em; font-size: clamp(9px, 2.3cqw, 15px);
   padding: .4em 1.1em .4em .45em; text-align: left;
   background: linear-gradient(#fff6c8, #ffe08a); color: var(--ink);
-  border-radius: 999px; box-shadow: 0 .5em 1.4em rgba(40, 10, 30, .3);
+  border-radius: 999px;
   animation: toast 2.8s cubic-bezier(.3, 1.4, .5, 1) both;
 }
 .toast .emb { animation: wiggle .45s ease-in-out .3s 2; }
@@ -353,7 +352,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .toast.r-legendary small { color: #8a5a00; opacity: 1; }
 
 /* ---------- profile, avatars, stat icons ---------- */
-.avatar.xl { width: 4.6em; height: 4.6em; filter: drop-shadow(0 .2em .25em rgba(91, 42, 78, .25)); }
+.avatar.xl { width: 4.6em; height: 4.6em; }
 .avatar.lg { width: 3em; height: 3em; }
 .avatar.sm { width: 1.7em; height: 1.7em; vertical-align: -.45em; }
 .bob { animation: bob 2.6s ease-in-out infinite; }
@@ -376,7 +375,6 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .stat-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: .45em; margin-top: .7em; }
 .stat-chip {
   display: inline-flex; align-items: center; gap: .3em; padding: .2em .8em .2em .3em;
-  background: #fff; border-radius: 999px; box-shadow: 0 .15em .6em rgba(91, 42, 78, .12);
 }
 .stat-chip .ico { width: 1.9em; height: 1.9em; vertical-align: 0; }
 .stat-chip b { font-size: 1.25em; font-variant-numeric: tabular-nums; }

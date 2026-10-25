@@ -34,8 +34,10 @@ in `em` off `2.5cqw` (2.5% of the board width, clamped to 9-16px), so every dial
 
 Only clickable things get an ink border: buttons, tabs, the "Playing as" chip, avatar choices, the name field.
 Everything read-only (stat tiles and chips, ribbons, badges, achievement tiles, ranking rows, podium steps,
-toasts, avatars, progress bars) is borderless: a soft fill and at most a soft shadow. Dialog cards and the board
-keep their frame as containers.
+toasts, avatars, progress bars) is borderless, and has no blurred shadow either: soft shadows clash with the
+flat ink art. The only shadows are the hard ink offsets on buttons, dialog cards and the board (plus the
+rarity glows). Fills are rare too: the big score tile keeps its pink, the pause stat chips have none.
+Dialog cards and the board keep their frame as containers.
 
 ## HUD: buttons vs read-outs
 
@@ -44,11 +46,14 @@ The old HUD was a row of identical pills, so nobody could tell what was clickabl
 | Kind       | Items                                   | Look                                                        |
 |------------|-----------------------------------------|-------------------------------------------------------------|
 | Buttons    | profile, records, mute, FX              | white, raised (dark bottom edge), round or pill; lift on hover, sink on press |
-| Read-outs  | score, snacks, best, speed, effect      | just icon + number on the header, no frame, no well; bump when a number goes up |
+| Read-outs  | score, snacks, best                     | just icon + number on the header, no frame; bump when a number goes up |
+| Status     | speed meter, current effect             | one sunken strip under the top row, so it reads as separate from both |
 
 Every stat has its own icon everywhere it appears (HUD, pause chips, game over tiles):
 `coin` = score, `snackbag` = snacks, `crown` = best, `worm` = length, `clock` = time.
-On small boards the profile button drops the "PLAYER" label, then the name, keeping the avatar.
+The name always sits right of the avatar (cut with … when long); small boards only drop the "PLAYER" label.
+The page keeps 18px of padding and sizes the board from the window height (the header is ~15% of the board
+width), so the board frame is never cut off by the window edge.
 
 ## Profile
 

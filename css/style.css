@@ -6,8 +6,10 @@
 :root { --ink: #5b2a4e; }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
+body { height: 100dvh; }
 body {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: safe center; gap: 12px;
+  padding: 18px 0;   /* breathing room so the board frame is never cut by the window edge */
   background: radial-gradient(circle at 20% 10%, #ffe3f1, #ffd2b8 45%, #c9f0ff);
   font-family: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
   color: var(--ink); user-select: none; -webkit-user-select: none; overflow: hidden;
@@ -30,7 +32,8 @@ body.fx-dizzy::before { opacity: 1; animation: dz 3s ease infinite; }
 /* the board: HUD header (css/hud.css) glued on top of the stage; the canvas fills the stage and the UI
    screens (css/ui.css) sit on top of it. The whole board glows with the active effect (GLOWS). */
 #board {
-  width: min(94vw, calc(100vh - 165px), 640px); container-type: inline-size;
+  /* the header is ~15% of the board width, so the board is (window - page padding - hint - gaps) / 1.15 tall */
+  width: min(94vw, calc((100dvh - 150px) / 1.15), 640px); container-type: inline-size;
   border-radius: 22px; box-shadow: 0 8px 0 var(--ink), 0 18px 30px rgba(91,42,78,.3); transition: box-shadow .25s;
 }
 #stage { position: relative; width: 100%; aspect-ratio: 1; container-type: inline-size; }
