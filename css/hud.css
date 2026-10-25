@@ -28,7 +28,7 @@
 }
 .hud-profile .who { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; min-width: 0; }
 .hud-profile small { font-size: .62em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
-.hud-profile b { max-width: 7.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .95em; }
+.hud-profile b { max-width: 8.5em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .95em; }
 
 .hud-btns { display: flex; gap: .4em; flex: none; }
 .round {
@@ -75,10 +75,10 @@
 /* small boards: drop the "Player" label and shorten the name (it is always shown) */
 @container (max-width: 520px) {
   .hud-profile small { display: none; }
-  .hud-profile b { max-width: 5em; }
+  .hud-profile b { max-width: 6.2em; }
 }
 @container (max-width: 420px) {
-  .hud-profile b { max-width: 5.2em; }
+  .hud-profile b { max-width: 5.6em; }
   .counters { gap: .45em; }
 }
 @container (max-width: 370px) {

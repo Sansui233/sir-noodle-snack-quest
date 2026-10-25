@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.1
+
+- Fix: the bundled Fredoka font never loaded since the CSS moved to `css/` (its `url()` must be relative to the
+  stylesheet), so every browser fell back to Trebuchet MS. Text now looks the same on every OS again.
+- HUD name gets a little more room, since Fredoka is wider than the fallback.
+
 ## v2.0.0
 
 Achievements, ranking, profiles and a new UI.
