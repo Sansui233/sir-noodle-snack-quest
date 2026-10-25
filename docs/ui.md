@@ -67,6 +67,8 @@ The board is sized from the window so its frame is never cut off by the window e
 - No text is smaller than 10px (`--min-font`): sub-1em sizes are written `max(var(--min-font), .7em)`, and
   canvas text (`text()`, bubbles, "×N" pops) is floored at `minTextPx`, 10 screen px in board units.
 - Windows under 520px tall (landscape phones) hide the hint.
+- The game over stat tiles (score, snacks, length, time) go 2x2 when the card is under 30em wide
+  (container query on `.over-card`), instead of clipping the numbers.
 
 ## Profile
 

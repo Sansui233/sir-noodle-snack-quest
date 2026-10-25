@@ -128,7 +128,7 @@
 .keys { margin: .5em 0 0; font-size: max(var(--min-font), .85em); color: var(--pink); font-weight: 600; }
 
 /* ---------- game over ---------- */
-.over-card { max-width: 35em; padding: .9em 1.2em 1em; }
+.over-card { max-width: 35em; padding: .9em 1.2em 1em; container: over / inline-size; }
 .over-head { display: flex; align-items: center; justify-content: center; gap: .45em; }
 .over-head .ico { width: 2.6em; height: 2.6em; animation: wiggle .5s ease-in-out .9s 2; }
 .over-head h2 { font-size: 2.1em; font-weight: 600; color: var(--pink); letter-spacing: .04em; text-shadow: 0 .07em 0 var(--ink); }
@@ -141,6 +141,11 @@
 .stat b { display: block; font-size: 1.55em; font-weight: 600; line-height: 1.15; font-variant-numeric: tabular-nums; }
 .stat.big { background: #ffe9f0; }
 .stat.big b { font-size: 1.85em; color: var(--pink); }
+/* narrow card (small boards, where text stops shrinking at 10px): the four tiles go 2x2 instead of clipping.
+   The card is the query container, so this follows its real width in its own em. */
+@container over (max-width: 30em) {
+  .stats { grid-template-columns: 1fr 1fr; }
+}
 .ribbon {
   display: inline-block; margin: .1em 0 .1em; padding: .28em 1em; font-weight: 600;
   background: #fff; border-radius: .6em;
