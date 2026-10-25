@@ -1,0 +1,15 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# local scratch output
+*.log
+tmp/
+shots/
+
+# Claude Code local settings (the project skill in .claude/skills is tracked)
+.claude/settings.local.json
