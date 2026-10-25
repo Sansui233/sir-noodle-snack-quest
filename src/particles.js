@@ -12,6 +12,18 @@ function burst(px, py, n, colors, speed = 140, ic) {
 }
 const ROCK_COLORS = ['#9aa0a6', '#6b7075', '#cfd4d8', '#7d8389'];
 
+// a rare achievement unlocked mid-run: confetti from the head (gold sparkles + flash for legendary)
+function celebrate(tier) {
+  if (state !== 'play') return;
+  const h = snake[0], px = (h.x + .5) * CELL, py = (h.y + .5) * CELL;
+  const gold = tier === 'legendary';
+  burst(px, py, gold ? 40 : 24, gold ? ['#ffd23d', '#ffb300', '#fff6b8', '#fff'] : ['#b45cff', '#d9a8ff', '#7fd3ff', '#fff'], gold ? 260 : 200);
+  burst(px, py, gold ? 8 : 4, ['#fff'], 160, 'sparkle');
+  rings.push({ x: px, y: py, ms: 700, total: 700, maxR: (gold ? 4 : 2.5) * CELL });
+  if (gold) { flash = Math.max(flash, 0.5); shake = Math.max(shake, 160); }
+  wake();
+}
+
 // ambient particles that make each effect feel alive
 function ambient(dt) {
   if (particles.length > (lowFx ? 60 : 320)) return;

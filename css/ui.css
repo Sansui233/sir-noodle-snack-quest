@@ -61,6 +61,8 @@
   0%, 100% { transform: scale(1); box-shadow: 0 .25em 0 var(--ink), 0 0 0 0 rgba(255, 122, 162, .7); }
   50%      { transform: scale(1.06); box-shadow: 0 .25em 0 var(--ink), 0 0 0 .45em rgba(255, 122, 162, 0); }
 }
+/* shine sweeps start off to the left so nothing is covered while they wait for their delay */
+.badge::after, .ribbon.best::after, .ach.got.r-legendary::after, .toast.r-legendary::after { transform: translateX(-120%) skewX(-20deg); }
 @keyframes shine    { 0% { transform: translateX(-120%) skewX(-20deg); } 60%, 100% { transform: translateX(260%) skewX(-20deg); } }
 
 /* ---------- buttons, chips, bars ---------- */
@@ -165,7 +167,6 @@
   padding: .12em .75em .12em .2em; font-size: .85em; font-weight: 700;
   background: linear-gradient(#fff6c8, #ffe08a); border: 2.5px solid var(--ink); border-radius: 999px;
 }
-.badge .ico { width: 1.9em; height: 1.9em; }
 .badge::after {
   content: ''; position: absolute; inset: 0; width: 40%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent);
@@ -176,7 +177,6 @@
   display: flex; align-items: center; gap: .55em; text-align: left; max-width: 26em; margin: 0 auto;
   background: #fff; border: 2.5px solid var(--ink); border-radius: .9em; padding: .35em .7em;
 }
-.goal > .ico { width: 2.2em; height: 2.2em; flex: none; }
 .goal > div { flex: 1; min-width: 0; }
 .goal b { display: block; font-size: .95em; }
 .goal small { display: block; font-size: .75em; opacity: .8; }
@@ -229,7 +229,6 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
   display: flex; align-items: center; gap: .5em; padding: .4em .6em;
   background: #fff; border: 2.5px solid var(--ink); border-radius: .9em; box-shadow: 0 .15em 0 var(--ink);
 }
-.ach > .ico { width: 2.4em; height: 2.4em; flex: none; }
 .ach > div { flex: 1; min-width: 0; }
 .ach b { display: block; font-size: .95em; }
 .ach small { display: block; font-size: .74em; opacity: .8; line-height: 1.2; }
@@ -239,7 +238,6 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .ach .prog small { font-weight: 700; font-variant-numeric: tabular-nums; }
 .ach.got { background: linear-gradient(#fffbe6, #fff0b3); }
 .ach.locked { background: #f4eff2; box-shadow: 0 .15em 0 rgba(91, 42, 78, .5); }
-.ach.locked > .ico { filter: grayscale(1) brightness(1.15); opacity: .45; }
 .ach.locked b { opacity: .7; }
 
 /* ---------- toasts ---------- */
@@ -250,7 +248,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
   border: 3px solid var(--ink); border-radius: 999px; box-shadow: 0 .3em 0 var(--ink), 0 .8em 1.4em rgba(40, 10, 30, .3);
   animation: toast 2.8s cubic-bezier(.3, 1.4, .5, 1) both;
 }
-.toast .ico { width: 2.4em; height: 2.4em; animation: wiggle .45s ease-in-out .3s 2; }
+.toast .emb { animation: wiggle .45s ease-in-out .3s 2; }
 .toast small { display: block; font-size: .72em; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
 .toast b { display: block; font-size: 1.15em; }
 .toast.leave { animation: toast-leave .25s ease-in both; }
@@ -263,6 +261,96 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
   86%  { transform: none; opacity: 1; }
   100% { transform: translateY(-170%); opacity: 0; }
 }
+
+/* ---------- rarity: medallions, tiles, badges, toasts ----------
+   common    plain white medallion
+   rare      blue gradient + blue ring
+   epic      purple gradient, glowing ring, a twinkling star on the rim
+   legendary gold medallion with a slowly spinning sunburst behind it, glow, twinkle, shimmering tile
+   Locked tiles keep the tier's frame (so you can see what's rare) but grey out the icon. */
+:root {
+  --rare: #3a93e6; --rare-bg: #e4f2ff; --epic: #9b51e0; --epic-bg: #f3e8ff;
+  --legend: #f5a800; --legend-bg: #fff4c2;
+}
+.emb {
+  position: relative; isolation: isolate; flex: none; display: inline-grid; place-items: center;
+  width: 2.7em; height: 2.7em; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #f1ecef); border: 2.5px solid var(--ink);
+}
+.card .emb .ico, .toast .emb .ico { width: 74%; height: 74%; vertical-align: 0; animation: none; }
+.emb.t-rare { background: radial-gradient(circle at 35% 30%, #fff, #a9d5ff); box-shadow: 0 0 0 .16em var(--rare); }
+.emb.t-epic {
+  background: radial-gradient(circle at 35% 30%, #fff, #cfa6ff);
+  box-shadow: 0 0 0 .16em var(--epic), 0 0 .7em .15em rgba(155, 81, 224, .55);
+}
+.emb.t-legendary {
+  background: radial-gradient(circle at 35% 30%, #fffbe0, #ffc53d 70%, #f59a00);
+  box-shadow: 0 0 0 .18em var(--legend), 0 0 0 .3em #fff3b0, 0 0 1em .35em rgba(255, 190, 40, .75);
+}
+.emb.t-legendary::before {                       /* sunburst rays behind the medallion */
+  content: ''; position: absolute; inset: -42%; z-index: -1; border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 200, 40, .75) 0 9deg, transparent 9deg 24deg);
+  -webkit-mask: radial-gradient(circle, #000 35%, transparent 70%); mask: radial-gradient(circle, #000 35%, transparent 70%);
+  animation: spin 9s linear infinite;
+}
+.emb.t-epic::after, .emb.t-legendary::after {    /* twinkle on the rim */
+  content: ''; position: absolute; top: -12%; right: -12%; width: 38%; height: 38%; background: #fff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, .9)); animation: twinkle 1.8s ease-in-out infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes twinkle { 0%, 100% { transform: scale(.4) rotate(0); opacity: .3; } 50% { transform: scale(1) rotate(45deg); opacity: 1; } }
+
+/* tier name pills and section headers */
+.tier-chip.r-common { background: #fff; }
+.tier-chip.r-rare { background: var(--rare-bg); border-color: var(--rare); color: #1f5f9e; }
+.tier-chip.r-epic { background: var(--epic-bg); border-color: var(--epic); color: #6a2ea8; }
+.tier-chip.r-legendary { background: linear-gradient(#fff6c8, #ffd25e); border-color: var(--legend); color: #8a5a00; }
+.tier-label { margin-top: .9em; font-size: .78em; }
+.tier-label.r-rare { color: var(--rare); opacity: 1; }
+.tier-label.r-epic { color: var(--epic); opacity: 1; }
+.tier-label.r-legendary { color: #d48a00; opacity: 1; text-shadow: 0 0 .6em rgba(255, 200, 40, .8); }
+.ach-sum .chips { margin-bottom: 0; }
+
+/* achievement tiles */
+.ach > .emb { font-size: .95em; }
+.ach.got.r-rare { background: linear-gradient(#f5fbff, var(--rare-bg)); border-color: #2a6fb8; }
+.ach.got.r-epic { background: linear-gradient(#fbf6ff, var(--epic-bg)); border-color: #6a2ea8; box-shadow: 0 .15em 0 #6a2ea8, 0 0 .8em rgba(155, 81, 224, .35); }
+.ach.got.r-legendary {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #fffbe6, var(--legend-bg) 45%, #ffe08a);
+  border-color: #b87d00; box-shadow: 0 .15em 0 #b87d00, 0 0 1em rgba(255, 190, 40, .55);
+}
+.ach.got.r-legendary::after, .badge.r-legendary::after, .toast.r-legendary::after {
+  content: ''; position: absolute; inset: 0; width: 35%; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent);
+  animation: shine 2.6s ease-in-out infinite;
+}
+.ach.locked .emb .ico { filter: grayscale(1) brightness(1.15); opacity: .45; }
+.ach.locked .emb { background: #eee8ec; }
+.ach.locked .emb.t-legendary::before { animation: none; opacity: .35; filter: grayscale(.6); }
+.ach.locked .emb::after { animation: none; opacity: 0; }
+.ach.locked.r-legendary { background: linear-gradient(#f6f0e0, #efe6d0); }
+.ach.locked.r-epic { background: #f1ebf6; }
+
+/* game over badges and the next goal */
+.badge .emb { font-size: .7em; margin: .1em .15em .1em 0; }
+.badge.r-rare { background: linear-gradient(#f2f9ff, #cfe7ff); }
+.badge.r-epic { background: linear-gradient(#f8f0ff, #dcc0ff); box-shadow: 0 0 .7em rgba(155, 81, 224, .5); }
+.badge.r-legendary { background: linear-gradient(#fff6c8, #ffc53d); box-shadow: 0 0 1em .2em rgba(255, 190, 40, .7); font-size: .95em; }
+.goal > .emb { font-size: .85em; }
+
+/* toasts */
+.toast { position: relative; overflow: hidden; }
+.toast .emb { font-size: .95em; }
+.toast.r-rare { background: linear-gradient(#f2f9ff, #bfe0ff); }
+.toast.r-epic { background: linear-gradient(#f8f0ff, #d2adff); box-shadow: 0 .3em 0 var(--ink), 0 0 1.4em .3em rgba(155, 81, 224, .6); }
+.toast.r-legendary {
+  font-size: clamp(10px, 2.7cqw, 17px); animation-duration: 3.6s;
+  background: linear-gradient(#fff6c8, #ffc53d); box-shadow: 0 .3em 0 var(--ink), 0 0 1.8em .5em rgba(255, 190, 40, .85);
+}
+.toast.r-epic small { color: #6a2ea8; opacity: 1; }
+.toast.r-legendary small { color: #8a5a00; opacity: 1; }
 
 /* the game over buttons stay reachable even when a small board makes the dialog scroll */
 .over-card .actions {
@@ -285,6 +373,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
   }
   .toast { animation-name: toast-fade !important; animation-duration: 2.8s !important; }
   .toast.leave { animation: fade-out .2s both !important; }
-  .logo, .crown .ico, .empty .ico, .btn.ready, .over-head .ico, .toast .ico, .badge::after, .ribbon.best::after { animation: none !important; }
+  .logo, .crown .ico, .empty .ico, .btn.ready, .over-head .ico, .toast .emb, .badge::after, .ribbon.best::after,
+  .emb::before, .emb::after, .ach::after, .toast::after { animation: none !important; }
   @keyframes toast-fade { 0% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
 }

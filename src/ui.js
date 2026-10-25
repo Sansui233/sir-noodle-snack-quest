@@ -3,9 +3,16 @@
 // Layer order, screen flow and the game over timeline are written up in docs/ui.md.
 'use strict';
 
-const DEATH_PAUSE = 700;       // ms of watching the crash before the game over dialog drops in
-const STEP = 90;               // ms between the dialog's parts popping in
-const POP_MS = 450;            // length of the .pop animation (css/ui.css)
+const DEATH_PAUSE = 600;       // ms of watching the crash before the game over dialog drops in
+const LANDED_MS = 620;         // the card's drop-in animation (css/ui.css): Replay works from here on
+const ACT_AT = 160;            // the buttons pop in with the card (pop is 450ms, done just as it lands)
+const STEP = 80;               // ms between the other parts popping in (they keep going after Replay works)
+
+// ---------- achievement looks by rarity ----------
+const TIER_RANK = Object.fromEntries(Object.keys(TIERS).map((k, i) => [k, i]));
+// the icon in a medallion whose frame shows the tier: plain / blue ring / purple glow + twinkle / gold sunburst
+const emblem = (a) => `<span class="emb t-${a.tier}">${iconHtml(a.icon)}</span>`;
+const tierSfx = (tier) => tier === 'legendary' ? 'fanfare' : 'achieve';
 
 // ---------- showing / hiding screens ----------
 function showScreen(el) {
@@ -112,14 +119,14 @@ function showGameOver(rep) {
   }
   h += `</div>`;
 
-  // what this run unlocked, or the next goal to chase
+  // what this run unlocked (rarest first), or the next goal to chase
   if (rep.unlocked.length) {
     h += `<div class="label pop" ${d(next(160))}>Unlocked this run</div><div class="badges">`;
-    const shown = rep.unlocked.slice(0, 6);
+    const shown = [...rep.unlocked].sort((a, b) => TIER_RANK[b.tier] - TIER_RANK[a.tier]).slice(0, 6);
     shown.forEach((a, i) => {
       const ms = next(i ? 110 : 90);
-      sounds.push([ms, i ? 'pop' : 'achieve']);
-      h += `<span class="badge pop" ${d(ms)} title="${a.desc}">${iconHtml(a.icon)}${a.name}</span>`;
+      sounds.push([ms, i ? 'pop' : tierSfx(a.tier)]);
+      h += `<span class="badge pop r-${a.tier}" ${d(ms)} title="${TIERS[a.tier].name}: ${a.desc}">${emblem(a)}${a.name}</span>`;
     });
     if (rep.unlocked.length > shown.length) h += `<span class="badge more pop" ${d(next())}>+${rep.unlocked.length - shown.length} more</span>`;
     h += `</div>`;
@@ -128,14 +135,14 @@ function showGameOver(rep) {
     if (g) {
       const p = achProgress(g);
       h += `<div class="label pop" ${d(next(160))}>Next goal</div>
-        <div class="goal pop" ${d(next())}>${iconHtml(g.icon)}<div><b>${g.name}</b><small>${g.desc}</small>
+        <div class="goal pop r-${g.tier}" ${d(next())}>${emblem(g)}<div><b>${g.name}</b><small>${g.desc}</small>
         ${bar(p, g.goal)}</div><span class="num">${fmtNum(p)}/${fmtNum(g.goal)}</span></div>`;
     }
   }
 
-  const actAt = next(220);
-  h += `<div class="actions pop" ${d(actAt)}>
-      <button class="btn primary" data-act="replay" disabled>Replay <kbd>Enter</kbd></button>
+  // the buttons arrive with the card, so Replay is usable as soon as the dialog has landed
+  h += `<div class="actions pop" ${d(ACT_AT)}>
+      <button class="btn primary" data-act="replay" disabled>Replay <kbd>Space</kbd></button>
       <button class="btn" data-act="records">${iconHtml('trophy')} Records <kbd>T</kbd></button>
     </div>`;
   $overCard.innerHTML = h;
@@ -145,15 +152,11 @@ function showGameOver(rep) {
   later(DEATH_PAUSE, () => { showScreen($scrOver); sfx.whoosh(); });
   for (const [ms, name] of sounds) later(DEATH_PAUSE + ms, () => sfx[name]());
   for (const [ms, i, v, fmt] of counts) later(DEATH_PAUSE + ms, () => countUp(nums[i], v, fmt));
-  later(DEATH_PAUSE + actAt + POP_MS, () => {
-    for (const [, i, v, fmt] of counts) nums[i].textContent = fmt(v);   // in case rAF was throttled
-    overReady = true;
-    btn.disabled = false;
-    btn.classList.add('ready');
-  });
+  later(DEATH_PAUSE + LANDED_MS, () => { overReady = true; btn.disabled = false; btn.classList.add('ready'); });
+  later(DEATH_PAUSE + t + 800, () => { for (const [, i, v, fmt] of counts) nums[i].textContent = fmt(v); });   // in case rAF was throttled
 }
 
-// the only way out of game over: Replay button or Enter, and only once the dialog is fully shown
+// the only way out of game over: Replay button, Space or Enter, once the dialog has landed
 function replay() {
   if (state !== 'over' || !overReady) return;
   sfx.click();
@@ -214,17 +217,24 @@ function renderRecords() {
     }
     h += `<div class="rec-foot"><button class="btn small danger" data-act="wipe">Reset records</button></div>`;
   } else {
-    const n = unlockedCount();
-    h += `<div class="ach-sum pop"><b>${n} / ${ACHIEVEMENTS.length}</b> unlocked ${bar(n, ACHIEVEMENTS.length)}</div><div class="ach-grid">`;
-    ACHIEVEMENTS.forEach((a, i) => {
-      const got = save.unlocked[a.id], p = achProgress(a);
-      h += `<div class="ach pop ${got ? 'got' : 'locked'}" ${d(60 + i * 28)}>${iconHtml(a.icon)}<div>
-        <b>${a.name}</b><small>${a.desc}</small>
-        ${got ? `<small class="when">Unlocked ${fmtDate(got)}</small>`
-              : a.goal > 1 ? `<span class="prog">${bar(p, a.goal, 'sm')}<small>${fmtNum(p)}/${fmtNum(a.goal)}</small></span>` : ''}
-      </div></div>`;
-    });
-    h += `</div>`;
+    // summary, then one section per tier (common -> legendary), each with its own look
+    const n = unlockedCount(), byTier = (k) => ACHIEVEMENTS.filter(a => a.tier === k);
+    h += `<div class="ach-sum pop"><b>${n} / ${ACHIEVEMENTS.length}</b> unlocked ${bar(n, ACHIEVEMENTS.length)}
+      <div class="chips">${Object.keys(TIERS).map(k => `<span class="chip tier-chip r-${k}">${TIERS[k].name}
+        ${byTier(k).filter(a => save.unlocked[a.id]).length}/${byTier(k).length}</span>`).join('')}</div></div>`;
+    let i = 0;
+    for (const k of Object.keys(TIERS)) {
+      h += `<div class="label tier-label r-${k} pop" ${d(60 + i * 22)}>${TIERS[k].name}</div><div class="ach-grid">`;
+      for (const a of byTier(k)) {
+        const got = save.unlocked[a.id], p = achProgress(a);
+        h += `<div class="ach pop r-${a.tier} ${got ? 'got' : 'locked'}" ${d(60 + ++i * 22)}>${emblem(a)}<div>
+          <b>${a.name}</b><small>${a.desc}</small>
+          ${got ? `<small class="when">Unlocked ${fmtDate(got)}</small>`
+                : a.goal > 1 ? `<span class="prog">${bar(p, a.goal, 'sm')}<small>${fmtNum(p)}/${fmtNum(a.goal)}</small></span>` : ''}
+        </div></div>`;
+      }
+      h += `</div>`;
+    }
   }
   $recBody.innerHTML = h;
   $recBody.scrollTop = 0;                    // fresh elements replay their .pop / .slide entry
@@ -253,13 +263,16 @@ function nextToast() {
   if (!a) { toastBusy = false; return; }
   toastBusy = true;
   const el = document.createElement('div');
-  el.className = 'toast';
-  el.innerHTML = `${iconHtml(a.icon)}<div><small>Achievement unlocked!</small><b>${a.name}</b></div>`;
+  el.className = 'toast r-' + a.tier;
+  const kind = a.tier === 'common' ? 'Achievement unlocked!' : `${TIERS[a.tier].name} achievement!`;
+  el.innerHTML = `${emblem(a)}<div><small>${kind}</small><b>${a.name}</b></div>`;
   $toasts.appendChild(el);
+  sfx[tierSfx(a.tier)]();                    // sound and celebration play when its toast shows, not when queued
+  if (a.tier === 'epic' || a.tier === 'legendary') celebrate(a.tier);
   let done = false;
   const end = () => { if (done) return; done = true; el.remove(); nextToast(); };
   el.addEventListener('animationend', (e) => { if (e.target === el) end(); });
-  setTimeout(end, 3200);                     // the animation is 2.8s; covers browsers that skip it
+  setTimeout(end, a.tier === 'legendary' ? 4000 : 3200);   // the animation is 2.8s (3.6s legendary); covers browsers that skip it
 }
 
 // ---------- clicks ----------

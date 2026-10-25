@@ -9,7 +9,7 @@ function turn(dx, dy) {
   if (last.x === dx && last.y === dy) return;
   if (queue.length < 2) queue.push({ x: dx, y: dy });
 }
-// space / enter / tap. Never restarts from game over: that needs the Replay button or Enter (see replay()).
+// space / enter / tap. Game over has its own rule: Space / Enter / Replay once the dialog has landed (replay()).
 function primary() {
   audio();
   if (state === 'title') start();
@@ -47,8 +47,8 @@ window.addEventListener('keydown', (e) => {
   if (k === 'm' || k === 'M') { toggleMute(); return; }
   if (k === 'l' || k === 'L') { toggleLowFx(); return; }
   if (k === 't' || k === 'T') { audio(); openRecords(); return; }
-  if (state === 'over') {                                     // only Enter restarts, once the dialog is fully shown
-    if (k === 'Enter') replay();
+  if (state === 'over') {                                     // Space / Enter restart, once the dialog has landed
+    if (k === ' ' || k === 'Enter') replay();
     else if (KEYMAP[k]) e.preventDefault();
     return;
   }

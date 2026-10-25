@@ -3,47 +3,61 @@
 Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js` (save file, ranking),
 `src/ui.js` (toasts, game over dialog, records modal). If you change a goal in code, update this table.
 
-## Achievements (22)
+## Achievements (34, in 4 rarity tiers)
 
 "Run" ones must be reached inside a single game; their progress bar shows your best run.
-"Life" ones add up over every game.
+"Life" ones add up over every game. Tier looks (medallion, tile, toast, sound) are in [ui.md](ui.md#rarity-looks).
 
-| Id             | Name             | Goal                                   | Scope | Stat (`run.*`)     |
-|----------------|------------------|----------------------------------------|-------|--------------------|
-| `first_bite`   | First Bite       | eat 1 snack                            | run   | `snacks`           |
-| `snack_attack` | Snack Attack     | eat 50 snacks                          | run   | `snacks`           |
-| `bottomless`   | Bottomless Belly | eat 100 snacks                         | run   | `snacks`           |
-| `triple_digit` | Triple Digits    | score 100                              | run   | `score`            |
-| `tycoon`       | Snack Tycoon     | score 1,000                            | run   | `score`            |
-| `legend`       | Noodle Legend    | score 3,000                            | run   | `score`            |
-| `royal`        | Royal Noodle     | reach the crown (5th hat, 25 snacks)   | run   | `hat`              |
-| `bonk`         | Rock Bottom      | die to a rock                          | run   | `death === 'rock'` |
-| `ouroboros`    | Ouroboros        | bite your own tail                     | run   | `death === 'self'` |
-| `demolition`   | Demolition Crew  | destroy 15 rocks (any way)             | run   | `rocks`            |
-| `kaboom`       | KA-BOOM          | clear 8 rocks with one super bomb      | run   | `superBest`        |
-| `close_call`   | Close Call       | a shield saves you                     | run   | `saves`            |
-| `fortress`     | Fortress         | hold 3 shields at once                 | run   | `maxShields`       |
-| `unstoppable`  | Unstoppable      | smash 5 rocks in one God Mode          | run   | `godBest`          |
-| `yeet`         | YEET!            | monkey paws fling 5 rocks              | run   | `flung`            |
-| `sweet_dreams` | Sweet Dreams     | eat a moon                             | run   | `moons`            |
-| `speed_demon`  | Speed Demon      | speed level 38 (meter full)            | run   | `maxSpeed`         |
-| `triple`       | Triple Threat    | 3 effects active at once               | run   | `maxActive`        |
-| `marathon`     | Marathon Noodle  | survive 3:00 (paused time excluded)    | run   | `time`             |
-| `taste_tester` | Taste Tester     | try all 6 power-up effects             | life  | `lifeTried`        |
-| `regular`      | Regular Customer | finish 10 games                        | life  | `lifeGames`        |
-| `glutton`      | Glutton          | eat 1,000 snacks                       | life  | `lifeSnacks`       |
+| Tier      | Id               | Name               | Goal                                   | Scope | Stat (`run.*`)     |
+|-----------|------------------|--------------------|----------------------------------------|-------|--------------------|
+| Common    | `first_bite`     | First Bite         | eat 1 snack                            | run   | `snacks`           |
+| Common    | `triple_digit`   | Triple Digits      | score 100                              | run   | `score`            |
+| Common    | `bonk`           | Rock Bottom        | die to a rock                          | run   | `death === 'rock'` |
+| Common    | `ouroboros`      | Ouroboros          | bite your own tail                     | run   | `death === 'self'` |
+| Common    | `sweet_dreams`   | Sweet Dreams       | eat a moon                             | run   | `moons`            |
+| Common    | `close_call`     | Close Call         | a shield saves you                     | run   | `saves`            |
+| Common    | `regular`        | Regular Customer   | finish 10 games                        | life  | `lifeGames`        |
+| Rare      | `snack_attack`   | Snack Attack       | eat 50 snacks                          | run   | `snacks`           |
+| Rare      | `tycoon`         | Snack Tycoon       | score 1,000                            | run   | `score`            |
+| Rare      | `royal`          | Royal Noodle       | reach the crown (5th hat, 25 snacks)   | run   | `hat`              |
+| Rare      | `speed_demon`    | Speed Demon        | speed level 38 (meter full)            | run   | `maxSpeed`         |
+| Rare      | `demolition`     | Demolition Crew    | destroy 15 rocks (any way)             | run   | `rocks`            |
+| Rare      | `fortress`       | Fortress           | hold 3 shields at once                 | run   | `maxShields`       |
+| Rare      | `yeet`           | YEET!              | monkey paws fling 5 rocks              | run   | `flung`            |
+| Rare      | `triple`         | Triple Threat      | 3 effects active at once               | run   | `maxActive`        |
+| Rare      | `night_owl`      | Night Owl          | 3 moons in one run                     | run   | `moons`            |
+| Rare      | `taste_tester`   | Taste Tester       | try all 6 power-up effects             | life  | `lifeTried`        |
+| Epic      | `bottomless`     | Bottomless Belly   | eat 100 snacks                         | run   | `snacks`           |
+| Epic      | `legend`         | Noodle Legend      | score 3,000                            | run   | `score`            |
+| Epic      | `longcat`        | Loooong Noodle     | grow to 100 segments                   | run   | `length`           |
+| Epic      | `marathon`       | Marathon Noodle    | survive 3:00 (paused time excluded)    | run   | `time`             |
+| Epic      | `iron_stomach`   | Iron Stomach       | survive 10:00                          | run   | `time`             |
+| Epic      | `kaboom`         | KA-BOOM            | clear 8 rocks with one super bomb      | run   | `superBest`        |
+| Epic      | `unstoppable`    | Unstoppable        | smash 5 rocks in one God Mode          | run   | `godBest`          |
+| Epic      | `quarry_boss`    | Quarry Boss        | destroy 50 rocks                       | run   | `rocks`            |
+| Epic      | `glutton`        | Glutton            | eat 1,000 snacks                       | life  | `lifeSnacks`       |
+| Epic      | `devotee`        | Noodle Devotee     | finish 100 games                       | life  | `lifeGames`        |
+| Legendary | `gourmet`        | Five-Star Gourmet  | eat 200 snacks                         | run   | `snacks`           |
+| Legendary | `grandmaster`    | Grandmaster Noodle | score 10,000                           | run   | `score`            |
+| Legendary | `armageddon`     | Armageddon         | clear 12 rocks with one super bomb (rock cap is 16, needs score ≥ 960) | run | `superBest` |
+| Legendary | `rampage`        | Divine Rampage     | smash 10 rocks in one 7s God Mode      | run   | `godBest`          |
+| Legendary | `cocktail`       | Effect Cocktail    | 4 effects active at once (spicy and chill cancel each other) | run | `maxActive` |
+| Legendary | `bottomless_pit` | Bottomless Pit     | eat 10,000 snacks                      | life  | `lifeSnacks`       |
+| Legendary | `hall_of_fame`   | Hall of Fame       | unlock all 33 others                   | life  | count of unlocked  |
 
 "Rocks destroyed" counts every way a rock goes away: God Mode crunch, shield break, bomb, super bomb, monkey fling.
 
 ### When they unlock
 
-`checkAchievements()` runs after every step. A new unlock during play shows a toast (one at a time, 2.8s
-each) with a chime. Unlocks on the final step (e.g. Rock Bottom) are listed in the game over dialog
+`checkAchievements()` runs after every step. A new unlock during play shows a toast in its tier's look (one at a time, 2.8s each, legendary 3.6s); its sound
+plays when the toast shows (chime, fanfare for legendary), and epic / legendary also burst confetti around Sir Noodle. Unlocks on the final step (e.g. Rock Bottom) are listed in the game over dialog
 instead, and any toasts still queued at death are dropped, because the dialog lists everything from the run.
 
 ### Adding one
 
-1. Add `{ id, icon, name, desc, goal, m: r => ... }` to `ACHIEVEMENTS` (`life: true` for lifetime totals).
+1. Add `{ id, tier, icon, name, desc, goal, m: r => ... }` to `ACHIEVEMENTS` in its tier's group (`life: true` for
+   lifetime totals). Pick the tier by how hard it is: common = happens by playing, rare = a good run,
+   epic = a great run or real dedication, legendary = brag-worthy. Keep Hall of Fame last.
    `icon` must be one of the PNGs in `assets/`.
 2. If it needs a new stat, add it to `newRun()` and bump it where it happens in `src/game.js`
    (or mirror it from game state at the top of `checkAchievements()`).

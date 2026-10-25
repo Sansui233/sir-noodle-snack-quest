@@ -35,14 +35,17 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
    documented there (speeds, durations, spawn weights), update the doc's tables too.
 
 ## Achievements, ranking, screens
-- Achievements: `ACHIEVEMENTS` in `src/achievements.js` (`m: r => stat`, `goal`, `life`), stats in `newRun()`,
+- Achievements: `ACHIEVEMENTS` in `src/achievements.js` (`tier`, `m: r => stat`, `goal`, `life`), stats in `newRun()`,
   bumped in `src/game.js` (`run.rocks++` etc.). Table in `docs/achievements-and-ranking.md` must match.
+  Tiers (common/rare/epic/legendary) drive the look everywhere: icon in `emblem(a)`, classes `.t-<tier>` /
+  `.r-<tier>` in `css/ui.css`. The rarer, the more the medallion/tile must show it. Hall of Fame stays last.
 - Save data: one localStorage key via `src/storage.js` (`save`, `persist()`); validate anything you add in `loadSave()`.
 - Title / pause / game over / records are DOM screens over the canvas (`src/ui.js`, `css/ui.css`), not canvas
   panels. Change state only with `setState()`. Layers, flow, key map and the game over timeline: `docs/ui.md`.
-- Game over must not restart until the dialog is fully shown: only `replay()` (Replay button / Enter) restarts,
-  gated by `overReady`. Keep that when touching input or the dialog. Animated parts use `.pop/.rise/.stamp`
-  with `style="--d:<ms>"`; the ready time is computed from the same timeline in `showGameOver()`.
+- Game over restarts only via `replay()` (Replay button / Space / Enter), gated by `overReady`, which turns on
+  when the card has landed (`DEATH_PAUSE + LANDED_MS`, ~1.2s after death), not after the whole results timeline:
+  a player mashing Space should get back in right after the dialog pops up. Buttons pop in with the card.
+  Animated parts use `.pop/.rise/.stamp` with `style="--d:<ms>"` from the timeline in `showGameOver()`.
 
 ## Playtesting headlessly
 `node tools/playtest.mjs` = smoke test (random play, fails on page errors).
