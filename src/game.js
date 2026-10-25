@@ -87,22 +87,33 @@ function say(text, ms = 1400) { bubble = { text, ms, total: ms }; }
 
 // ---------- game logic ----------
 function start() {
-  reset(); state = 'play'; acc = 0; sfx.start();
+  reset(); setState('play'); acc = 0; sfx.start();
 }
 
-function die(msg) {
-  prev = snake; state = 'over'; shake = 450;
+// every state change goes through here so the screens (ui.js) follow
+function setState(s) {
+  state = s;
+  syncScreens();
+}
+
+// cause: 'self' | 'rock' (some achievements care how you went)
+function die(msg, cause = 'self') {
+  prev = snake; setState('over'); shake = 450;
   deathMsg = msg || rnd(DEATH_QUOTES);
   fx = fxMap(0);
   wasActive = fxMap(false);
   sfx.die();
   const h = snake[0];
   burst((h.x + .5) * CELL, (h.y + .5) * CELL, 26, ['#ff6b9d','#ffd166','#fff','#9be15d'], 200);
+  const prevBest = best;
   if (score > best) {
     best = score;
     try { localStorage.setItem('sirNoodleBest', String(best)); } catch (e) {}
   }
   updateHud();
+  const report = finishRun(cause);
+  report.newBest = score > prevBest;
+  showGameOver(report);
 }
 
 function startEffect(k) {
@@ -111,6 +122,9 @@ function startEffect(k) {
   if (k === 'chill') fx.spicy = 0;
   fx[k] = clock + e.ms;
   wasActive[k] = true;
+  run.tried.add(k);
+  if (k === 'night') run.moons++;
+  if (k === 'god') run.godSmash = 0;                         // "rocks in a single God Mode" starts over
   banner = { text: e.banner, icon: e.icon, sub: e.sub, color: e.color, ms: 1700, total: 1700 };
 }
 
@@ -127,6 +141,7 @@ function wakeUp() {
 
 function smashStone(st) {
   stones = stones.filter(s => s !== st);
+  run.rocks++;
   const px = (st.x + .5) * CELL, py = (st.y + .5) * CELL;
   burst(px, py, 14, ROCK_COLORS, 190);
   burst(px, py, 4, ['#fff'], 120, 'boom');
@@ -137,7 +152,7 @@ function smashStone(st) {
 
 // a shield charge pops and the rock goes with it
 function breakShield(st) {
-  shields--;
+  shields--; run.saves++;
   smashStone(st);
   const px = (st.x + .5) * CELL, py = (st.y + .5) * CELL;
   burst(px, py, 16, ['#4aa8f0', '#9fd8ff', '#ffffff'], 210);
@@ -150,6 +165,7 @@ function breakShield(st) {
 
 function blowUpStone(st, parts) {
   const px = (st.x + .5) * CELL, py = (st.y + .5) * CELL;
+  run.rocks++;
   burst(px, py, parts, ROCK_COLORS, 220);
   burst(px, py, 3, ['#fff'], 100, 'boom');
   blasts.push({ x: st.x, y: st.y, ms: 520, total: 520 });
@@ -186,6 +202,7 @@ function superDetonate(cx, cy) {
   }
   stones = [];
   sinceSuper = 0;
+  run.superBest = Math.max(run.superBest, n);
   rings.push({ x: px, y: py, ms: 900, total: 900, maxR: SIZE * 0.75 });
   rings.push({ x: px, y: py, ms: 650, total: 650, maxR: SIZE * 0.4 });
   burst(px, py, 36, ['#ff4d4d','#ffa94d','#ffe066','#fff'], 300);
@@ -205,9 +222,9 @@ function step() {
   // rocks
   const rock = stoneAt(nh.x, nh.y);
   if (rock) {
-    if (god) smashStone(rock);                             // god mode never spends a shield
+    if (god) { smashStone(rock); run.godBest = Math.max(run.godBest, ++run.godSmash); }   // god mode never spends a shield
     else if (shields > 0) breakShield(rock);
-    else { die(rnd(STONE_DEATH)); return; }
+    else { die(rnd(STONE_DEATH), 'rock'); return; }
   }
 
   // own body
@@ -224,6 +241,7 @@ function step() {
     const st = stoneAt(c.x, c.y);
     if (st) fling(st, c.s); else consume(c.x, c.y, true);
   }
+  checkAchievements();
 }
 
 // the two cells beside the head, s = -1 (left) / 1 (right) of the travel direction
@@ -235,6 +253,7 @@ function pawCells() {
 // a paw throws a rock off the board
 function fling(st, s) {
   stones = stones.filter(r => r !== st);
+  run.rocks++; run.flung++;
   const px = (st.x + .5) * CELL, py = (st.y + .5) * CELL;
   const ox = -dir.y * s, oy = dir.x * s;                   // outward from the head
   flung.push({ x: px, y: py, vx: ox * 700 + dir.x * 120, vy: oy * 700 + dir.y * 120 - 260, rot: 0, ms: 900 });

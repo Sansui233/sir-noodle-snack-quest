@@ -40,8 +40,10 @@ h1 { margin: 0; font-size: clamp(18px, 3.4vh, 30px); text-shadow: 2px 2px 0 #fff
 #spd .meter { width: 72px; height: 12px; border: 2.5px solid var(--ink); border-radius: 999px; background: #eef3f0; overflow: hidden; }
 #spd .meter i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .35s, background-color .35s; }
 #spdx { min-width: 2.6em; text-align: right; }
+/* the board; the canvas fills it and the UI screens (css/ui.css) sit on top */
+#stage { position: relative; width: min(94vw, calc(100vh - 170px), 640px); aspect-ratio: 1; container-type: inline-size; }
 canvas {
-  width: min(94vw, calc(100vh - 170px), 640px); aspect-ratio: 1;
+  display: block; width: 100%; height: 100%;
   border: 5px solid var(--ink); border-radius: 22px;
   box-shadow: 0 8px 0 var(--ink), 0 18px 30px rgba(91,42,78,.3);
   background: #bdf0a6; touch-action: none; cursor: pointer;
@@ -50,5 +52,9 @@ canvas {
 .hint { font-size: 13px; opacity: .85; text-align: center; padding: 0 10px; max-width: 680px; }
 body.low-fx::before { display: none; }
 body.idle::before { animation-play-state: paused; }     /* nothing animates while the game sleeps */
-#mute, #lowfx { border: 3px solid var(--ink); background: #fff; border-radius: 999px; padding: 3px 12px; cursor: pointer; font: 600 16px "Fredoka", system-ui, sans-serif; color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+#mute, #lowfx, #trophies { border: 3px solid var(--ink); background: #fff; border-radius: 999px; padding: 3px 12px; cursor: pointer; font: 600 16px "Fredoka", system-ui, sans-serif; color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+#trophies { background: #fff3c4; }
+/* a HUD number went up */
+.pill.bump { animation: bump .32s cubic-bezier(.3,1.8,.5,1); }
+@keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.18) rotate(-2deg); background: #fff3c4; } 100% { transform: scale(1); } }
 .ico { height: 1.3em; width: 1.3em; vertical-align: -0.3em; }

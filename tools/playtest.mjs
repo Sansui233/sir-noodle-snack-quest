@@ -1,5 +1,6 @@
 // Headless playtest helper: loads index.html in headless Chrome and lets a script drive the game.
 //   node tools/playtest.mjs                 -> smoke test (boots, plays ~300 random steps, dies, reports errors)
+//   VIEWPORT=390x844 node tools/playtest.mjs ...  -> phone-sized window
 //   node tools/playtest.mjs my-test.mjs     -> runs `export default async ({ T, shot, frames, errors }) => {...}`
 // T(code) evaluates code in the page's global scope (all game state is reachable: state, snake, score...).
 // shot(path) screenshots the canvas stage; frames(n) advances n frames by hand (rAF may not fire headless).
@@ -79,7 +80,8 @@ async function smoke({ T, errors }) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const script = process.argv[2];
   const fn = script ? (await import(pathToFileURL(resolve(script)).href)).default : smoke;
-  const errors = await withGame(async (api) => { await fn(api); await api.sleep(200); return api.errors; });
+  const [width, height] = (process.env.VIEWPORT || '900x1000').split('x').map(Number);
+  const errors = await withGame(async (api) => { await fn(api); await api.sleep(200); return api.errors; }, { width, height });
   if (errors.length) { console.error('page errors:\n' + errors.join('\n')); process.exit(1); }
   console.log('no page errors');
 }

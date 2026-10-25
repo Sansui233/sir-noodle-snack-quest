@@ -121,4 +121,4 @@ const loadIcon = (name) => new Promise((ok) => {
   ICONS[name] = img;
 });
 const fontReady = document.fonts ? document.fonts.load(`700 20px "Fredoka"`).catch(() => {}) : Promise.resolve();
-Promise.all([...ICON_NAMES.map(loadIcon), fontReady]).then(() => requestAnimationFrame(frame));
+Promise.all([...ICON_NAMES.map(loadIcon), fontReady]).then(() => { syncScreens(); requestAnimationFrame(frame); });

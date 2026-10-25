@@ -36,5 +36,11 @@ const sfx = {
   fling()  { tone(260, 0.28, 'sawtooth', 0.06, 3.2); tone(140, 0.1, 'square', 0.08, 0.6); },
   shieldBreak() { tone(1200, 0.25, 'triangle', 0.1, 0.35); tone(700, 0.3, 'square', 0.06, 0.4, 0.03); },
   lullaby(){ [784, 659, 523, 392].forEach((f, i) => tone(f, 0.32, 'sine', 0.11, 1, i * 0.16)); },
-  morning(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.12, 'triangle', 0.1, 1.05, i * 0.07)); tone(1568, 0.08, 'sine', 0.06, 1.3, 0.34); tone(1760, 0.08, 'sine', 0.06, 1.3, 0.44); }
+  morning(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.12, 'triangle', 0.1, 1.05, i * 0.07)); tone(1568, 0.08, 'sine', 0.06, 1.3, 0.34); tone(1760, 0.08, 'sine', 0.06, 1.3, 0.44); },
+  // UI
+  achieve(){ [784, 988, 1175, 1568].forEach((f, i) => tone(f, 0.16, 'triangle', 0.1, 1, i * 0.08)); tone(2093, 0.3, 'sine', 0.05, 1, 0.34); },
+  pop()    { tone(600 + Math.random() * 200, 0.07, 'triangle', 0.07, 1.6); },
+  whoosh() { tone(900, 0.25, 'sine', 0.05, 0.3); },
+  fanfare(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.18, 'square', 0.06, 1, i * 0.1)); tone(1047, 0.5, 'triangle', 0.1, 1, 0.42); tone(1319, 0.5, 'triangle', 0.08, 1, 0.42); },
+  click()  { tone(520, 0.05, 'triangle', 0.06, 1.3); }
 };

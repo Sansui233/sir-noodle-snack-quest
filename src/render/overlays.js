@@ -1,4 +1,4 @@
-// Speech bubble, particles, blasts, banners, screens and render().
+// Speech bubble, particles, blasts, banners and render(). Title / pause / game over are DOM screens (ui.js).
 'use strict';
 
 function drawBubble(hp) {
@@ -84,24 +84,6 @@ function drawBanner() {
   ctx.restore();
 }
 
-// lines: { s, y, size, color?, w?, icon? } - icon alone, or icon in front of the text
-function panel(lines) {
-  ctx.fillStyle = 'rgba(255,255,255,.82)';
-  rr(50, 150, SIZE - 100, 300, 28); ctx.fill();
-  ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.stroke();
-  for (const l of lines) {
-    if (!l.s) { icon(l.icon, SIZE / 2, l.y, l.size); continue; }
-    let x = SIZE / 2;
-    if (l.icon) {
-      ctx.font = `${l.w || '800'} ${l.size}px ${TEXT_FONT}`;
-      const w = ctx.measureText(l.s).width, is = l.size * 1.3;
-      x += (is + 6) / 2;
-      icon(l.icon, x - w / 2 - 6 - is / 2, l.y, is);
-    }
-    text(l.s, x, l.y, l.size, l.color || INK, l.w || '800', false);
-  }
-}
-
 function render(time, t) {
   ctx.save();
   ctx.clearRect(0, 0, SIZE, SIZE);
@@ -124,29 +106,5 @@ function render(time, t) {
   drawBubble(hp);
   drawBanner();
   if (flash > 0.01) { ctx.fillStyle = `rgba(255,255,255,${Math.min(1, flash) * 0.9})`; ctx.fillRect(-20, -20, SIZE + 40, SIZE + 40); }
-
-  if (state === 'title') {
-    panel([
-      { icon: 'worm', y: 205, size: 58 },
-      { s: "Sir Noodle's", y: 262, size: 38 },
-      { s: 'Snack Quest', y: 304, size: 38, color: '#e0457b' },
-      { s: 'Eat snacks. Grow hats. Dodge rocks.', y: 352, size: 16, w: '700' },
-      { s: 'Press any arrow key / tap to start', y: 398, size: 17, color: '#e0457b' }
-    ]);
-  } else if (state === 'pause') {
-    panel([
-      { icon: 'pause', y: 230, size: 56 },
-      { s: 'Snack break!', y: 300, size: 36 },
-      { s: 'Space / tap to continue', y: 360, size: 18, color: '#e0457b' }
-    ]);
-  } else if (state === 'over') {
-    panel([
-      { icon: 'face_dead', y: 200, size: 52 },
-      { s: deathMsg, y: 262, size: deathMsg.length > 30 ? 19 : 22 },
-      { s: `Score ${score}   •   Snacks ${eaten}`, y: 310, size: 22, color: '#e0457b' },
-      score >= best && score > 0 ? { s: 'New high score!', icon: 'trophy', y: 352, size: 18, w: '700' } : { s: `Best: ${best}`, y: 352, size: 18, w: '700' },
-      { s: 'Space / tap to try again', y: 400, size: 17, color: '#e0457b' }
-    ]);
-  }
   ctx.restore();
 }

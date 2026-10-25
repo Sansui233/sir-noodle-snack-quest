@@ -1,8 +1,19 @@
 // The DOM HUD above the canvas.
 'use strict';
 
+// write a HUD number only when it changes; going up during play gives its pill a little bump
+function setNum(el, v) {
+  const s = String(v);
+  if (el.textContent === s) return;
+  const up = state === 'play' && v > (parseInt(el.textContent, 10) || 0);
+  el.textContent = s;
+  if (up && !lowFx) { const p = el.parentElement; p.classList.remove('bump'); void p.offsetWidth; p.classList.add('bump'); }
+}
+
 function updateHud() {
-  $score.textContent = score; $best.textContent = best; $snacks.textContent = eaten;
+  setNum($score, score); setNum($best, best); setNum($snacks, eaten);
+  const got = unlockedCount() + '/' + ACHIEVEMENTS.length;
+  if ($trophyCount.textContent !== got) $trophyCount.textContent = got;
   const parts = [];
   for (const k of THEME_ORDER) {
     if (isActive(k)) parts.push(`${iconHtml(EFFECTS[k].emo)} ${EFFECTS[k].name} ${Math.ceil((fx[k] - clock) / 1000)}s`);

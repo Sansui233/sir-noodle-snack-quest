@@ -3,17 +3,21 @@
 Open `index.html` in a browser. Everything is local: no network access, no server and no build step needed.
 
 ```
-index.html              page shell: HUD, canvas, script tags (in load order)
+index.html              page shell: HUD, board (canvas + UI screens), script tags (in load order)
 css/style.css           page + HUD styles, page mood per effect
+css/ui.css              title / pause / game over / records screens, toasts, all their animations
 src/                    the game, as plain classic scripts sharing one global scope
   config.js             constants and data: effects, pickups, quotes, art names
   util.js               small pure helpers
+  storage.js            save file in localStorage: ranking, achievements, lifetime totals
   dom.js                page elements
   state.js              mutable game state, reset()
   hud.js                HUD above the canvas
   audio.js              synthesized sound effects
   particles.js          particle bursts, ambient effect particles
+  achievements.js       achievement list, per-run stats, unlocking
   game.js               rules: spawning, effects, movement, eating, rocks, bombs
+  ui.js                 DOM screens over the canvas, game over dialog, records, toasts
   input.js              keyboard / touch / mouse
   render/               canvas drawing (helpers, world, snake, overlays + render())
   main.js               main loop and boot (loads last)
@@ -31,8 +35,10 @@ be opened by double-clicking `index.html`. Top-level `let`/`const`/`function` in
 global scope, so the files see each other's state directly. Keep the `<script>` order in `index.html`:
 a file may only *run* code at load time that uses things defined in files above it.
 
-## Mechanics docs
+## Docs
 
+- [UI hierarchy and screen flow](docs/ui.md): layers, screens, game over dialog timeline, animations, key map
+- [Achievements and ranking](docs/achievements-and-ranking.md): all 22 achievements, ranking rules, save format
 - [Speed and the Night (moon) mechanic](docs/speed-and-night.md): speed stage table, speed meter, moon spawn rules, tuning knobs
 
 ## Changing the art

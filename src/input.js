@@ -9,11 +9,12 @@ function turn(dx, dy) {
   if (last.x === dx && last.y === dy) return;
   if (queue.length < 2) queue.push({ x: dx, y: dy });
 }
-function primary() {            // space / enter / tap
+// space / enter / tap. Never restarts from game over: that needs the Replay button or Enter (see replay()).
+function primary() {
   audio();
-  if (state === 'title' || state === 'over') start();
-  else if (state === 'play') state = 'pause';
-  else if (state === 'pause') state = 'play';
+  if (state === 'title') start();
+  else if (state === 'play') setState('pause');
+  else if (state === 'pause') setState('play');
   wake();
 }
 function toggleMute() { muted = !muted; $mute.innerHTML = iconHtml(muted ? 'speaker_off' : 'speaker'); if (!muted) audio(); }
@@ -38,24 +39,36 @@ const KEYMAP = {
   w:[0,-1], s:[0,1], a:[-1,0], d:[1,0], W:[0,-1], S:[0,1], A:[-1,0], D:[1,0]
 };
 window.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); primary(); return; }
-  if (e.key === 'p' || e.key === 'P') { if (state === 'play' || state === 'pause') primary(); return; }
-  if (e.key === 'm' || e.key === 'M') { toggleMute(); return; }
-  if (e.key === 'l' || e.key === 'L') { toggleLowFx(); return; }
-  const m = KEYMAP[e.key];
+  const k = e.key;
+  // Enter/Space are handled here only; a focused button must not also "click" on them
+  if (k === ' ' || k === 'Enter') e.preventDefault();
+  if (e.repeat && (k === ' ' || k === 'Enter')) return;      // a held key must not skip through the game over
+  if (recordsOpen()) { recordsKey(e); return; }               // the records modal owns the keyboard while open
+  if (k === 'm' || k === 'M') { toggleMute(); return; }
+  if (k === 'l' || k === 'L') { toggleLowFx(); return; }
+  if (k === 't' || k === 'T') { audio(); openRecords(); return; }
+  if (state === 'over') {                                     // only Enter restarts, once the dialog is fully shown
+    if (k === 'Enter') replay();
+    else if (KEYMAP[k]) e.preventDefault();
+    return;
+  }
+  if (k === ' ' || k === 'Enter') { primary(); return; }
+  if (k === 'p' || k === 'P' || k === 'Escape') { if (state === 'play' || state === 'pause') primary(); return; }
+  const m = KEYMAP[k];
   if (m) {
     e.preventDefault();
-    if (state === 'title' || state === 'over') { start(); }
-    else if (state === 'pause') { state = 'play'; }
+    if (state === 'title') { audio(); start(); }
+    else if (state === 'pause') { setState('play'); }
     turn(m[0], m[1]);
     wake();
   }
 });
-$mute.addEventListener('click', (e) => { toggleMute(); e.target.blur(); });
-$lowfx.addEventListener('click', (e) => { toggleLowFx(); e.target.blur(); });
-window.addEventListener('blur', () => { if (state === 'play') state = 'pause'; });
+$mute.addEventListener('click', (e) => { toggleMute(); e.currentTarget.blur(); });
+$lowfx.addEventListener('click', (e) => { toggleLowFx(); e.currentTarget.blur(); });
+$trophies.addEventListener('click', (e) => { audio(); openRecords(); e.currentTarget.blur(); });
+window.addEventListener('blur', () => { if (state === 'play') setState('pause'); });
 
-// touch / swipe / click
+// touch / swipe / click on the canvas (title, pause and game over have their own screens on top)
 let tx = 0, ty = 0;
 cv.addEventListener('touchstart', (e) => {
   const t = e.changedTouches[0]; tx = t.clientX; ty = t.clientY; e.preventDefault();
@@ -64,8 +77,8 @@ cv.addEventListener('touchend', (e) => {
   const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
   e.preventDefault();
   if (Math.abs(dx) < 24 && Math.abs(dy) < 24) { primary(); return; }
-  if (state === 'title' || state === 'over') start();
-  else if (state === 'pause') state = 'play';
+  if (state === 'title') start();
+  else if (state === 'pause') setState('play');
   if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0); else turn(0, dy > 0 ? 1 : -1);
   wake();
 }, { passive: false });
