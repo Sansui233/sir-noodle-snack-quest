@@ -61,9 +61,9 @@
 @keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.25) rotate(-4deg); } 100% { transform: scale(1); } }
 
 .hud-status {
-  display: flex; align-items: center; gap: .6em; margin-top: .4em; padding: .2em .6em;
+  display: flex; align-items: center; gap: .6em; margin-top: .8em; padding: .2em .6em;
   font-size: .82em; font-weight: 700; border-radius: .7em;
-  background: rgba(91, 42, 78, .07); box-shadow: inset 0 .12em 0 rgba(91, 42, 78, .13);
+  background: rgba(91, 42, 78, .07);
 }
 /* speed meter: the bar is the base speed (what a night's sleep resets), the number is the current speed */
 #spd { display: flex; align-items: center; gap: .4em; flex: none; }
