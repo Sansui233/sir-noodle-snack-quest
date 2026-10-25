@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.1
+
+- Snappier swipes: the turn fires mid-drag once the finger has moved 14px, and one continuous drag can chain
+  turns (an L-shaped drag = two turns).
+
 ## v2.1.0
 
 - **简体中文**: every screen, HUD tooltip, banner, speech bubble, achievement and the controls hint, in Chinese.
