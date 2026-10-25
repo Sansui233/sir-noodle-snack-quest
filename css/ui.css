@@ -18,13 +18,27 @@
 
 .card {
   font-size: clamp(9px, 2.5cqw, 16px);
-  position: relative; width: 100%; max-width: 34em; max-height: 100%; overflow: auto;
+  position: relative; width: 100%; max-width: 34em; max-height: 100%;
+  overflow: hidden auto;   /* vertical only: popping parts (scale 1.12) must never flash a horizontal bar */
   background: var(--cream); color: var(--ink); text-align: center;
   border: 4px solid var(--ink); border-radius: 1.6em; padding: 1.1em 1.3em 1.2em;
   box-shadow: 0 .45em 0 var(--ink), 0 1.2em 2.4em rgba(40, 10, 30, .35);
-  scrollbar-width: thin;
 }
 .card h2 { margin: 0; line-height: 1.05; }
+
+/* scrollbars in the game's colours: a rounded pink thumb on a clear track, no arrow buttons.
+   Chromium ignores the ::-webkit-scrollbar styles once scrollbar-color is set, so the standard properties
+   are only for browsers without them (Firefox). */
+@supports not selector(::-webkit-scrollbar) {
+  .card, .rec-body { scrollbar-width: thin; scrollbar-color: var(--pink-soft) transparent; }
+}
+.card::-webkit-scrollbar, .rec-body::-webkit-scrollbar { width: 10px; height: 0; }
+.card::-webkit-scrollbar-track, .rec-body::-webkit-scrollbar-track { background: transparent; margin: .6em 0; }
+.card::-webkit-scrollbar-thumb, .rec-body::-webkit-scrollbar-thumb {
+  background: var(--pink-soft); border-radius: 999px; border: 2.5px solid var(--cream);   /* inset look: cream gap around the thumb */
+}
+.card::-webkit-scrollbar-thumb:hover, .rec-body::-webkit-scrollbar-thumb:hover { background: var(--pink); }
+.card::-webkit-scrollbar-button, .rec-body::-webkit-scrollbar-button { display: none; }
 
 /* ---------- screen enter / leave ---------- */
 .screen.in { animation: fade-in .25s both; }
@@ -199,7 +213,7 @@
   transform: rotate(45deg);
 }
 .btn.close::after { transform: rotate(-45deg); }
-.rec-body { flex: 1; overflow: auto; margin-top: .7em; padding: .1em .2em .3em; scrollbar-width: thin; }
+.rec-body { flex: 1; overflow: hidden auto; margin-top: .7em; padding: .1em .4em .3em .2em; }
 .life { display: flex; flex-wrap: wrap; justify-content: center; gap: .35em; margin-bottom: .5em; }
 
 table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; font-variant-numeric: tabular-nums; }

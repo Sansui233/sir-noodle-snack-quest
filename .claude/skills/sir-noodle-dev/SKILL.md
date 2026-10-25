@@ -54,6 +54,10 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
   Animated parts use `.pop/.rise/.stamp` with `style="--d:<ms>"` from the timeline in `showGameOver()`.
 
 ## Playtesting headlessly
+UI-only change? Don't play: open the screen directly (`openRecords('ach')`, `setState('pause')`,
+`setState('over'); showGameOver({ entry: null, rank: -1, newBest: false, run, unlocked: [] })`) and screenshot it.
+Scrollbars are hidden by default; `SCROLLBARS=1` shows real ones. Scroll containers must stay `overflow: hidden auto`
+(popping parts scale past the edges and would otherwise flash a horizontal bar).
 `node tools/playtest.mjs` = smoke test (random play, fails on page errors).
 `node tools/playtest.mjs test.mjs` runs `export default async ({ T, shot, frames, sleep, errors }) => {...}`;
 `VIEWPORT=360x640` for phone size. `T(code)` evaluates in the page's global scope, so all game state is reachable

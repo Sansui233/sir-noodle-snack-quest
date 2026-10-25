@@ -1,6 +1,7 @@
 // Headless playtest helper: loads index.html in headless Chrome and lets a script drive the game.
 //   node tools/playtest.mjs                 -> smoke test (boots, plays ~300 random steps, dies, reports errors)
 //   VIEWPORT=390x844 node tools/playtest.mjs ...  -> phone-sized window
+//   SCROLLBARS=1 node tools/playtest.mjs ...       -> keep real scrollbars (hidden by default for clean screenshots)
 //   node tools/playtest.mjs my-test.mjs     -> runs `export default async ({ T, shot, frames, errors }) => {...}`
 // T(code) evaluates code in the page's global scope (all game state is reachable: state, snake, score...).
 // shot(path) screenshots the canvas stage; frames(n) advances n frames by hand (rAF may not fire headless).
@@ -19,7 +20,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 export async function withGame(fn, { width = 900, height = 1000 } = {}) {
   const profile = mkdtempSync(join(tmpdir(), 'noodle-play-'));
   const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`,
-    `--window-size=${width},${height}`, '--hide-scrollbars', '--autoplay-policy=no-user-gesture-required', 'about:blank']);
+    `--window-size=${width},${height}`, ...(process.env.SCROLLBARS ? [] : ['--hide-scrollbars']), '--autoplay-policy=no-user-gesture-required', 'about:blank']);
   const errors = [];
   try {
     let targets;
