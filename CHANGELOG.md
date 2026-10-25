@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.0
+
+- **Pick one**: on a hard board (fast, long, lots of rocks) a power-up can come as a choice of 2 items, rarely 3.
+  Eat the one you want and the others vanish. The harder the board, the more often it happens (3 items: at most 5%).
+- **Help grows with speed**: faster play brings more shields (from level 15), then more stars (25 and 33).
+  Ice is rare at the start and gets more common as you speed up. With 2 shields, shields show up less often.
+- **Moon guarantee**: at full speed, a moon shows up within 7 snacks, so the game can't stay at max speed for long.
+- **Super bombs**: more rocks and a longer snake make them more likely (tuned for runs around length 150),
+  and with 12 or more rocks the next bomb is always a super bomb.
+
 ## v2.2.0
 
 - **Share your run**: a share button on the game over card makes a picture (the board at the crash, your
