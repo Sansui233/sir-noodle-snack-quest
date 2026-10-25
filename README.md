@@ -28,6 +28,7 @@ tools/art.js            the art, drawn as code in a 100x100 box
 tools/sheet.html        preview of every icon (open in a browser)
 tools/export.mjs        renders tools/art.js -> assets/*.png via headless Chrome
 tools/playtest.mjs      drives the game in headless Chrome (smoke test, scripted tests, screenshots)
+tools/release.mjs       builds dist/sir-noodle (runtime files only) and copies it to deploy folders
 docs/                   game mechanics write-ups (for humans)
 ```
 
@@ -47,6 +48,13 @@ a file may only *run* code at load time that uses things defined in files above 
 1. Edit or add a drawing in `tools/art.js` (`ART.<name> = g => { ... }`).
 2. Run `node tools/export.mjs` (set `CHROME=<path>` if Chrome/Edge is not in the default Windows location).
 3. New icons used on the canvas must also be listed in `ICON_NAMES` in `src/config.js`.
+
+## Releasing
+
+1. Bump `VERSION` in `src/config.js` and add a section to `CHANGELOG.md`.
+2. Commit on `main`, tag it: `git tag -a v<version> -m "..."`.
+3. `node tools/release.mjs --to <deploy dir> ...` builds `dist/sir-noodle/` (index.html, css, src, assets, VERSION)
+   and replaces each `--to` folder with it.
 
 ## Testing
 

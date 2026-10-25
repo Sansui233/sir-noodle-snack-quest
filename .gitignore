@@ -13,3 +13,6 @@ shots/
 
 # Claude Code local settings (the project skill in .claude/skills is tracked)
 .claude/settings.local.json
+
+# release builds (tools/release.mjs)
+dist/
