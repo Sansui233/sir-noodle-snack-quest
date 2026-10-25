@@ -81,7 +81,7 @@
 
 /* ---------- buttons, chips, bars ---------- */
 .btn {
-  font: 600 1.05em "Fredoka", system-ui, sans-serif; color: var(--ink); cursor: pointer;
+  font: 600 1.05em var(--font); color: var(--ink); cursor: pointer;
   display: inline-flex; align-items: center; gap: .4em; padding: .42em 1.1em;
   background: #fff; border: 3px solid var(--ink); border-radius: 999px; box-shadow: 0 .25em 0 var(--ink);
   transition: transform .08s, box-shadow .08s, filter .2s, opacity .2s;
@@ -96,7 +96,7 @@
 .btn.danger { background: #ffe3e3; }
 .btn.danger.armed { background: #ff6b6b; color: #fff; }
 .btn kbd {
-  font: 600 .62em "Fredoka", system-ui, sans-serif; padding: .05em .4em; border-radius: .4em;
+  font: 600 .62em var(--font); padding: .05em .4em; border-radius: .4em;
   border: 2px solid currentColor; opacity: .85; text-shadow: none;
 }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .6em; margin-top: .9em; }
@@ -200,7 +200,7 @@
 .rec-head { display: flex; align-items: center; gap: .5em; }
 .tabs { flex: 1; display: flex; gap: .35em; }
 .tab {
-  flex: 1; font: 600 1em "Fredoka", system-ui, sans-serif; color: var(--ink); cursor: pointer;
+  flex: 1; font: 600 1em var(--font); color: var(--ink); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center; gap: .35em; padding: .4em .6em;
   background: #fff; border: 3px solid var(--ink); border-radius: .8em; box-shadow: 0 .2em 0 var(--ink);
   transition: transform .08s, background .15s;
@@ -376,7 +376,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 /* "Playing as" on the title card: a button, so it looks like one */
 .player-chip {
   display: inline-flex; align-items: center; gap: .45em; margin-top: .8em; cursor: pointer;
-  font: 600 .95em "Fredoka", system-ui, sans-serif; color: var(--ink);
+  font: 600 .95em var(--font); color: var(--ink);
   padding: .15em .9em .15em .2em; background: #fff; border: 3px solid var(--ink); border-radius: 999px;
   box-shadow: 0 .2em 0 var(--ink); transition: transform .08s, box-shadow .08s;
 }
@@ -411,7 +411,7 @@ table.rank { width: 100%; border-collapse: separate; border-spacing: 0 .3em; fon
 .profile-card .t1 { font-size: 1.9em; margin-bottom: .3em; }
 .name-row { display: flex; gap: .45em; justify-content: center; align-items: center; margin: .7em 0 .6em; }
 .name-row input {
-  flex: 1; min-width: 0; max-width: 14em; font: 600 1.15em "Fredoka", system-ui, sans-serif; color: var(--ink);
+  flex: 1; min-width: 0; max-width: 14em; font: 600 1.15em var(--font); color: var(--ink);
   padding: .3em .7em; border: 3px solid var(--ink); border-radius: 999px; background: #fff; text-align: center;
   box-shadow: inset 0 .15em 0 rgba(91, 42, 78, .12); user-select: text; -webkit-user-select: text;
 }

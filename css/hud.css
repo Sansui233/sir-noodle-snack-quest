@@ -14,7 +14,7 @@
 
 /* ---------- buttons ---------- */
 #hud button {
-  font: 600 1em "Fredoka", system-ui, sans-serif; color: var(--ink); cursor: pointer;
+  font: 600 1em var(--font); color: var(--ink); cursor: pointer;
   background: #fff; border: 3px solid var(--ink); box-shadow: 0 .22em 0 var(--ink);
   transition: transform .08s, box-shadow .08s, background .15s;
 }

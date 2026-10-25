@@ -21,7 +21,7 @@ function toggleMute() { muted = !muted; $mute.innerHTML = iconHtml(muted ? 'spea
 
 function applyLowFx() {
   $lowfx.innerHTML = iconHtml(lowFx ? 'feather' : 'sparkle');
-  $lowfx.title = lowFx ? 'Effects: low (L to switch back to high)' : 'Effects: high (L to switch to low for slower devices)';
+  $lowfx.title = tr(lowFx ? 'fxLow' : 'fxHigh');
   document.body.classList.toggle('low-fx', lowFx);
   dpr = lowFx ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   cv.width = cv.height = SIZE * dpr;                       // resizing also resets the context state
@@ -69,6 +69,7 @@ $mute.addEventListener('click', (e) => { toggleMute(); e.currentTarget.blur(); }
 $lowfx.addEventListener('click', (e) => { toggleLowFx(); e.currentTarget.blur(); });
 $trophies.addEventListener('click', (e) => { audio(); openRecords(); e.currentTarget.blur(); });
 $profileBtn.addEventListener('click', (e) => { audio(); openProfile(); e.currentTarget.blur(); });
+$lang.addEventListener('click', (e) => { toggleLang(); e.currentTarget.blur(); });
 window.addEventListener('blur', () => { if (state === 'play') setState('pause'); });
 
 // touch / swipe / click on the canvas (title, pause and game over have their own screens on top)

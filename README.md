@@ -17,6 +17,7 @@ src/                    the game, as plain classic scripts sharing one global sc
   audio.js              synthesized sound effects
   particles.js          particle bursts, ambient effect particles
   achievements.js       achievement list, per-run stats, unlocking
+  i18n.js               languages: Chinese text for the page, data tables and tr() strings
   game.js               rules: spawning, effects, movement, eating, rocks, bombs
   ui.js                 DOM screens over the canvas, game over dialog, records, toasts
   input.js              keyboard / touch / mouse

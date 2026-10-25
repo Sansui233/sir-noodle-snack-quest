@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **简体中文**: every screen, HUD tooltip, banner, speech bubble, achievement and the controls hint, in Chinese.
+  Picked from the browser language; the 中 / EN button in the HUD switches and remembers it.
+  Chinese text uses the system UI font (PingFang SC, Microsoft YaHei UI, Noto Sans CJK), kept light.
+
 ## v2.0.2
 
 - Lighter type: bold text is Fredoka 600 (was 700-900), medium text 500. Applies to dialogs, HUD and the

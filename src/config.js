@@ -10,7 +10,7 @@ const BOMB_MS = 10000, SUPER_MS = 12000;   // how long bombs stay on the board
 const MAX_SHIELDS = 3;                     // shield charges: each one breaks one rock instead of dying
 const MAX_LVL = 38;                        // speed level at which the step time hits its 75ms floor
 
-const TEXT_FONT = '"Fredoka","Trebuchet MS",system-ui,sans-serif';
+const TEXT_FONT = '"Fredoka","Noodle CJK","PingFang SC","Microsoft YaHei UI","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif';   // canvas: same stack as --font (css/style.css)
 
 // all art is bundled PNG (drawn by tools/art.js, exported by tools/export.mjs) -> identical on every OS
 const ICON_NAMES = ['pizza','donut','burger','banana','strawberry','cupcake','taco','watermelon','cheese','fries',

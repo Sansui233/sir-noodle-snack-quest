@@ -3,7 +3,26 @@
   font-family: 'Fredoka'; font-style: normal; font-weight: 400 700; font-display: block;
   src: url(../assets/fonts/fredoka-latin.woff2) format('woff2');
 }
-:root { --ink: #5b2a4e; }
+/* Chinese: Fredoka has no CJK glyphs, so they come from the system's UI font (nothing to bundle).
+   Kept light: bold text (600) gets a medium cut where there is one, never a heavy bold
+   (YaHei has no medium, so Windows stays regular): PingFang SC (Apple), Microsoft YaHei UI (Windows),
+   Noto Sans CJK / Source Han Sans (Android, Linux). */
+@font-face {
+  font-family: 'Noodle CJK'; font-weight: 100 500;
+  src: local('PingFangSC-Regular'), local('Microsoft YaHei UI'), local('MicrosoftYaHeiUI'),
+       local('Noto Sans CJK SC'), local('NotoSansCJKsc-Regular'), local('Source Han Sans SC'), local('SourceHanSansSC-Regular');
+  unicode-range: U+2E80-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noodle CJK'; font-weight: 600 900;
+  src: local('PingFangSC-Medium'), local('Microsoft YaHei UI'), local('MicrosoftYaHeiUI'),
+       local('Noto Sans CJK SC Medium'), local('NotoSansCJKsc-Medium'), local('Source Han Sans SC Medium'), local('SourceHanSansSC-Medium');
+  unicode-range: U+2E80-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+:root {
+  --ink: #5b2a4e;
+  --font: "Fredoka", "Noodle CJK", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+}
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body { height: 100dvh; }
@@ -11,7 +30,7 @@ body {
   display: flex; flex-direction: column; align-items: center; justify-content: safe center; gap: 12px;
   padding: 18px 0;   /* breathing room so the board frame is never cut by the window edge */
   background: radial-gradient(circle at 20% 10%, #ffe3f1, #ffd2b8 45%, #c9f0ff);
-  font-family: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  font-family: var(--font);
   color: var(--ink); user-select: none; -webkit-user-select: none; overflow: hidden;
 }
 /* page mood changes with the active effect */

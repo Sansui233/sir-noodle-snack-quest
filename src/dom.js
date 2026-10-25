@@ -15,6 +15,7 @@ const $spdlbl = document.getElementById('spdlbl');
 const $spdx = document.getElementById('spdx');
 const $mute = document.getElementById('mute');
 const $lowfx = document.getElementById('lowfx');
+const $lang = document.getElementById('lang');
 const $trophies = document.getElementById('trophies');
 const $trophyCount = document.getElementById('trophy-count');
 const $profileBtn = document.getElementById('profile');

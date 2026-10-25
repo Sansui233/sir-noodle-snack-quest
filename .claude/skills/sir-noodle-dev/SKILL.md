@@ -54,6 +54,15 @@ earlier files. Map of files: README.md. Git: work on a branch, commit with the a
   a player mashing Space should get back in right after the dialog pops up. Buttons pop in with the card.
   Animated parts use `.pop/.rise/.stamp` with `style="--d:<ms>"` from the timeline in `showGameOver()`.
 
+## Text and languages (English + 简体中文)
+- Every player-facing string needs a Chinese version (`src/i18n.js`): text built in code goes through
+  `tr('key', ...args)` with the key in both `STR.en` and `STR.zh`; static text in `index.html` gets
+  `data-i18n` / `data-i18n-title` / `-alt` / `-aria` / `-ph` = a key in `UI_ZH`; new entries in the data tables
+  (`EFFECTS`, `PICKUPS`, quotes, `ACHIEVEMENTS`, `AVATARS`...) need their entry in `DATA_ZH`.
+- Chinese uses full-width punctuation (，！？：（）). Show names with `shownName()` (the saved "Anonymous" is translated).
+- CJK glyphs come from system fonts (light: no heavy bold) via the `--font` stack / `TEXT_FONT`;
+  check zh screens with `toggleLang()`.
+
 ## Playtesting headlessly
 UI-only change? Don't play: open the screen directly (`openRecords('ach')`, `setState('pause')`,
 `setState('over'); showGameOver({ entry: null, rank: -1, newBest: false, run, unlocked: [] })`) and screenshot it.

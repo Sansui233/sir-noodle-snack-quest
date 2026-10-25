@@ -13,7 +13,7 @@ body
 │  │  ├─ .hud-row
 │  │  │  ├─ button#profile        [avatar  PLAYER / name]   opens the profile dialog
 │  │  │  ├─ .counters             (coin) score · (snack bag) snacks · (crown) best     read-outs, not buttons
-│  │  │  └─ .hud-btns             (trophy + unlocked count) records · (speaker) mute · (sparkle/feather) FX
+│  │  │  └─ .hud-btns             (trophy + unlocked count) records · (speaker) mute · (sparkle/feather) FX · 中/EN language
 │  │  └─ .hud-status              speed meter ................................ current effect / shields
 │  └─ #stage                the square board (container for cqw font sizing)
 │     ├─ canvas#c           z0  world: grass, rocks, pickups, Sir Noodle, particles, "×N" pops, banners, bubbles
@@ -45,7 +45,7 @@ The old HUD was a row of identical pills, so nobody could tell what was clickabl
 
 | Kind       | Items                                   | Look                                                        |
 |------------|-----------------------------------------|-------------------------------------------------------------|
-| Buttons    | profile, records, mute, FX              | white, raised (dark bottom edge), round or pill; lift on hover, sink on press |
+| Buttons    | profile, records, mute, FX, language    | white, raised (dark bottom edge), round or pill; lift on hover, sink on press |
 | Read-outs  | score, snacks, best                     | just icon + number on the header, no frame; bump when a number goes up |
 | Status     | speed meter, current effect             | one sunken strip under the top row, so it reads as separate from both |
 
