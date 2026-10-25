@@ -5,7 +5,7 @@ into the rocks falling from the sky.
 
 **[▶ Play it in your browser](https://sansui233.github.io/static/sir-noodle/)** (desktop and phone, English / 简体中文)
 
-![Sir Noodle in Monkey Mode, wearing the crown, next to a pizza, a star power-up, a bomb and falling rocks](docs/img/gameplay.png)
+![Sir Noodle in Chill Mode on icy grass, wearing the crown, next to a pizza, a star power-up, a bomb and rocks](docs/img/gameplay.png)
 
 ## How to play
 
