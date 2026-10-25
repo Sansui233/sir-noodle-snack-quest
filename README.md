@@ -40,7 +40,7 @@ Effects stack, and so do their multipliers.
 
 ## Also inside
 
-- **34 achievements** in four rarities, from *First Bite* to *Hall of Fame*
+- **35 achievements** in four rarities, from *First Bite* to *Hall of Fame*
 - **Your top 10 runs** with a podium, plus a name and one of 13 avatars
 - **English and 简体中文**, picked from your browser, switch any time
 - **Share a run** from the game over screen: a picture card of your crash and stats plus a ready-made sentence,

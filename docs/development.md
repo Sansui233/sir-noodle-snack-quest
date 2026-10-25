@@ -42,7 +42,7 @@ a file may only *run* code at load time that uses things defined in files above 
 ## Docs
 
 - [UI hierarchy and screen flow](ui.md): layers, screens, game over dialog timeline, animations, key map
-- [Achievements and ranking](achievements-and-ranking.md): all 34 achievements and their rarity tiers, ranking rules, save format
+- [Achievements and ranking](achievements-and-ranking.md): all 35 achievements and their rarity tiers, ranking rules, save format
 - [Speed, power-up spawns and the Night](speed-and-night.md): speed stage table, speed meter, item pool and choices, bombs, moon rules, tuning knobs
 
 ## Changing the art

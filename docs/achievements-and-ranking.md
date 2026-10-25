@@ -3,7 +3,7 @@
 Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js` (save file, ranking),
 `src/ui.js` (toasts, game over dialog, records modal). If you change a goal in code, update this table.
 
-## Achievements (34, in 4 rarity tiers)
+## Achievements (35, in 4 rarity tiers)
 
 "Run" ones must be reached inside a single game; their progress bar shows your best run.
 "Life" ones add up over every game. Tier looks (medallion, tile, toast, sound) are in [ui.md](ui.md#rarity-looks).
@@ -22,9 +22,8 @@ Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js
 | Rare      | `royal`          | Royal Noodle       | reach the crown (5th hat, 25 snacks)   | run   | `hat`              |
 | Rare      | `speed_demon`    | Speed Demon        | speed level 38 (meter full)            | run   | `maxSpeed`         |
 | Rare      | `demolition`     | Demolition Crew    | destroy 15 rocks (any way)             | run   | `rocks`            |
-| Rare      | `fortress`       | Fortress           | hold 3 shields at once                 | run   | `maxShields`       |
+| Rare      | `double_guard`   | Double Guard       | hold 2 shields at once                 | run   | `maxShields`       |
 | Rare      | `yeet`           | YEET!              | monkey paws fling 5 rocks              | run   | `flung`            |
-| Rare      | `triple`         | Triple Threat      | 3 effects active at once               | run   | `maxActive`        |
 | Rare      | `night_owl`      | Night Owl          | 3 moons in one run                     | run   | `moons`            |
 | Rare      | `taste_tester`   | Taste Tester       | try all 6 power-up effects             | life  | `lifeTried`        |
 | Epic      | `bottomless`     | Bottomless Belly   | eat 100 snacks                         | run   | `snacks`           |
@@ -32,6 +31,8 @@ Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js
 | Epic      | `longcat`        | Loooong Noodle     | grow to 100 segments                   | run   | `length`           |
 | Epic      | `marathon`       | Marathon Noodle    | survive 3:00 (paused time excluded)    | run   | `time`             |
 | Epic      | `iron_stomach`   | Iron Stomach       | survive 10:00                          | run   | `time`             |
+| Epic      | `fortress`       | Fortress           | hold 3 shields at once                 | run   | `maxShields`       |
+| Epic      | `triple`         | Triple Threat      | 3 effects active at once               | run   | `maxActive`        |
 | Epic      | `kaboom`         | KA-BOOM            | clear 8 rocks with one super bomb      | run   | `superBest`        |
 | Epic      | `unstoppable`    | Unstoppable        | smash 5 rocks in one God Mode          | run   | `godBest`          |
 | Epic      | `quarry_boss`    | Quarry Boss        | destroy 50 rocks                       | run   | `rocks`            |
@@ -43,7 +44,7 @@ Code: `src/achievements.js` (definitions, run stats, unlocking), `src/storage.js
 | Legendary | `rampage`        | Divine Rampage     | smash 10 rocks in one 7s God Mode      | run   | `godBest`          |
 | Legendary | `cocktail`       | Effect Cocktail    | 4 effects active at once (spicy and chill cancel each other) | run | `maxActive` |
 | Legendary | `bottomless_pit` | Bottomless Pit     | eat 10,000 snacks                      | life  | `lifeSnacks`       |
-| Legendary | `hall_of_fame`   | Hall of Fame       | unlock all 33 others                   | life  | count of unlocked  |
+| Legendary | `hall_of_fame`   | Hall of Fame       | unlock all 34 others                   | life  | count of unlocked  |
 
 "Rocks destroyed" counts every way a rock goes away: God Mode crunch, shield break, bomb, super bomb, monkey fling.
 

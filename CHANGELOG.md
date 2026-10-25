@@ -9,6 +9,8 @@
 - **Moon guarantee**: at full speed, a moon shows up within 7 snacks, so the game can't stay at max speed for long.
 - **Super bombs**: more rocks and a longer snake make them more likely (tuned for runs around length 150),
   and with 12 or more rocks the next bomb is always a super bomb.
+- **Achievements**: new rare *Double Guard* (hold 2 shields). *Fortress* (3 shields) and *Triple Threat*
+  (3 effects at once) are now epic: with pick-one choices and rarer shields at 2, they're a great run's work.
 
 ## v2.2.0
 
